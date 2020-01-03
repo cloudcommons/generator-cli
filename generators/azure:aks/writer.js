@@ -9,6 +9,7 @@ module.exports = function (generator, answers) {
         kubernetesVersion: answers.kubernetesVersion,
         vms: answers.vms,
         vmsize: answers.vmsize,
+        sshKey: answers.sshKey,
         clientId: answers.clientId,
         clientSecret: answers.clientSecret,
         acrEnabled: answers.features.includes("Private Docker Registry"),
@@ -19,7 +20,7 @@ module.exports = function (generator, answers) {
         rbacEnabled: answers.features.includes("Role-Based Access Control (RBAC)"),
         issuerEmail: answers.issuerEmail
     };
-    generator.log(args);
+    
     copy(generator, "aks.tf", args);
     copy(generator, "acr.tf", args);
     copy(generator, "dns-zone.tf", args);
@@ -30,13 +31,18 @@ module.exports = function (generator, answers) {
     copy(generator, "variables.tf", args);
     copy(generator, '__init__.tf', { version: "v0.12.18", backend: "local" });
     if (answers.features.includes("Let's Encrypt (v0.8)")) {
-        copyTo(generator, "lets-encrypt/v0.8/crds.yml", "cert-manager/crds.yml", args);
-        copyTo(generator, "lets-encrypt/v0.8/cluster-issuer.yml", "cert-manager/cluster-issuer.yml", args);
-        copyTo(generator, "lets-encrypt/v0.8/jetstack-helm-repo.tf", "jetstack-helm-repo.tf", args);
+        copy(generator, "lets-encrypt/v0.8/crds.yml",args);
+        copy(generator, "lets-encrypt/v0.8/cluster-issuer.yml", args);
+        copyTo(generator, "lets-encrypt/v0.8/jetstack-helm-repo.tf", "lets-encrypt-jetstack-helm-repo.tf", args);
         copyTo(generator, "lets-encrypt/v0.8/lets-encrypt.tf", "lets-encrypt.tf", args);
     }
+    if (true) // Future condition to copy Tiller-related rubbish when people use Helm v2
+    {
+        copyTo(generator, "helm/v2/cluster-role.tf", "tiller-cluster-role.tf");
+        copyTo(generator, "helm/v2/role-binding.tf", "tiller-role-binding.tf");
+        copyTo(generator, "helm/v2/service-account.tf", "tiller-service-account.tf");
+    }
 }
-
 
 /**
  * Copies a file from the source path to the exact same location in destination
