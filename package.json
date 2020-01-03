@@ -1,0 +1,13 @@
+{
+  "name": "generator-cloudcommons",
+  "version": "0.1.0",
+  "description": "A generator to produce cloud common boilerplate code",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sesispla@outlook.com",
+  "license": "MIT",
+  "dependencies": {
+    "yeoman-generator": "^4.4.0"
+  }
+}

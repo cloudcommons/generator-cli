@@ -1,0 +1,58 @@
+parameters:
+  pool: 'Hosted Ubuntu 1604'
+  name: 'Terraform'
+  terraformVersion: '0.12.18'
+  workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+jobs:
+- job: Publish${{ parameters.name}}
+  displayName: 'Publish - ${{ parameters.name}}'
+  pool:
+    name: ${{ parameters.pool }}
+
+  steps:
+  - task: CopyFiles@2
+    displayName: 'Copy - Terraform scripts'
+    inputs:
+      SourceFolder: ${{ parameters.workingDirectory }}
+      Contents: |
+        **
+        !.git/**
+        !.gitignore
+        !azure-pipelines.yml
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - task: TerraformInstaller@0
+    displayName: 'Terraform - Install'
+    inputs:
+        terraformVersion: '${{ parameters.terraformVersion }}'
+
+  - task: TerraformCLI@0
+    displayName: "Terraform - Init"
+    inputs:
+      command: 'init'
+      workingDirectory: ${{ parameters.workingDirectory }}
+      backendType: 'azurerm'
+      backendServiceArm: '${{ parameters.backendServiceArm }}'
+      ensureBackend: true
+      backendAzureRmResourceGroupName: '${{ parameters.backendAzureRmResourceGroupName }}'
+      backendAzureRmResourceGroupLocation: '${{ parameters.backendAzureRmResourceGroupLocation }}'
+      backendAzureRmStorageAccountName: '${{ parameters.backendAzureRmStorageAccountName }}'
+      backendAzureRmStorageAccountSku: '${{ parameters.backendAzureRmStorageAccountSku }}'
+      backendAzureRmContainerName: '${{ parameters.backendAzureRmContainerName }}'
+      backendAzureRmKey: 'build.tfstate'
+
+  - task: TerraformCLI@0
+    displayName: "Terraform - Validate"
+    inputs:
+        command: 'validate'
+        workingDirectory: ${{ parameters.workingDirectory }}
+        commandOptions: '${{ parameters.validateCommandOptions }}'
+
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish - Validated Terraform scripts'
+    inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: '${{ parameters.name }}'
+        publishLocation: 'Container'
