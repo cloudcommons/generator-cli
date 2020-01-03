@@ -4,8 +4,7 @@ locals {
 
 resource "kubernetes_cluster_role" "tiller" {
   metadata {
-    name      = "tiller"
-    namespace = "kube-system"
+    name      = "tiller"    
     annotations = {
       "rbac.authorization.kubernetes.io/autoupdate" = "true"
     }
@@ -17,11 +16,6 @@ resource "kubernetes_cluster_role" "tiller" {
   rule {
     api_groups        = ["*"]
     resources         = ["*"]    
-    verbs             = ["*"]
-    non_resource_urls = ["*"]    
-  }
-  rule {
-    non_resource_urls = ["*"]
     verbs             = ["*"]
   }
 }

@@ -31,10 +31,10 @@ module.exports = function (generator, answers) {
     copy(generator, "variables.tf", args);
     copy(generator, '__init__.tf', { version: "v0.12.18", backend: "local" });
     if (answers.features.includes("Let's Encrypt (v0.8)")) {
-        copy(generator, "lets-encrypt/v0.8/crds.yml",args);
-        copy(generator, "lets-encrypt/v0.8/cluster-issuer.yml", args);
-        copyTo(generator, "lets-encrypt/v0.8/jetstack-helm-repo.tf", "lets-encrypt-jetstack-helm-repo.tf", args);
-        copyTo(generator, "lets-encrypt/v0.8/lets-encrypt.tf", "lets-encrypt.tf", args);
+        copy(generator, "cert-manager/v0.8/crds.yml",args);
+        copy(generator, "cert-manager/v0.8/cluster-issuer.yml", args);
+        copyTo(generator, "cert-manager/v0.8/jetstack-helm-repo.tf", "cert-manager-jetstack-helm-repo.tf", args);
+        copyTo(generator, "cert-manager/v0.8/cert-manager.tf", "cert-manager.tf", args);
     }
     if (true) // Future condition to copy Tiller-related rubbish when people use Helm v2
     {
