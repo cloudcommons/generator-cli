@@ -47,8 +47,14 @@ module.exports = function (generator) {
         type: "input",
         name: "adminUser",
         message: "Kubernetes - Virtual Machine Administrator username",
-        default: "root"
+        default: "cloudcommons"
     });
+
+    questions.push({
+        type: "password",
+        name: "sshKey",
+        message: "Kubernetes - SSH Key",
+    });        
 
     questions.push({
         type: "input",
@@ -66,8 +72,8 @@ module.exports = function (generator) {
         type: "checkbox",
         name: "features",
         message: "Application features",
-        choices: ["Network plugin", "Network policy", "Let's Encrypt (v0.8)", "Auto-scaler", "Role-Based Access Control (RBAC)", "Private Docker Registry", "DNS Zone"],
-        default: ["Network plugin", "Network policy", "Let's Encrypt (v0.8)", "Auto-scaler", "Role-Based Access Control (RBAC)"]
+        choices: ["Network plugin", "Network policy", "Let's Encrypt (v0.8)", "Role-Based Access Control (RBAC)", "Auto-scaler", "Private Docker Registry", "DNS Zone"],
+        default: ["Network plugin", "Network policy", "Let's Encrypt (v0.8)", "Role-Based Access Control (RBAC)"]
     });
 
     questions.push({
