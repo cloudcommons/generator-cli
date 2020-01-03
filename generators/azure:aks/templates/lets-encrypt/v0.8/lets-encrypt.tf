@@ -4,8 +4,9 @@ resource "helm_release" "letsencrypt" {
   chart      = "jetstack/cert-manager"
   version    = "v0.8.0"
   namespace  = "cert-manager"
+  depends_on = [module.<%= name %>-aks]
   provisioner "local-exec" {
-      working_dir = "cert-manager"
+      working_dir = "lets-encrypt/v0.8"
       command = "kubectl apply -f ."
-  }
+  }  
 }

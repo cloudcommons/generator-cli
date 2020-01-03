@@ -5,7 +5,7 @@ output "client_certificate" {
 }
 
 output "kube_config" {
-  value = "${module.<%= name %>-aks.kube_config}"
-  description = "AKS Configuration"
+  value = "${module.<%= name %>-aks.kube_config_raw}"
+  description = "AKS Configuration file"
   sensitive = true
 }

@@ -1,6 +1,6 @@
 module "<%= name %>-aks" {
   source                    = "cloudcommons/kubernetes/azure"
-  version                   = "0.1.2"
+  version                   = "0.1.3"
   name                      = var.KUBERNETES_CLUSTER_NAME
   location                  = local.location
   resource_group            = local.resource_group

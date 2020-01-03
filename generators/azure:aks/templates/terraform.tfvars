@@ -3,7 +3,7 @@ CREATOR                 = "cloudcommons"
 KUBERNETES_CLUSTER_NAME = "<%= name %>"
 LOCATION                = "<%= location %>"
 ADMIN_USER              = "<%= adminUser %>"
-SSH_KEY                 = null
+SSH_KEY                 = "<%= sshKey %>"
 KUBERNETES_VERSION      = "<%= kubernetesVersion %>"
 KUBERNETES_AGENT_COUNT  = <%= vms %>
 KUBERNETES_VM_SIZE      = "<%= vmsize %>"
