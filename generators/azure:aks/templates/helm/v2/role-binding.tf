@@ -10,6 +10,6 @@ resource "kubernetes_cluster_role_binding" "tiller" {
   subject {
     kind      = "ServiceAccount"
     name      = local.tiller_account
-    namespace = "kube-system"
+    namespace = local.tiller_account_namespace
   }  
 }
