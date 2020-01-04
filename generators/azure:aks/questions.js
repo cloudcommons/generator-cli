@@ -72,8 +72,8 @@ module.exports = function (generator) {
         type: "checkbox",
         name: "features",
         message: "Application features",
-        choices: ["Network plugin", "Network policy", "Let's Encrypt (v0.8)", "Role-Based Access Control (RBAC)", "Auto-scaler", "Private Docker Registry"],
-        default: ["Network plugin", "Network policy", "Let's Encrypt (v0.8)", "Role-Based Access Control (RBAC)"]
+        choices: ["Network plugin", "Network policy", "Role-Based Access Control (RBAC)", "Cert-manager (v0.8)", "Auto-scaler", "Private Docker Registry"],
+        default: ["Network plugin", "Network policy", "Role-Based Access Control (RBAC)"]
     });
 
     questions.push({

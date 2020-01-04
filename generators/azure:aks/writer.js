@@ -26,7 +26,7 @@ module.exports = function (generator, answers) {
     copy(generator, "terraform.tfvars", args);
     copy(generator, "variables.tf", args);
     copy(generator, '__init__.tf', { version: "v0.12.18", backend: "local" });
-    if (answers.features.includes("Let's Encrypt (v0.8)")) {
+    if (answers.features.includes("Cert-manager (v0.8)")) {
         copy(generator, "cert-manager/v0.8/crds.yml", args);
         copy(generator, "cert-manager/v0.8/cluster-issuer.yml", args);
         copyTo(generator, "cert-manager/v0.8/jetstack-helm-repo.tf", "cert-manager-jetstack-helm-repo.tf", args);
