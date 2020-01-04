@@ -2,7 +2,7 @@ locals {
   name = "${var.KUBERNETES_CLUSTER_NAME}-${terraform.workspace}"
 }
 
-module "<%= name %>-aks" {
+module "kubernetes" {
   source                    = "cloudcommons/kubernetes/azure"
   version                   = "0.1.3"
   name                      = local.name
