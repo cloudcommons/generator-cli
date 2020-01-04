@@ -72,7 +72,7 @@ module.exports = function (generator) {
         type: "checkbox",
         name: "features",
         message: "Application features",
-        choices: ["Network plugin", "Network policy", "Let's Encrypt (v0.8)", "Role-Based Access Control (RBAC)", "Auto-scaler", "Private Docker Registry", "DNS Zone"],
+        choices: ["Network plugin", "Network policy", "Let's Encrypt (v0.8)", "Role-Based Access Control (RBAC)", "Auto-scaler", "Private Docker Registry"],
         default: ["Network plugin", "Network policy", "Let's Encrypt (v0.8)", "Role-Based Access Control (RBAC)"]
     });
 
@@ -81,14 +81,7 @@ module.exports = function (generator) {
         name: "issuerEmail",
         message: "Let's Encrypt - Issuer e-mail",
         when: (answers) => answers.features.includes("Let's Encrypt (v0.8)")
-    });       
-
-    questions.push({
-        type: "input",
-        name: "acrName",
-        message: "Azure Container Registry - Name",
-        when: (answers) => answers.features.includes("Private Docker Registry")
-    });      
+    });         
 
     questions.push({
         type: "list",

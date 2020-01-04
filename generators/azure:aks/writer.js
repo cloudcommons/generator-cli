@@ -13,17 +13,13 @@ module.exports = function (generator, answers) {
         clientId: answers.clientId,
         clientSecret: answers.clientSecret,
         acrEnabled: answers.features.includes("Private Docker Registry"),
-        acrName: answers.acrName,
         acrSku: answers.acrSku,
-        dnsZoneEnabled: answers.features.includes("DNS Zone"),
-        dnsZoneName: answers.dnsZoneName,
         rbacEnabled: answers.features.includes("Role-Based Access Control (RBAC)"),
         issuerEmail: answers.issuerEmail
     };
     
     copy(generator, "aks.tf", args);
     copy(generator, "acr.tf", args);
-    copy(generator, "dns-zone.tf", args);
     copy(generator, "outputs.tf", args);
     copy(generator, "providers.tf", args);
     copy(generator, "resource-group.tf", args);

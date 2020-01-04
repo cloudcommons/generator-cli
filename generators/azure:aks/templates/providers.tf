@@ -2,6 +2,10 @@ provider "azurerm" {
   version = "1.39"
 }
 
+provider "null" {
+  version = "2.1"
+}
+
 provider "kubernetes" {
   version                = "1.10"
   host                   = module.<%= name %>-aks.kube_config.0.host

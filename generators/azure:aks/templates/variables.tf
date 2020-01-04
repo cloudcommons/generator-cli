@@ -55,11 +55,6 @@ variable "ACR_ENABLED" {
     default = true
 }
 
-variable "ACR_NAME" {
-    type = string
-    description = "Container Registry name"
-}
-
 variable "ACR_SKU" {
     type = string
     description = "Container Registry SKU: Basic, Standard, Premium"    
