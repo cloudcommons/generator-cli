@@ -60,18 +60,6 @@ variable "ACR_SKU" {
     description = "Container Registry SKU: Basic, Standard, Premium"    
 }
 
-variable "DNS_ZONE_ENABLED" {
-    type = bool
-    description = "Deploy a DNS zone. Default false"
-    default = false
-}
-
-variable "DNS_ZONE_NAME" {
-    type = string
-    description = "(Required) The name of the DNS Zone. Must be a valid domain name."    
-    default = null
-}
-
 variable "RBAC_ENABLED" {
     type = bool
     description = "(Optional) Enable Kubernetes Role-Based Access Control. Defaults to true"
