@@ -1,8 +1,12 @@
 resource "null_resource" "cert-manager" {
   provisioner "local-exec" {
-      working_dir = "cert-manager/v0.8"
-      command = "kubectl apply -f ."
-  }    
+    working_dir = "cert-manager/v0.8"
+    command     = "az aks get-credentials -g $resource_group -n $name && kubectl apply -f ."
+    environment = {
+      name           = local.name
+      resource_group = local.resource_group
+    }
+  }
   depends_on = [module.kubernetes]
 }
 
