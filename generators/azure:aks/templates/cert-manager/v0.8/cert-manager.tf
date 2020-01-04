@@ -1,7 +1,7 @@
 resource "null_resource" "cert-manager" {
   provisioner "local-exec" {
     working_dir = "cert-manager/v0.8"
-    command     = "az aks get-credentials -g $resource_group -n $name --overwrite-existing && kubectl apply -f ."
+    command     = "az aks get-credentials -g $resource_group -n $name --overwrite-existing && kubectl apply -f crds.yml && kubectl apply -f cluster-issuer.yml"
     environment = {
       name           = local.name
       resource_group = local.resource_group
