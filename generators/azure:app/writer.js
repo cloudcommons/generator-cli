@@ -8,7 +8,8 @@ module.exports = function (generator, answers) {
         ingressChart: "stable/nginx-ingress",
         ingressVersion: "1.5.0"
     }
-
+    
+    copy(generator, "LICENSE");
     copy(generator, "outputs.tf");
     copy(generator, "variables.tf", args);
     copy(generator, "app.tf", args);

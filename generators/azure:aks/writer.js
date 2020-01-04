@@ -18,6 +18,7 @@ module.exports = function (generator, answers) {
         issuerEmail: answers.issuerEmail
     };
     
+    copy(generator, "LICENSE");
     copy(generator, "aks.tf", args);
     copy(generator, "acr.tf", args);
     copy(generator, "outputs.tf", args);
