@@ -1,5 +1,5 @@
 locals {
-  ingress_enabled = var.INGRESS_CHART != null ? true : false
+  ingress_enabled = var.INGRESS_ENABLED
   ingress_class = local.ingress_enabled ? "${var.APP_NAME}-${terraform.workspace}-ingress" : null
 }
 

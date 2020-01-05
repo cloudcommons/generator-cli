@@ -6,5 +6,10 @@ controller:
       loadBalancerIP: "${LOAD_BALANCER_IP}"
       externalTrafficPolicy: Local
       annotations: {    
-        service.beta.kubernetes.io/azure-load-balancer: true,
+        <% if (internalLoadBalancer == true) { %>
+        service.beta.kubernetes.io/azure-load-balancer-internal: true,
+        service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "${INGRESS_SERVICE_SUBNET}"
+        <% } else { %>
+        service.beta.kubernetes.io/azure-load-balancer: true
+        <% } %>
       }

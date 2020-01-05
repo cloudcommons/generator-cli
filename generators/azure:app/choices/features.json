@@ -1,0 +1,26 @@
+[
+    {
+        "value": "ingress",
+        "name": "Ingress service"
+    },
+    {
+        "value": "tls",
+        "name": "TLS"
+    },
+    {
+        "value": "livenessProbe",
+        "name": "Deployment liveness probe"
+    },
+    {
+        "value": "readinessProbe",
+        "name": "Deployment readiness probe"
+    },
+    {
+        "value": "privateRegistry",
+        "name": "Private Docker registry"
+    },
+    {
+        "value": "dns",
+        "name": "Create Azure DNS Record"
+    }
+]
