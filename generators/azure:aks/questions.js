@@ -80,7 +80,7 @@ module.exports = function (generator) {
         type: "input",
         name: "issuerEmail",
         message: "Let's Encrypt - Issuer e-mail",
-        when: (answers) => answers.features.includes("Let's Encrypt (v0.8)")
+        when: (answers) => answers.features.includes("Cert-manager (v0.8)")
     });         
 
     questions.push({
