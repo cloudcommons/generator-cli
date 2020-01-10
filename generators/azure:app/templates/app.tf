@@ -3,6 +3,8 @@ locals {
   app_name  = "${var.APP_NAME}-${terraform.workspace}"
   tls_enabled = var.APP_INGRESS_TLS_ENABLED == true
   tls_secret_name = "tls-secret"
+  dns_enabled = var.DNS_ZONE_ENABLED
+  fqdn = local.dns_enabled ? "${var.DNS_ZONE_RECORD}.${var.DNS_ZONE_NAME}" : null
 }
 
 module "<%= name %>" {
@@ -13,8 +15,9 @@ module "<%= name %>" {
   DEPLOYMENT_REPLICAS             = var.APP_IMAGE_REPLICACOUNT
   DEPLOYMENT_IMAGE                = var.APP_IMAGE_REPOSITORY
   DEPLOYMENT_IMAGE_PULL_POLICY    = var.APP_IMAGE_PULLPOLICY
-  DEPLOYMENT_IMAGE_PULL_SECRET    = local.docker_secret_name
+  <% if (privateRegistryEnabled) { %>DEPLOYMENT_IMAGE_PULL_SECRET    = local.docker_secret_name <% } %>
   VERSIONS = [{
+    <% if (ingressHostname || dns) %>
     hostname   = local.fqdn
     name       = "current"
     docker_tag = var.APP_IMAGE_TAG
@@ -37,6 +40,7 @@ module "<%= name %>" {
     "certmanager.k8s.io/acme-challenge-type" = "http01"
   } : {}
   INGRESS_TLS = local.tls_enabled ? [{
+    <% if (ingressHostname || dns) %>
     hosts       = [local.fqdn]
     secret_name = local.tls_secret_name
   }] : []

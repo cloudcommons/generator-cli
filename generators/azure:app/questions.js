@@ -34,6 +34,14 @@ module.exports = function (generator) {
 function addIngressQuestions(questions) {
 
     questions.push({
+        type: "input",
+        name: "ingressHostname",
+        message: "Ingress - Hostname",
+        default: null,
+        when: (answers) => !answers.features.includes("dns")
+    })
+
+    questions.push({
         type: "list",
         name: "ingressType",
         message: "Ingress - Type",
@@ -102,7 +110,7 @@ function addDeploymentQuestions(questions) {
         type: "input",
         name: "imageReplicaCount",
         message: "Deployment - Image replica count",
-        default: "2"
+        default: 2
     });
 
     questions.push({

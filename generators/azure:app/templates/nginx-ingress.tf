@@ -8,7 +8,8 @@ data "template_file" "ingress_chart_values_yaml" {
     vars = {
         INGRESS_CLASS = local.ingress_class
         INGRESS_REPLICAS = var.INGRESS_REPLICAS
-        LOAD_BALANCER_IP = local.ingress_load_balancer_ip
+        LOAD_BALANCER_IP = <%= internalLoadBalancer ? "var.INGRESS_IP" : "local.ingress_load_balancer_ip" %>
+        <% if (internalLoadBalancer) %>INGRESS_SERVICE_SUBNET = var.INGRESS_SERVICE_SUBNET
     }
 }
 

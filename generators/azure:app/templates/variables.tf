@@ -62,6 +62,12 @@ variable "INGRESS_ENABLED" {
   default     = true
 }
 
+variable "INGRESS_HOSTNAME" {
+  type = string
+  description = "(Optional) When DNS Zone is disabled, use this variable to add a hostname to the ingress. This property is ignored if the DNS Zone is enabled"
+  default = null
+}
+
 
 variable "INGRESS_CHART" {
   type        = string
@@ -79,6 +85,12 @@ variable "INGRESS_SERVICE_SUBNET" {
   type        = string
   description = "(Optional) When deploying internal ingresses, this variable allows you to allocate a load balancer in an specific VNET subnet"
   default     = null
+}
+
+variable "INGRESS_IP" {
+  type = string
+  description = "(Optional) When Ingress is internal, use this variable to specify the Ingress private IP address. This IP should belog to to the INGRESS_SERVICE_SUBNET VNET subnet"
+  default = null
 }
 
 variable "INGRESS_REPLICAS" {
@@ -120,6 +132,12 @@ variable "CLUSTER_ISSUER" {
   type        = string
   description = "cert-manager Issuer or ClusterIssuer name"
   default     = "letsencrypt"
+}
+
+variable DNS_ZONE_ENABLED {
+  type = bool
+  description = "(Optional) Is the DNS zone feature enabled?"
+  default = false
 }
 
 variable DNS_ZONE_NAME {

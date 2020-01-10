@@ -9,27 +9,32 @@ module.exports = function (generator, answers) {
         // Deployment
         imageName: answers.imageName,
         imageTag: answers.imageTag,
-        imageReplicaCount: answers.imageReplicaCount ? imageReplicaCount : 2,
+        imageReplicaCount: answers.imageReplicaCount ? answers.imageReplicaCount : 2,
         imagePullPolicy: answers.imagePullPolicy,
+        privateRegistryEnabled: answers.features.includes("privateRegistry"), 
         dockerRepoServer: answers.dockerRepoServer,
         dockerRepoUser: answers.dockerRepoUser,
         dockerRepoPassword: answers.dockerRepoPassword,
         dockerRepoEmail: answers.dockerRepoEmail,
         dockerSecretName: answers.dockerSecretName,
         // Ingress
-        ingressEnabled: answers.features.includes("ingress"),
+        ingressHostname: answers.ingressHostname,
+        ingressEnabled: answers.features.includes("ingress"),        
         internalLoadBalancer: answers.features.includes("ingress") && answers.ingressType === "internalLoadBalancer",
+        ingressServiceSubnet: answers.ingressServiceSubnet,
+        privateLoadBalancerIp: answers.privateLoadBalancerIp,
         location: answers.ipLocation ? answers.ipLocation : "westeurope",
         aksResourceGroup: answers.aksResourceGroup,
         ingressChart: chartParts ? chartParts[0] : null,
         ingressChartVersion: chartParts ? chartParts[1] : null,
-        ingressReplicas: answers.ingressReplicas,
+        ingressReplicas: answers.ingressReplicas ? answers.ingressReplicas : null,
         ingressServiceName: answers.ingressServiceName,
         ingressServiceSubnet: answers.ingressServiceSubnet,
         // TLS
         tlsEnabled: answers.features.includes("tls"),
         certificateIssuer: answers.certificateIssuer,
         // DNS
+        dnsZoneEnabled: answers.features.includes("dns"),
         dnsZoneName: answers.dnsZoneName,
         dnsZoneResourceGroup: answers.dnsZoneResourceGroup,
         dnsZoneRecord: answers.dnsZoneRecord,
@@ -39,17 +44,20 @@ module.exports = function (generator, answers) {
     copy(generator, "LICENSE");
     copy(generator, "terraform.tfvars", args);
     copy(generator, "variables.tf", args);
-    copy(generator, "outputs.tf");    
+    copy(generator, "outputs.tf", args);    
     copy(generator, "app.tf", args);
     copy(generator, "providers.tf");
-    if (answers.features.includes("privateRegistry")) {
+    if (args.privateRegistryEnabled) {
         copy(generator, "docker-secret.tf", args);
     }
     copy(generator, '__init__.tf', { version: "v0.12.18", backend: "local" });
     copy(generator, 'nginx-ingress.tf', args);
     copy(generator, 'templates/ingress.yml', args);
-    copy(generator, 'ip.tf', args);
-    copy(generator, 'dns.tf', args);
+    if (!args.internalLoadBalancer)
+        copy(generator, 'ip.tf', args);
+    if (args.dnsZoneEnabled) {
+        copy(generator, 'dns.tf', args);
+    }
     copy(generator, '.gitignore');
 }
 
