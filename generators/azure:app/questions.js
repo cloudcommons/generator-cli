@@ -3,6 +3,7 @@ var locations = require ("../../common/questions/azure/locations")
 var pullPolicies = require("./choices/pullPolicies");
 var ingressCharts = require("./choices/ingressCharts");
 var ingressTypes = require("./choices/ingressTypes");
+var az = require('../../common/az');
 
 module.exports = function (generator) {
     var questions = [];
@@ -22,16 +23,16 @@ module.exports = function (generator) {
     });
 
     questions = addDeploymentQuestions(questions);
-    questions = addIngressQuestions(questions);
+    questions = addIngressQuestions(generator, questions);
     questions = addTlsQuestions(questions);
-    questions = addDnsZoneQuestions(questions);
+    questions = addDnsZoneQuestions(generator, questions);
     questions = addProbeQuestions(questions, "livenessProbe", "Liveness probe");
     questions = addProbeQuestions(questions, "readinessProbe", "Readiness probe");
 
     return questions;
 }
 
-function addIngressQuestions(questions) {
+function addIngressQuestions(generator, questions) {
 
     questions.push({
         type: "input",
@@ -51,9 +52,10 @@ function addIngressQuestions(questions) {
     });
 
     questions.push({
-        type: "input",
+        type: "list",
         name: "aksResourceGroup",
         message: "Ingress - Public Load Balancer - AKS Managed Resource Group (Required to create an static IP address that Kubernetes can use)",
+        choices: az.resourceGroups(generator),
         when: (answers) => answers.features.includes("ingress") && answers.ingressType === "publicLoadBalancer"
     });
 
@@ -181,18 +183,20 @@ function addTlsQuestions(questions) {
     return questions;
 }
 
-function addDnsZoneQuestions(questions) {
+function addDnsZoneQuestions(generator, questions) {
     questions.push({
-        type: "input",
-        name: "dnsZoneName",
-        message: "DNS Zone - Name",
+        type: "list",
+        name: "dnsZoneResourceGroup",
+        message: "DNS Zone - Resource Group",
+        choices: az.resourceGroups(generator),
         when: (answers) => answers.features.includes("dns")
     });
 
     questions.push({
-        type: "input",
-        name: "dnsZoneResourceGroup",
-        message: "DNS Zone - Resource Group",
+        type: "list",
+        name: "dnsZoneName",
+        message: "DNS Zone - Name",
+        choices: (answers) => az.dnsZones(generator, answers.dnsZoneResourceGroup),
         when: (answers) => answers.features.includes("dns")
     });
 
