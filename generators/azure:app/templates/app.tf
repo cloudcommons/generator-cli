@@ -4,7 +4,7 @@ locals {
   tls_enabled = var.APP_INGRESS_TLS_ENABLED == true
   tls_secret_name = "tls-secret"
   dns_enabled = var.DNS_ZONE_ENABLED
-  fqdn = local.dns_enabled ? "${var.DNS_ZONE_RECORD}.${var.DNS_ZONE_NAME}" : null
+  fqdn = local.dns_enabled ? "${var.DNS_ZONE_RECORD}.${var.DNS_ZONE_NAME}" : var.INGRESS_HOSTNAME
 }
 
 module "<%= name %>" {
