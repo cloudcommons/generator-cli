@@ -1,6 +1,4 @@
-var locations = require("../../common/questions/azure/locations.json");
-var vms = require("../../common/questions/azure/vm-sizes.json");
-var aksVersions = require("../../common/questions/azure/aks-versions.json");
+var az = require('../../common/az');
 
 module.exports = function (generator) {
     var questions = [];
@@ -16,7 +14,7 @@ module.exports = function (generator) {
         type: "list",
         name: "location",
         message: "Azure location",
-        choices: locations,
+        choices: az.locations(generator),
         default: "westeurope"
     });
 
@@ -24,15 +22,14 @@ module.exports = function (generator) {
         type: "list",
         name: "kubernetesVersion",
         message: "Kubernetes - Version",
-        choices: aksVersions,
-        default: aksVersions[0]
+        choices: (answers) => az.aksVersions(generator, answers.location)
     });
 
     questions.push({
         type: "list",
         name: "vmsize",
         message: "Kubernetes - Virtual machine size",
-        choices: vms,
+        choices: (answers) => az.vmSkus(generator, answers.location),
         default: "Standard_DS3_v2"        
     });       
 

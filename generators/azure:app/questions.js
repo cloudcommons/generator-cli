@@ -1,5 +1,4 @@
 var features = require("./choices/features");
-var locations = require ("../../common/questions/azure/locations")
 var pullPolicies = require("./choices/pullPolicies");
 var ingressCharts = require("./choices/ingressCharts");
 var ingressTypes = require("./choices/ingressTypes");
@@ -77,7 +76,7 @@ function addIngressQuestions(generator, questions) {
         type: "list",
         name: "ipLocation",
         message: "Ingress - Public Load Balancer - Static IP location",
-        choices: locations,
+        choices: az.locations(this),
         default: "westeurope",
         when: (answers) => answers.features.includes("ingress") && answers.ingressType === "Load Balancer - Public"
     });
