@@ -34,7 +34,7 @@ module.exports.aksVersions = function(generator, location) {
     return aks.orchestrators.map(function(version){
         return {
             name: version.isPreview ? `${version.orchestratorVersion} (Preview)` : version.orchestratorVersion,
-            value: version.name
+            value: version.orchestratorVersion
         }
     });
 }
