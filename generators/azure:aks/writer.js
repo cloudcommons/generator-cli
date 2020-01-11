@@ -19,6 +19,7 @@ module.exports = function (generator, answers) {
     };
     
     copy(generator, "LICENSE");
+    copy(generator, ".gitignore");
     copy(generator, "aks.tf", args);
     copy(generator, "acr.tf", args);
     copy(generator, "outputs.tf", args);
