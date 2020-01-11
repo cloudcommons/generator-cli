@@ -9,7 +9,7 @@ locals {
 
 module "<%= name %>" {
   source                          = "cloudcommons/application/kubernetes"
-  version                         = "0.1.2"
+  version                         = "0.1.3"
   APP_NAME                        = var.APP_NAME
   ENVIRONMENT                     = terraform.workspace
   DEPLOYMENT_REPLICAS             = var.APP_IMAGE_REPLICACOUNT
@@ -40,7 +40,7 @@ module "<%= name %>" {
     "certmanager.k8s.io/acme-challenge-type" = "http01"
   } : {}
   INGRESS_TLS = local.tls_enabled ? [{
-    <% if (ingressHostname || dns) %>
+    <% if (ingressHostname || dnsZoneEnabled) %>
     hosts       = [local.fqdn]
     secret_name = local.tls_secret_name
   }] : []
