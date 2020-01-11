@@ -1,7 +1,7 @@
 var features = require("./choices/features");
-var locations = require ("../../common/questions/azure/locations.json")
-var pullPolicies = require("./choices/pullPolicies.json");
-var ingressCharts = require("./choices/ingressCharts.json");
+var locations = require ("../../common/questions/azure/locations")
+var pullPolicies = require("./choices/pullPolicies");
+var ingressCharts = require("./choices/ingressCharts");
 var ingressTypes = require("./choices/ingressTypes");
 
 module.exports = function (generator) {

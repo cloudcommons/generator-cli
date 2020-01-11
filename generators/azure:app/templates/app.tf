@@ -17,7 +17,7 @@ module "<%= name %>" {
   DEPLOYMENT_IMAGE_PULL_POLICY    = var.APP_IMAGE_PULLPOLICY
   <% if (privateRegistryEnabled) { %>DEPLOYMENT_IMAGE_PULL_SECRET    = local.docker_secret_name <% } %>
   VERSIONS = [{
-    <% if (ingressHostname || dns) %>
+    <% if (ingressHostname || dnsZoneEnabled) %>
     hostname   = local.fqdn
     name       = "current"
     docker_tag = var.APP_IMAGE_TAG

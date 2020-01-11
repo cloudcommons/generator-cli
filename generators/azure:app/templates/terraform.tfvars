@@ -10,12 +10,13 @@ DOCKER_REPO_EMAIL          = "<%= dockerRepoEmail %>"
 DOCKER_SECRET_NAME         = "<%= dockerSecretName %>"
 <% } %>
 INGRESS_ENABLED            = <%= ingressEnabled %>
-<% if (!dnsZoneEnabled) %>
-INGRESS_HOSTNAME           = <%= ingressHostname%>
+<% if (!dnsZoneEnabled) { %>
+INGRESS_HOSTNAME           = "<%= ingressHostname %>"
+<% } %>
 <% if (internalLoadBalancer) { %>
-INGRESS_SUBNET             = "ingressServiceSubnet"
-INGRESS_IP                 = "privateLoadBalancerIp"
-<% } %
+INGRESS_SUBNET             = "<%= ingressServiceSubnet %>"
+INGRESS_IP                 = "<%= privateLoadBalancerIp %>"
+<% } %>
 INGRESS_CHART              = "<%= ingressChart %>"
 INGRESS_CHART_VERSION      = "<%= ingressChartVersion %>"
 INGRESS_REPLICAS           = <%= ingressReplicas %>

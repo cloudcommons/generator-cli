@@ -27,7 +27,7 @@ module.exports = function (generator, answers) {
         aksResourceGroup: answers.aksResourceGroup,
         ingressChart: chartParts ? chartParts[0] : null,
         ingressChartVersion: chartParts ? chartParts[1] : null,
-        ingressReplicas: answers.ingressReplicas ? answers.ingressReplicas : null,
+        ingressReplicas: answers.ingressReplicas ? answers.ingressReplicas : 2,
         ingressServiceName: answers.ingressServiceName,
         ingressServiceSubnet: answers.ingressServiceSubnet,
         // TLS
@@ -40,9 +40,10 @@ module.exports = function (generator, answers) {
         dnsZoneRecord: answers.dnsZoneRecord,
         dnsZoneRecordTtl: answers.dnsZoneRecordTtl
     }
-
+    
     copy(generator, "LICENSE");
     copy(generator, "terraform.tfvars", args);
+    generator.log("Writing");
     copy(generator, "variables.tf", args);
     copy(generator, "outputs.tf", args);    
     copy(generator, "app.tf", args);
@@ -50,7 +51,8 @@ module.exports = function (generator, answers) {
     if (args.privateRegistryEnabled) {
         copy(generator, "docker-secret.tf", args);
     }
-    copy(generator, '__init__.tf', { version: "v0.12.18", backend: "local" });
+    
+    copy(generator, '__init__.tf', { version: "~> v0.12.19", backend: "local" });
     copy(generator, 'nginx-ingress.tf', args);
     copy(generator, 'templates/ingress.yml', args);
     if (!args.internalLoadBalancer)
