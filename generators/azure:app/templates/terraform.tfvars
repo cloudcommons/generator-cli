@@ -27,6 +27,7 @@ APP_IMAGE_REPLICACOUNT     = "<%= imageReplicaCount %>"
 APP_IMAGE_PULLPOLICY       = "<%= imagePullPolicy %>"
 APP_INGRESS_TLS_ENABLED    = <%= tlsEnabled %>
 CLUSTER_ISSUER             = "<%= certificateIssuer %>"
+DNS_ZONE_ENABLED           = dnsZoneEnabled
 <% if (dnsZoneEnabled) { %>
 DNS_ZONE_NAME              = "<%= dnsZoneName %>"
 DNS_ZONE_RESOURCE_GROUP    = "<%= dnsZoneResourceGroup %>"
