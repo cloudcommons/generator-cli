@@ -1,0 +1,14 @@
+trigger:
+- master
+
+jobs:
+- template: templates/cloudcommons-terraform-build.yaml 
+  parameters:
+    terraformVersion: '0.12.18'
+    backendServiceArm: '%(TF_AZURE_BACKEND_SUBSCRIPTION)'
+    backendAzureRmResourceGroupName: '$(TF_RESOURCE_GROUP_NAME)'
+    backendAzureRmResourceGroupLocation: '$(TF_RESOURCE_GROUP_LOCATION)'
+    backendAzureRmStorageAccountName: '$(TF_STORAGE_ACCOUNT_NAME)'
+    backendAzureRmStorageAccountSku: '$(TF_STORAGE_ACCOUNT_SKU)'
+    backendAzureRmContainerName: 'build'
+    backendAzureRmKey: '<%= name %>'
