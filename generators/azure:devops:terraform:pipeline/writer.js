@@ -6,7 +6,7 @@ module.exports = function (generator, answers) {
         name: answers.name
     };
     copy(generator, "LICENSE");
-    copy(generator, "cloudcommons-terraform-build.yaml", args);
+    copy(generator, "templates/cloudcommons-terraform-build.yaml", args);
     copy(generator, "azure-pipelines.yaml", args);
 }
 
