@@ -92,12 +92,5 @@ module.exports = function (generator) {
         when: (answers) => answers.features.includes("Private Docker Registry")
     });
 
-    questions.push({
-        type: "input",
-        name: "dnsZoneName",
-        message: "DNS Zone - Name",               
-        when: (answers) => answers.features.includes("DNS Zone")
-    });
-
     return questions;
 }
