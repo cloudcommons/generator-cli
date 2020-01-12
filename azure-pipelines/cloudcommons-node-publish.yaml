@@ -25,5 +25,5 @@ jobs:
     displayName: 'NPM - Publish'  
     inputs:
       command: 'custom'
-      customCommand: publish --access public
-      publishEndpoint: 'npm-cloudcommons'
+      customCommand: publish --access publiccustom
+      customEndpoint: 'npm-cloudcommons'
