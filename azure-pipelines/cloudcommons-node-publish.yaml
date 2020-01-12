@@ -1,6 +1,6 @@
 parameters:
   pool: 'ubuntu-latest'
-  name: 'generator-cloudcommons'
+  name: 'generator'
   nodeVersionSpec: '10.x'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
 
