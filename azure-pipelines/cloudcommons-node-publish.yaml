@@ -26,4 +26,5 @@ jobs:
     inputs:
       command: 'custom'
       customCommand: publish --access public
+      customRegistry: useExternalRegistry
       customEndpoint: 'npm-cloudcommons'
