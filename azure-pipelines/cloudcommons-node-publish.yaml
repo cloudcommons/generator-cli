@@ -1,7 +1,7 @@
 parameters:
   pool: 'ubuntu-latest'
   name: 'generator'
-  nodeVersionSpec: '10.x'
+  nodeVersionSpec: '12.x'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
 
 jobs:
