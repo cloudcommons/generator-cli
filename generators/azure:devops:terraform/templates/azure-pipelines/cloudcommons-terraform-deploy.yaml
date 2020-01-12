@@ -9,7 +9,7 @@ jobs:
 - job: Deploy${{ parameters.name }}
   displayName: 'Deploy - ${{ parameters.environment }}'
   pool:
-    name: ${{ parameters.pool }}
+    vmImage: ${{ parameters.pool }}
 
   steps:
   - task: DownloadBuildArtifacts@0

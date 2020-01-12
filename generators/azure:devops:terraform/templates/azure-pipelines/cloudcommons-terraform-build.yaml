@@ -8,7 +8,7 @@ jobs:
 - job: Publish${{ parameters.name}}
   displayName: 'Publish - ${{ parameters.name}}'
   pool:
-    name: ${{ parameters.pool }}
+    vmImage: ${{ parameters.pool }}
 
   steps:
   - task: CopyFiles@2

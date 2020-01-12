@@ -8,7 +8,7 @@ jobs:
 - job: Validate${{ parameters.name}}
   displayName: 'Terraform - Validate'
   pool:
-    name: ${{ parameters.pool }}
+    vmImage: ${{ parameters.pool }}
 
   steps:
   - task: TerraformInstaller@0
