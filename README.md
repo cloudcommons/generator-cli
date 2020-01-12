@@ -1,0 +1,3 @@
+# Cloudcommons Yeoman generator
+
+WIP
