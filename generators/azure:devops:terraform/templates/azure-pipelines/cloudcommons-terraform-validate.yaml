@@ -1,5 +1,5 @@
 parameters:
-  pool: 'Hosted Ubuntu 1604'
+  pool: 'ubuntu-latest'
   name: 'terraform'
   terraformVersion: '0.12.19'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
