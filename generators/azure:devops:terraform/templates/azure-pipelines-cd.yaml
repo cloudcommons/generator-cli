@@ -7,7 +7,7 @@ stages:
 - stage: 'build'
   displayName: 'Continous Delivery'
   jobs:
-  - template: templates/cloudcommons-terraform-build.yaml 
+  - template: azure-pipelines/cloudcommons-terraform-build.yaml 
     parameters:
       terraformVersion: '<%= terraformVersion %>'
       artifactName: 'terraform'      
@@ -22,7 +22,7 @@ stages:
 - stage: 'deployDevelopment'
   displayName: 'Deploy - Development'
   jobs:
-  - template: templates/cloudcommons-terraform-deploy.yaml 
+  - template: azure-pipelines/cloudcommons-terraform-deploy.yaml 
     parameters:
       name: 'develop'
       environment: 'develop'
