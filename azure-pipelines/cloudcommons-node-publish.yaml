@@ -23,6 +23,6 @@ jobs:
 
   - task: Npm@1
     inputs:
-      command: 'publish'
-      customCommand: --access public
+      command: 'custom'
+      customCommand: npm publish --access public
       publishEndpoint: 'npm-cloudcommons'
