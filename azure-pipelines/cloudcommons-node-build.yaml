@@ -1,0 +1,21 @@
+parameters:
+  pool: 'ubuntu-latest'
+  name: 'generator-cloudcommons'
+  nodeVersionSpec: '10.x'
+  workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+jobs:
+- job: Build${{ parameters.name}}
+  displayName: 'Build - ${{ parameters.name}}'
+  pool:
+    name: ${{ parameters.pool }}
+
+  steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '${{ parameters.nodeVersionSpec}}'
+    displayName: 'Node.js - Install'
+
+  - script: |
+      npm install
+    displayName: 'NPM - Install'
