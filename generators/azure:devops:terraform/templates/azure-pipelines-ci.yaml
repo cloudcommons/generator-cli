@@ -11,7 +11,7 @@ stages:
 - stage: 'build'
   displayName: 'Continous Integration'
   jobs:
-  - template: azure-pipelines/cloudcommons-terraform-build.yaml 
+  - template: azure-pipelines/cloudcommons-terraform-validate.yaml 
     parameters:
       terraformVersion: '<%= terraformVersion %>'
       artifactName: 'terraform'      
