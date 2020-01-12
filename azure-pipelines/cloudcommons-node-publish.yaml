@@ -8,7 +8,7 @@ jobs:
 - job: Build${{ parameters.name}}
   displayName: 'Build - ${{ parameters.name}}'
   pool:
-    name: ${{ parameters.pool }}
+    vmImage: ${{ parameters.pool }}
 
   steps:
   - task: NodeTool@0
