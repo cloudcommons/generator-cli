@@ -3,6 +3,7 @@ parameters:
   name: 'generator'
   nodeVersionSpec: '10.x'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
+  tagVersion: '$(Build_SourceBranch)'
 
 jobs:
 - job: Build${{ parameters.name}}
@@ -21,5 +22,5 @@ jobs:
     displayName: 'NPM - Install'
 
   - script: |
-      npm publish --tag $(Build_SourceBranch)
-    displayName: 'NPM - Publish (dry-run)'    
+      npm publish --tag ${{ parameters.tagVersion}}
+    displayName: 'NPM - Publish'    
