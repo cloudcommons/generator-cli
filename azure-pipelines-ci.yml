@@ -17,7 +17,7 @@ pr:
 
 stages:
 - stage: 'build'
-  displayName: 'Continous Integration'
+  displayName: 'Generator - Continous Integration'
   jobs:
   - template: azure-pipelines/cloudcommons-node-build.yaml 
 

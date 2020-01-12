@@ -1,0 +1,11 @@
+trigger:
+  tags:
+    include:
+    - '*'
+
+stages:
+- stage: 'publish'
+  displayName: 'NPM - Publish'
+  jobs:
+  - template: azure-pipelines/cloudcommons-node-publish.yaml 
+
