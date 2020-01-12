@@ -4,8 +4,9 @@
 module.exports = function (generator, answers) {
     var args = {
         name: answers.name,
+        terraformRoot: answers.terraformRoot,
         subscription: answers.subscription,
-        safeName: camelize(answers.name),
+        safeName: generateSafeName(answers.name),
         terraformVersion: '0.12.19'
     };
 
@@ -55,8 +56,11 @@ function copyTo(generator, source, destination, parameters) {
  * Transform a string into a camelcase string
  * @param {*} str String to convert into camelcase
  */
-function camelize(str) {
-    return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
-        return index == 0 ? word.toLowerCase() : word.toUpperCase();
-    }).replace(/\s+/g, '');
+function generateSafeName(str) {
+    return str =>
+        str &&
+        str
+            .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+            .map(x => x.toLowerCase())
+            .join('-');
 }

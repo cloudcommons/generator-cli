@@ -12,7 +12,14 @@ module.exports = function (generator) {
         type: "input",
         name: "subscription",
         message: "Azurerm - Subscription (Should meet an existing Service Connection to Azurerm in Azure DevOps)"
-    });    
+    });
+
+    questions.push({
+        type: "input",
+        name: "terraformRoot",
+        message: "Terraform - Root folder",
+        default: "/"
+    });        
 
     questions.push({
         type: "checkbox",

@@ -10,7 +10,8 @@ stages:
   - template: azure-pipelines/cloudcommons-terraform-build.yaml 
     parameters:
       terraformVersion: '<%= terraformVersion %>'
-      artifactName: 'terraform'      
+      artifactName: 'terraform'
+      terraformRoot: '<%= terraformRoot %>'
       backendServiceArm: '$(TF_AZURE_BACKEND_SUBSCRIPTION)'
       backendAzureRmResourceGroupName: '$(TF_RESOURCE_GROUP_NAME)'
       backendAzureRmResourceGroupLocation: '$(TF_RESOURCE_GROUP_LOCATION)'
@@ -28,8 +29,8 @@ stages:
       environment: 'develop'
       subscriptionName: '<%= subscription %>'
       terraformVersion: '<%= terraformVersion %>'
-      artifactName: 'terraform'
-      terraformRoot: '/'
+      artifactName: 'terraform'      
+      terraformRoot: '<%= terraformRoot %>'
       backendServiceArm: '$(TF_AZURE_BACKEND_SUBSCRIPTION)'
       backendAzureRmResourceGroupName: '$(TF_RESOURCE_GROUP_NAME)'
       backendAzureRmResourceGroupLocation: '$(TF_RESOURCE_GROUP_LOCATION)'
