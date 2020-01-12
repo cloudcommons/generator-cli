@@ -21,6 +21,8 @@ jobs:
     inputs:
       command: 'install'
 
-  - script: |
-      npm publish --access public
-    displayName: 'NPM - Publish'
+- task: Npm@1
+  inputs:
+    command: 'publish'
+    customCommand: --access public
+    publishEndpoint: 'npm-cloudcommons'
