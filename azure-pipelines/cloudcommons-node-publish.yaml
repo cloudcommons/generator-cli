@@ -5,8 +5,8 @@ parameters:
   workingDirectory: '$(System.DefaultWorkingDirectory)'
 
 jobs:
-- job: Build${{ parameters.name}}
-  displayName: 'Build - ${{ parameters.name}}'
+- job: Publish${{ parameters.name}}
+  displayName: 'Publish - ${{ parameters.name}}'
   pool:
     vmImage: ${{ parameters.pool }}
 
@@ -17,10 +17,12 @@ jobs:
     displayName: 'Node.js - Install'
 
   - task: Npm@1
+    displayName: 'NPM - Install'  
     inputs:
       command: 'install'
 
   - task: Npm@1
+    displayName: 'NPM - Publish'  
     inputs:
       command: 'publish'
       publishEndpoint: 'npm-cloudcommons'
