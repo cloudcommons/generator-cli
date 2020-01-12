@@ -3,7 +3,6 @@ parameters:
   name: 'generator'
   nodeVersionSpec: '10.x'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
-  tagVersion: '$(Build_SourceBranch)'
 
 jobs:
 - job: Build${{ parameters.name}}
@@ -17,10 +16,11 @@ jobs:
       versionSpec: '${{ parameters.nodeVersionSpec}}'
     displayName: 'Node.js - Install'
 
-  - script: |
-      npm install
-    displayName: 'NPM - Install'
+  - task: Npm@1
+    inputs:
+      command: 'install'
 
-  - script: |
-      npm publish --tag ${{ parameters.tagVersion}}
-    displayName: 'NPM - Publish'    
+  - task: Npm@1
+    inputs:
+      command: 'publish'
+      publishEndpoint: 'npm-cloudcommons'
