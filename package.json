@@ -5,7 +5,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "sesispla@outlook.com",
+  "author": {
+    "name": "Sergio Sisternes",
+    "email": "sesispla@outlook.com",
+    "url": "https://www.sesispla.net"
+  }, 
+  "homepage": "https://github.com/cloudcommons/generator-cloudcommons",
+  "repository": "https://github.com/cloudcommons/generator-cloudcommons",
   "license": "MIT",
   "dependencies": {
     "yeoman-generator": "^4.4.0"
