@@ -1,0 +1,38 @@
+parameters:
+  pool: 'Hosted Ubuntu 1604'
+  name: 'terraform'
+  terraformVersion: '0.12.19'
+  workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+jobs:
+- job: Validate${{ parameters.name}}
+  displayName: 'Terraform - Validate'
+  pool:
+    name: ${{ parameters.pool }}
+
+  - task: TerraformInstaller@0
+    displayName: 'Terraform - Install'
+    inputs:
+        terraformVersion: '${{ parameters.terraformVersion }}'
+
+  - task: TerraformCLI@0
+    displayName: "Terraform - Init"
+    inputs:
+      command: 'init'
+      workingDirectory: ${{ parameters.workingDirectory }}
+      backendType: 'azurerm'
+      backendServiceArm: '${{ parameters.backendServiceArm }}'
+      ensureBackend: true
+      backendAzureRmResourceGroupName: '${{ parameters.backendAzureRmResourceGroupName }}'
+      backendAzureRmResourceGroupLocation: '${{ parameters.backendAzureRmResourceGroupLocation }}'
+      backendAzureRmStorageAccountName: '${{ parameters.backendAzureRmStorageAccountName }}'
+      backendAzureRmStorageAccountSku: '${{ parameters.backendAzureRmStorageAccountSku }}'
+      backendAzureRmContainerName: '${{ parameters.backendAzureRmContainerName }}'
+      backendAzureRmKey: 'build.tfstate'
+
+  - task: TerraformCLI@0
+    displayName: "Terraform - Validate"
+    inputs:
+        command: 'validate'
+        workingDirectory: ${{ parameters.workingDirectory }}
+        commandOptions: '${{ parameters.validateCommandOptions }}'

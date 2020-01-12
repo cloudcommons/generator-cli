@@ -9,11 +9,17 @@ module.exports = function (generator) {
     });
 
     questions.push({
+        type: "input",
+        name: "subscription",
+        message: "Azurerm - Subscription (Should meet an existing Service Connection to Azurerm in Azure DevOps)"
+    });    
+
+    questions.push({
         type: "checkbox",
         name: "features",
         message: "Application features",
-        choices: ["template", "pipeline"],
-        default: ["template", "pipeline"]
+        choices: ["templates", "pipelines"],
+        default: ["templates", "pipelines"]
     });
 
     return questions;

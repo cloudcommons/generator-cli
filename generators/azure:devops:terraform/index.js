@@ -37,5 +37,9 @@ module.exports = class extends Generator {
   }
 
   end() {
+    this.log("Completed! Please dont forget to:");
+    this.log(`1) Configure your YAML pipelines in Azure DevOps`);
+    this.log(`2) Create environment the environment variables for the Azure back-end`);
+    this.log(`3) A Service Connection named ${this.answers.subscription} exists in your Azure DevOps`);    
   }
 };
