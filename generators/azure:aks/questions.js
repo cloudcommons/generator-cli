@@ -1,4 +1,5 @@
 var az = require('../../common/az');
+var features = require('./choices/features.json');
 
 module.exports = function (generator) {
     var questions = [];
@@ -69,15 +70,24 @@ module.exports = function (generator) {
         type: "checkbox",
         name: "features",
         message: "Application features",
-        choices: ["Network plugin", "Network policy", "Role-Based Access Control (RBAC)", "Cert-manager (v0.8)", "Auto-scaler", "Private Docker Registry"],
-        default: ["Network plugin", "Network policy", "Role-Based Access Control (RBAC)"]
+        choices: features,
+        default: ["network-plugin", "network-policy", "rbac", "cert-manager"]
     });
+
+    questions.push({
+        type: "list",
+        name: "certManagerVersion",
+        message: "Cert-manager - Version",
+        choices: ["v0.8", "v0.9","v0.10.1"],
+        when: (answers) => answers.features.includes("cert-manager"),
+        default: "v0.10.1"
+    });         
 
     questions.push({
         type: "input",
         name: "issuerEmail",
-        message: "Let's Encrypt - Issuer e-mail",
-        when: (answers) => answers.features.includes("Cert-manager (v0.8)")
+        message: "Cert-manager - Issuer e-mail",
+        when: (answers) => answers.features.includes("cert-manager")
     });         
 
     questions.push({
@@ -86,7 +96,7 @@ module.exports = function (generator) {
         message: "Azure Container Registry - SKU",
         choices: ["Basic", "Standard", "Premium"],
         default: "Basic",        
-        when: (answers) => answers.features.includes("Private Docker Registry")
+        when: (answers) => answers.features.includes("acr")
     });
 
     return questions;

@@ -12,9 +12,10 @@ module.exports = function (generator, answers) {
         sshKey: answers.sshKey,
         clientId: answers.clientId,
         clientSecret: answers.clientSecret,
-        acrEnabled: answers.features.includes("Private Docker Registry"),
+        certManagerVersion: answers.certManagerVersion,
+        acrEnabled: answers.features.includes("acr"),
         acrSku: answers.acrSku,
-        rbacEnabled: answers.features.includes("Role-Based Access Control (RBAC)"),
+        rbacEnabled: answers.features.includes("rbac"),
         issuerEmail: answers.issuerEmail
     };
     
@@ -27,12 +28,12 @@ module.exports = function (generator, answers) {
     copy(generator, "resource-group.tf", args);
     copy(generator, "terraform.tfvars", args);
     copy(generator, "variables.tf", args);
-    copy(generator, '__init__.tf', { version: "v0.12.18", backend: "local" });
-    if (answers.features.includes("Cert-manager (v0.8)")) {
-        copy(generator, "cert-manager/v0.8/crds.yml", args);
-        copy(generator, "cert-manager/v0.8/cluster-issuer.yml", args);
-        copyTo(generator, "cert-manager/v0.8/jetstack-helm-repo.tf", "cert-manager-jetstack-helm-repo.tf", args);
-        copyTo(generator, "cert-manager/v0.8/cert-manager.tf", "cert-manager.tf", args);
+    copy(generator, '__init__.tf', { version: "v0.12.19", backend: "local" });
+    if (answers.features.includes("cert-manager")) {
+        copy(generator, `cert-manager/${args.certManagerVersion}/crds.yml`, args);
+        copy(generator, `cert-manager/${args.certManagerVersion}/cluster-issuer.yml`, args);
+        copyTo(generator, `cert-manager/${args.certManagerVersion}/jetstack-helm-repo.tf`, "cert-manager-jetstack-helm-repo.tf", args);
+        copyTo(generator, `cert-manager/${args.certManagerVersion}/cert-manager.tf`, "cert-manager.tf", args);
     }
     if (true) // Future condition to copy Tiller-related rubbish when people use Helm v2
     {
