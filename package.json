@@ -1,6 +1,6 @@
 {
   "name": "@cloudcommons/generator-cloudcommons",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A generator to produce cloud common boilerplate code",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
