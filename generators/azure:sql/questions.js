@@ -2,12 +2,8 @@ var features = require('./choices/features');
 var editions = require('./choices/database-editions')
 var sizes = require('./choices/database-sizes')
 var az = require('../../common/az');
+var getConfig = require('../../common/getConfig')
 
-
-function getConfig(generator, key, defaultValue) {
-    const answers = generator.config.get("database");
-    return answers && answers[key] ? answers[key] : defaultValue;
-}
 
 module.exports = function (generator) {
     var questions = [];

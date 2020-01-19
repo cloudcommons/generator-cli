@@ -11,6 +11,7 @@ module.exports = class extends Generator {
 
   constructor(args, opts) {
     super(args, opts);
+    this.configName = "sql-azure";
   }
 
   initializing() {
@@ -50,7 +51,7 @@ module.exports = class extends Generator {
 
   end() {
     cleanupSecrets(this.answers);   // Secrets are not stored in the .yo-rc file, as it is stored in clear
-    this.config.set("database", this.answers);
+    this.config.set(this.configName, this.answers);
     this.config.save();
     this.log("All set! Please validate your terraform script with 'terraform validate'");
   }  
