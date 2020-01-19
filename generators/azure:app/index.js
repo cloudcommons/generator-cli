@@ -6,6 +6,7 @@ module.exports = class extends Generator {
 
   constructor(args, opts) {
     super(args, opts);
+    this.configName = "azure:app";
   }
 
   initializing() {
@@ -44,6 +45,8 @@ module.exports = class extends Generator {
   }
 
   end() {
+    this.config.set(this.configName, this.answers);
+    this.config.save();
     this.log("All set! Please validate your terraform script with 'terraform validate'");
   }
 };

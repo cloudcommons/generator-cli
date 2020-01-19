@@ -1,5 +1,5 @@
 terraform {
-  required_version = "<%= version %>"
-  backend "<%= backend %>" {    
+  required_version = "<%- version %>"
+  backend "<%- backend %>" {    
   }
 }

@@ -11,7 +11,7 @@ module.exports = class extends Generator {
 
   constructor(args, opts) {
     super(args, opts);
-    this.configName = "sql-azure";
+    this.configName = "azure:sql";
   }
 
   initializing() {
