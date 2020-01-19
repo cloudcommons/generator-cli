@@ -1,0 +1,10 @@
+[
+    {
+        "value": "database",
+        "name": "Database"
+    },
+    {
+        "value": "fail-over",
+        "name": "Database - Fail over"
+    }
+]
