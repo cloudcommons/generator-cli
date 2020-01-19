@@ -3,6 +3,12 @@ var editions = require('./choices/database-editions')
 var sizes = require('./choices/database-sizes')
 var az = require('../../common/az');
 
+
+function getConfig(generator, key, defaultValue) {
+    const answers = generator.config.get("database");
+    return answers && answers[key] ? answers[key] : defaultValue;
+}
+
 module.exports = function (generator) {
     var questions = [];
 
@@ -10,14 +16,15 @@ module.exports = function (generator) {
         type: "input",
         name: "serverName",
         message: "Server - Name",
-        default: generator.appname + "-sql" // Default to current folder name
+        default: getConfig(generator, "serverName", `${generator.appname}-sql`)
     });
 
     questions.push({
         type: "list",
         name: "resourceGroup",
         message: "Server - Resource Group",
-        choices: az.resourceGroups(generator)
+        choices: az.resourceGroups(generator),
+        default: getConfig(generator, "resourceGroup")
     });
 
     questions.push({
@@ -25,18 +32,21 @@ module.exports = function (generator) {
         name: "serverLocation",
         message: "Server - Location",
         choices: az.locations(generator),
+        default: getConfig(generator, "serverLocation")
     });
 
     questions.push({
         type: "input",
         name: "serverAdminLogin",
-        message: "Server - Administrator user"
+        message: "Server - Administrator user",
+        default: getConfig(generator, "serverAdminLogin")
     });
 
     questions.push({
         type: "password",
         name: "serverAdminPassword",
-        message: "Server - Administrator password"
+        message: "Server - Administrator password",
+        when: !getConfig(generator, "serverAdminLogin") // Terraform is not used to update admin credentials
     });
 
     questions.push({
@@ -44,7 +54,7 @@ module.exports = function (generator) {
         name: "features",
         message: "Server - Features",
         choices: features,
-        default: ["database"]
+        default: getConfig(generator, "features", ["database"])
     });
 
     addDatabaseQuestions(questions, generator);
@@ -60,6 +70,7 @@ function addRestoreQuestions(questions, generator)
         type: "confirm",
         name: "databaseRestore",
         message: "Database - Restore from existing database?",
+        default: getConfig(generator, "databaseRestore"),
         when: (answers) => answers.features.includes("database")
     });
 
@@ -68,6 +79,7 @@ function addRestoreQuestions(questions, generator)
         name: "restoreResourceGroup",
         message: "Restore - Resource Group",
         choices: az.resourceGroups(generator),
+        default: getConfig(generator, "restoreResourceGroup"),
         when: (answers) => answers.features.includes("database") && answers.databaseRestore === true
     });
 
@@ -76,6 +88,7 @@ function addRestoreQuestions(questions, generator)
         name: "restoreServerId",
         message: "Restore - Server",
         choices: (answers) => az.sqlServers(generator, answers.restoreResourceGroup),
+        default: getConfig(generator, "restoreServerId"),
         when: (answers) => answers.features.includes("database") && answers.databaseRestore === true
     });
 
@@ -84,6 +97,7 @@ function addRestoreQuestions(questions, generator)
         name: "restoreDatabaseId",
         message: "Restore - Database",
         choices: (answers) => az.sqlDatabases(generator, answers.restoreServerId),
+        default: getConfig(generator, "restoreDatabaseId"),
         when: (answers) => answers.features.includes("database") && answers.databaseRestore === true
     });       
 }
@@ -93,7 +107,7 @@ function addDatabaseQuestions(questions, generator) {
         type: "input",
         name: "databaseName",
         message: "Database - Name",
-        default: generator.appname, // Default to current folder name        
+        default: getConfig(generator, "databaseName", generator.appname), // Default to current folder name        
         when: (answers) => answers.features.includes("database"),
     });
 
@@ -102,7 +116,7 @@ function addDatabaseQuestions(questions, generator) {
         name: "databaseEdition",
         message: "Database - Edition",
         choices: editions,
-        default: "Standard",
+        default:  getConfig(generator, "databaseEdition", "Standard"),
         when: (answers) => answers.features.includes("database")
     });
 
@@ -111,7 +125,7 @@ function addDatabaseQuestions(questions, generator) {
         name: "databaseSize",
         message: "Database - Size",        
         choices: (answers) => sizes[answers.databaseEdition],
-        default: "S0",
+        default: getConfig(generator, "databaseSize", "S0"),
         when: (answers) => answers.features.includes("database") && (answers.databaseEdition === "Standard" || answers.databaseEdition === "Premium")
     });
 }
@@ -123,7 +137,7 @@ function addFailOverQuestions(questions, generator) {
         name: "failOverLocations",
         message: "Database - Fail over - Locations",
         choices: az.locations(generator),
-        default: (answers) => [answers.serverLocation],
+        default: (answers) => getConfig(generator, "failOverLocations", [answers.serverLocation]),
         when: (answers) => answers.features.includes("database") && answers.features.includes("fail-over")
     });
 }
