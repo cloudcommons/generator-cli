@@ -10,6 +10,7 @@ module.exports = class extends Generator {
   }
 
   initializing() {
+    this.composeWith(require.resolve('../terraform'));
   }
 
   async prompting() {

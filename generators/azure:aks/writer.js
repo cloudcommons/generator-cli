@@ -19,8 +19,6 @@ module.exports = function (generator, answers) {
         issuerEmail: answers.issuerEmail
     };
     
-    copy(generator, "LICENSE");
-    copy(generator, ".gitignore");
     copy(generator, "aks.tf", args);
     copy(generator, "acr.tf", args);
     copy(generator, "outputs.tf", args);
@@ -28,7 +26,6 @@ module.exports = function (generator, answers) {
     copy(generator, "resource-group.tf", args);
     copy(generator, "terraform.tfvars", args);
     copy(generator, "variables.tf", args);
-    copy(generator, '__init__.tf', { version: "v0.12.19", backend: "local" });
     if (answers.features.includes("cert-manager")) {
         copy(generator, `cert-manager/${args.certManagerVersion}/crds.yml`, args);
         copy(generator, `cert-manager/${args.certManagerVersion}/cluster-issuer.yml`, args);

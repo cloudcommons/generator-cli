@@ -9,6 +9,7 @@ module.exports = class extends Generator {
   }
 
   initializing() {
+    this.composeWith(require.resolve('../terraform'));
   }
 
   async prompting() {
@@ -38,9 +39,9 @@ module.exports = class extends Generator {
     try {
       this.spawnCommandSync('terraform', ['init']);
     }
-    catch(e) {
+    catch (e) {
       this.log("Error executing terraform init. Is terraform installed? ", e);
-    } 
+    }
   }
 
   end() {
