@@ -9,8 +9,7 @@ module.exports = class extends Generator {
     this.configName = "azure:app";
   }
 
-  initializing() {
-    this.composeWith(require.resolve('../terraform'));
+  initializing() {    
   }
 
   async prompting() {
@@ -23,6 +22,7 @@ module.exports = class extends Generator {
   }
 
   configuring() {
+    this.composeWith(require.resolve('../terraform'));
   }
 
   default() {

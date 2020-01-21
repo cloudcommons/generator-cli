@@ -8,8 +8,7 @@ module.exports = class extends Generator {
     super(args, opts);
   }
 
-  initializing() {
-    this.composeWith(require.resolve('../terraform'));
+  initializing() {    
   }
 
   async prompting() {
@@ -22,6 +21,7 @@ module.exports = class extends Generator {
   }
 
   configuring() {
+    this.composeWith(require.resolve('../terraform'));
   }
 
   default() {
