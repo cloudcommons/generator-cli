@@ -17,7 +17,6 @@ module.exports = class extends Generator {
   }
 
   paths() {
-    this.log("Writing to ", this.destinationRoot());
   }
 
   configuring() {
