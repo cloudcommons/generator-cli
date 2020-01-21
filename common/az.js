@@ -56,3 +56,15 @@ module.exports.sqlDatabases = function (generator, serverId) {
         }
     });
 }
+
+module.exports.storageAccounts = function (generator, resourceGroup) {
+    return az(generator, ['storage', 'account', 'list', '-g', resourceGroup]).map(function (account) {
+        return account.name;
+    });
+}
+
+module.exports.storageContainers = function(generator, account) {
+    return az(generator, ['storage', 'container', 'list', '--account-name', account]).map(function (account) {
+        return account.name;
+    });    
+}

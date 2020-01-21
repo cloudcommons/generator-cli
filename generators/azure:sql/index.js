@@ -2,10 +2,16 @@ var Generator = require('yeoman-generator');
 var writer = require('./writer');
 var questions = require('./questions');
 
+
+function cleanupSecrets(answers) {
+  answers.serverAdminPassword = null;
+}
+
 module.exports = class extends Generator {
 
   constructor(args, opts) {
     super(args, opts);
+    this.configName = "azure:sql";
   }
 
   initializing() {
@@ -23,7 +29,7 @@ module.exports = class extends Generator {
   configuring() {
   }
 
-  default() {
+  default() {    
   }
 
   writing() {
@@ -44,6 +50,9 @@ module.exports = class extends Generator {
   }
 
   end() {
+    cleanupSecrets(this.answers);   // Secrets are not stored in the .yo-rc file, as it is stored in clear
+    this.config.set(this.configName, this.answers);
+    this.config.save();
     this.log("All set! Please validate your terraform script with 'terraform validate'");
-  }
+  }  
 };

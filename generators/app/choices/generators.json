@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Azure - Kubernetes Service",
+        "value": "../azure:aks"
+    },
+    {
+        "name": "Azure - Kubernetes Application",
+        "value": "../azure:app"
+    },
+    {
+        "name": "Azure - SQL Database",
+        "value": "../azure:sql"
+    },
+    {
+        "name": "Azure - DevOps - Terraform pipeline",
+        "value": "../azure:devops:terraform"
+    },
+    {
+        "name": "Other - Terraform empty project",
+        "value": "../terraform"
+    }  
+]

@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Local (local)",
+        "value": "local"
+    },
+    {
+        "name": "Remote (Terraform Cloud & Enterprise)",
+        "value": "remote"
+    },        
+    {
+        "name": "Azure Resource Manager (azurerm)",
+        "value": "azurerm"
+    } 
+]

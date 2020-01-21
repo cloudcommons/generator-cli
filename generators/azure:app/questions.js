@@ -3,6 +3,7 @@ var pullPolicies = require("./choices/pullPolicies");
 var ingressCharts = require("./choices/ingressCharts");
 var ingressTypes = require("./choices/ingressTypes");
 var az = require('../../common/az');
+var getConfig = require('../../common/getConfig')
 
 module.exports = function (generator) {
     var questions = [];
@@ -10,7 +11,7 @@ module.exports = function (generator) {
         type: "input",
         name: "name",
         message: "Project name",
-        default: generator.appname // Default to current folder name
+        default: getConfig(generator, "name", generator.appname) // Default to current folder name
     });
 
     questions.push({
@@ -18,15 +19,15 @@ module.exports = function (generator) {
         name: "features",
         message: "Application features",
         choices: features,
-        default: ["ingress", "tls", "readinessProbe", "livenessProbe"]
+        default: getConfig(generator, "features", ["ingress", "tls", "readinessProbe", "livenessProbe"])
     });
 
-    questions = addDeploymentQuestions(questions);
+    questions = addDeploymentQuestions(generator, questions);
     questions = addIngressQuestions(generator, questions);
-    questions = addTlsQuestions(questions);
+    questions = addTlsQuestions(generator, questions);
     questions = addDnsZoneQuestions(generator, questions);
-    questions = addProbeQuestions(questions, "livenessProbe", "Liveness probe");
-    questions = addProbeQuestions(questions, "readinessProbe", "Readiness probe");
+    questions = addProbeQuestions(generator, questions, "livenessProbe", "Liveness probe");
+    questions = addProbeQuestions(generator, questions, "readinessProbe", "Readiness probe");
 
     return questions;
 }
@@ -37,7 +38,7 @@ function addIngressQuestions(generator, questions) {
         type: "input",
         name: "ingressHostname",
         message: "Ingress - Hostname",
-        default: null,
+        default: getConfig(generator, "ingressHostname", null),
         when: (answers) => !answers.features.includes("dns")
     })
 
@@ -46,7 +47,7 @@ function addIngressQuestions(generator, questions) {
         name: "ingressType",
         message: "Ingress - Type",
         choices: ingressTypes,
-        default: "publicLoadBalancer",
+        default: getConfig(generator, "ingressType", "publicLoadBalancer"),
         when: (answers) => answers.features.includes("ingress")
     });
 
@@ -55,6 +56,7 @@ function addIngressQuestions(generator, questions) {
         name: "aksResourceGroup",
         message: "Ingress - Public Load Balancer - AKS Managed Resource Group (Required to create an static IP address that Kubernetes can use)",
         choices: az.resourceGroups(generator),
+        default: getConfig(generator, "aksResourceGroup"),
         when: (answers) => answers.features.includes("ingress") && answers.ingressType === "publicLoadBalancer"
     });
 
@@ -62,6 +64,7 @@ function addIngressQuestions(generator, questions) {
         type: "input",
         name: "ingressServiceSubnet",
         message: "Ingress - Private Load Balancer - Subnet name to deploy the load balancer",
+        default: getConfig(generator, "ingressServiceSubnet"),
         when: (answers) => answers.features.includes("ingress") && answers.ingressType === "internalLoadBalancer"
     });       
 
@@ -69,6 +72,7 @@ function addIngressQuestions(generator, questions) {
         type: "input",
         name: "privateLoadBalancerIp",
         message: "Ingress - Private Load Balancer - Static IP Address in ingress subnet",
+        default: getConfig(generator, "privateLoadBalancerIp"),
         when: (answers) => answers.features.includes("ingress") && answers.ingressType === "internalLoadBalancer"
     });    
 
@@ -76,8 +80,8 @@ function addIngressQuestions(generator, questions) {
         type: "list",
         name: "ipLocation",
         message: "Ingress - Public Load Balancer - Static IP location",
-        choices: az.locations(this),
-        default: "westeurope",
+        choices: az.locations(generator),
+        default: getConfig(generator, "ipLocation", "westeurope"),
         when: (answers) => answers.features.includes("ingress") && answers.ingressType === "Load Balancer - Public"
     });
 
@@ -86,32 +90,33 @@ function addIngressQuestions(generator, questions) {
         name: "ingressChartAndVersion",
         message: "Ingress - Chart",
         choices: ingressCharts,
-        default: ingressCharts[0].key,
+        default: getConfig(generator, "ingressChartAndVersion", ingressCharts[0].key),
         when: (answers) => answers.features.includes("ingress")
     });
 
     return questions;
 }
 
-function addDeploymentQuestions(questions) {
+function addDeploymentQuestions(generator, questions) {
     questions.push({
         type: "input",
         name: "imageName",
-        message: "Deployment - Docker Image (With private registry if applies, without tag)"
+        message: "Deployment - Docker Image (With private registry if applies, without tag)",
+        default: getConfig(generator, "imageName")
     });
 
     questions.push({
         type: "input",
         name: "imageTag",
         message: "Deployment - Docker Tag",
-        default: "latest"
+        default: getConfig(generator, "imageTag", "latest")
     });
 
     questions.push({
         type: "input",
         name: "imageReplicaCount",
         message: "Deployment - Image replica count",
-        default: 2
+        default: getConfig(generator, "imageReplicaCount", 2)
     });
 
     questions.push({
@@ -119,7 +124,7 @@ function addDeploymentQuestions(questions) {
         name: "imagePullPolicy",
         message: "Deployment - Image pull policy",
         choices: pullPolicies,
-        default: "Always"
+        default: getConfig(generator, "imagePullPolicy", "Always")
     });
 
     questions.push({
@@ -133,6 +138,7 @@ function addDeploymentQuestions(questions) {
         type: "input",
         name: "dockerRepoEmail",
         message: "Docker - Email",
+        default: getConfig(generator, "dockerRepoEmail"),
         when: (answers) => answers.features.includes("privateRegistry")
     });
 
@@ -140,6 +146,7 @@ function addDeploymentQuestions(questions) {
         type: "input",
         name: "dockerRepoUser",
         message: "Docker - Username",
+        default: getConfig(generator, "dockerRepoUser"),
         when: (answers) => answers.features.includes("privateRegistry")
     });
 
@@ -154,20 +161,20 @@ function addDeploymentQuestions(questions) {
         type: "input",
         name: "dockerSecretName",
         message: "Docker - Secret name",
-        default: "docker-secret",
+        default: getConfig(generator, "dockerSecretName"),
         when: (answers) => answers.features.includes("privateRegistry")
     });
 
     return questions;
 }
 
-function addTlsQuestions(questions) {
+function addTlsQuestions(generator, questions) {
     questions.push({
         type: "list",
         name: "tlsType",
         message: "TLS - Type",
         choices: ["cert-manager", "provided"],
-        default: "cert-manager",
+        default: getConfig(generator, "tlsType", "cert-manager"),
         when: (answers) => answers.features.includes("tls")
     });
 
@@ -175,7 +182,7 @@ function addTlsQuestions(questions) {
         type: "input",
         name: "certificateIssuer",
         message: "TLS - cert-manager issuer name",
-        default: "letsencrypt",
+        default: getConfig(generator, "certificateIssuer", "letsencrypt"),
         when: (answers) => answers.features.includes("tls") && answers.tlsType === "cert-manager"
     });
 
@@ -188,6 +195,7 @@ function addDnsZoneQuestions(generator, questions) {
         name: "dnsZoneResourceGroup",
         message: "DNS Zone - Resource Group",
         choices: az.resourceGroups(generator),
+        default: getConfig(generator, "dnsZoneResourceGroup"),
         when: (answers) => answers.features.includes("dns")
     });
 
@@ -196,6 +204,7 @@ function addDnsZoneQuestions(generator, questions) {
         name: "dnsZoneName",
         message: "DNS Zone - Name",
         choices: (answers) => az.dnsZones(generator, answers.dnsZoneResourceGroup),
+        default: getConfig(generator, "dnsZoneName"),
         when: (answers) => answers.features.includes("dns")
     });
 
@@ -203,6 +212,7 @@ function addDnsZoneQuestions(generator, questions) {
         type: "input",
         name: "dnsZoneRecord",
         message: "DNS Zone - Record",
+        default: getConfig(generator, "dnsZoneRecord"),
         when: (answers) => answers.features.includes("dns")
     });
 
@@ -211,34 +221,35 @@ function addDnsZoneQuestions(generator, questions) {
         name: "dnsZoneRecordTtl",
         message: "DNS Zone - Record TTL",
         default: 3600,
+        default: getConfig(generator, "dnsZoneRecordTtl", 3600),
         when: (answers) => answers.features.includes("dns")
     });
 
     return questions;
 }
 
-function addProbeQuestions(questions, feature, displayName) {
+function addProbeQuestions(generator, questions, feature, displayName) {
     questions.push({
         type: "input",
-        name: feature + "InitialDelay",
-        message: displayName + " - Initial delay",
-        default: 10,
+        name: `${feature}InitialDelay`,
+        message: `${displayName} - Initial delay`,
+        default: getConfig(generator, `${feature}InitialDelay`, 10),
         when: (answers) => answers.features.includes(feature)
     });
 
     questions.push({
         type: "input",
-        name: feature + "PeriodSeconds",
-        message: displayName + " - Period (Seconds)",
-        default: 30,
+        name: `${feature}PeriodSeconds`,
+        message: `${displayName} - Period (Seconds)`,
+        default: getConfig(generator, `${feature}PeriodSeconds`, 30),
         when: (answers) => answers.features.includes(feature)
     });
 
     questions.push({
         type: "input",
-        name: feature + "failureThreshold",
-        message: displayName + " - Failure threshold",
-        default: 3,
+        name: `${feature}FailureThreshold`,
+        message: `${displayName} - Failure threshold`,
+        default: getConfig(generator, `${feature}FailureThreshold`, 3),
         when: (answers) => answers.features.includes(feature)
     });
 

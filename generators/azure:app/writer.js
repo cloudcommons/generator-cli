@@ -41,9 +41,7 @@ module.exports = function (generator, answers) {
         dnsZoneRecordTtl: answers.dnsZoneRecordTtl
     }
     
-    copy(generator, "LICENSE");
     copy(generator, "terraform.tfvars", args);
-    generator.log("Writing");
     copy(generator, "variables.tf", args);
     copy(generator, "outputs.tf", args);    
     copy(generator, "app.tf", args);
@@ -52,7 +50,6 @@ module.exports = function (generator, answers) {
         copy(generator, "docker-secret.tf", args);
     }
     
-    copy(generator, '__init__.tf', { version: "~> v0.12.19", backend: "local" });
     copy(generator, 'nginx-ingress.tf', args);
     copy(generator, 'templates/ingress.yml', args);
     if (!args.internalLoadBalancer)
