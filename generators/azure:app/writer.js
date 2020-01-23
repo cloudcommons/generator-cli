@@ -56,8 +56,7 @@ module.exports = function (generator, answers) {
         copy(generator, 'ip.tf', args);
     if (args.dnsZoneEnabled) {
         copy(generator, 'dns.tf', args);
-    }
-    copy(generator, '.gitignore');
+    }    
 }
 
 /**

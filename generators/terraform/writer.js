@@ -4,7 +4,7 @@
 module.exports = function (generator, answers) {
 
     copy(generator, "LICENSE");
-    copy(generator, ".gitignore");
+    copy(generator, 'gitignore', '.gitignore');
     copyTo(generator, `init/${answers.backendType}.tf`, '__init__.tf', answers);
 }
 
