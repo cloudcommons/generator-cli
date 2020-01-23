@@ -17,12 +17,12 @@ module.exports = function (generator, answers) {
         features: answers.features
     }
 
-    copy(generator, 'database.tf', args);
-    copy(generator, 'database.auto.tfvars', args);
-    copy(generator, 'server.tf', args);
-    copy(generator, 'server.auto.tfvars', args);    
+    copy(generator, 'sql-database.tf', args);
+    copy(generator, 'sql-database.auto.tfvars', args);
+    copy(generator, 'sql-server.tf', args);
+    copy(generator, 'sql-server.auto.tfvars', args);    
     if (answers.features.includes("fail-over")) {
-        copy(generator, 'server-failover.tf', args);
+        copy(generator, 'sql-server-failover.tf', args);
     }
 }
 
