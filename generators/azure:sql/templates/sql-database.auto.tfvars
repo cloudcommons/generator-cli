@@ -1,5 +1,0 @@
-DATABASE_NAME                            = "<%= databaseName %>"
-DATABASE_EDITION                         = "<%= databaseEdition %>"
-DATABASE_REQUESTED_SERVICE_OBJETIVE_NAME = "<%= databaseSize %>"
-DATABASE_CREATE_MODE                     = "<%= databaseCreateMode %>"
-DATABASE_SOURCE_ID                       = "<%= databaseSourceId %>"

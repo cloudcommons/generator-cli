@@ -1,3 +1,5 @@
+var terraform = require('../../common/terraform');
+
 /**
  * Application writer
  */
@@ -18,12 +20,42 @@ module.exports = function (generator, answers) {
     }
 
     copy(generator, 'sql-database.tf', args);
-    copy(generator, 'sql-database.auto.tfvars', args);
+    writeDatabaseConfig(generator, args);
     copy(generator, 'sql-server.tf', args);
-    copy(generator, 'sql-server.auto.tfvars', args);    
+    writeServerConfig(generator, args);
     if (answers.features.includes("fail-over")) {
         copy(generator, 'sql-server-failover.tf', args);
     }
+}
+/**
+ * Appends the terraform configuration for the database
+ * @param {*} generator 
+ * @param {*} args 
+ */
+function writeDatabaseConfig(generator, args) {
+    terraform.writeConfig(generator, {
+        DATABASE_NAME: args.databaseName,
+        DATABASE_EDITION: args.databaseEdition,
+        DATABASE_REQUESTED_SERVICE_OBJETIVE_NAME: args.databaseSize,
+        DATABASE_CREATE_MODE: args.databaseCreateMode,
+        DATABASE_SOURCE_ID: args.databaseSourceId
+    });
+}
+
+/**
+ * Appends the terraform configuration for the database
+ * @param {*} generator 
+ * @param {*} args 
+ */
+function writeServerConfig(generator, args) {
+    terraform.writeConfig(generator, {
+        RESOURCE_GROUP_NAME: args.resourceGroup,
+        SQL_LOCATIONS: args.serverLocations,
+        SQL_NAME_PREFIX: args.name,
+        SQL_VERSION: args.serverVersion,
+        SQL_ADMIN_LOGIN: args.serverAdminLogin,
+        SQL_ADMIN_PASSWORD: args.serverAdminPassword
+    });
 }
 
 /**
