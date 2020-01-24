@@ -1,19 +1,30 @@
-[{
-    "name": "Network plugin",
-    "value": "network-plugin"
-},{
-    "name": "Network policy",
-    "value": "network-policy"
-},{
-    "name": "Role-Based Access Control (RBAC)",
-    "value": "rbac"
-},{
-    "name": "Cert-manager",
-    "value": "cert-manager"
-},{
-    "name": "Auto-scaler",
-    "value": "auto-scaler"
-},{
-    "name": "Private Docker Registry",
-    "value": "acr"
-}]
+[
+    {
+        "name": "Network plugin",
+        "value": "network-plugin"
+    },
+    {
+        "name": "Network policy",
+        "value": "network-policy"
+    },
+    {
+        "name": "Role-Based Access Control (RBAC)",
+        "value": "rbac"
+    },
+    {
+        "name": "Cert-manager",
+        "value": "cert-manager"
+    },
+    {
+        "name": "Atarray (Experimental - Key Vault Secret Injector for AKS)",
+        "value": "atarraya"
+    },
+    {
+        "name": "Auto-scaler",
+        "value": "auto-scaler"
+    },
+    {
+        "name": "Private Docker Registry",
+        "value": "acr"
+    }
+]
