@@ -1,61 +1,24 @@
-var terraform = require('../../common/terraform');
+var config = require('./js/config');
 
 /**
  * Application writer
  */
 module.exports = function (generator, answers) {
-    var args = {
+
+    answers = Object.assign({
         name: answers.serverName,
-        resourceGroup: answers.resourceGroup,
         serverVersion: "12.0",
         serverLocations: answers.features.includes("fail-over") ? answers.failOverLocations : [answers.serverLocation],
-        serverAdminLogin: answers.serverAdminLogin,
-        serverAdminPassword: answers.serverAdminPassword,
-        databaseName: answers.databaseName,
-        databaseEdition: answers.databaseEdition,
-        databaseSize: answers.databaseSize,
         databaseCreateMode: answers.databaseRestore === false ? "Default" : "Copy",
-        databaseSourceId: answers.restoreDatabaseId,
-        features: answers.features
-    }
+    }, answers);
 
-    copy(generator, 'sql-database.tf', args);
-    writeDatabaseConfig(generator, args);
-    copy(generator, 'sql-server.tf', args);
-    writeServerConfig(generator, args);
+    copy(generator, 'sql-server.tf', answers);
+    config.copyServerConfig(generator.fs, answers);
+    copy(generator, 'sql-database.tf', answers);
+    config.copyDatabaseConfig(generator.fs, answers);    
     if (answers.features.includes("fail-over")) {
-        copy(generator, 'sql-server-failover.tf', args);
+        copy(generator, 'sql-server-failover.tf', answers);
     }
-}
-/**
- * Appends the terraform configuration for the database
- * @param {*} generator 
- * @param {*} args 
- */
-function writeDatabaseConfig(generator, args) {
-    terraform.writeConfig(generator, {
-        DATABASE_NAME: args.databaseName,
-        DATABASE_EDITION: args.databaseEdition,
-        DATABASE_REQUESTED_SERVICE_OBJETIVE_NAME: args.databaseSize,
-        DATABASE_CREATE_MODE: args.databaseCreateMode,
-        DATABASE_SOURCE_ID: args.databaseSourceId
-    });
-}
-
-/**
- * Appends the terraform configuration for the database
- * @param {*} generator 
- * @param {*} args 
- */
-function writeServerConfig(generator, args) {
-    terraform.writeConfig(generator, {
-        RESOURCE_GROUP_NAME: args.resourceGroup,
-        SQL_LOCATIONS: args.serverLocations,
-        SQL_NAME_PREFIX: args.name,
-        SQL_VERSION: args.serverVersion,
-        SQL_ADMIN_LOGIN: args.serverAdminLogin,
-        SQL_ADMIN_PASSWORD: args.serverAdminPassword
-    });
 }
 
 /**
