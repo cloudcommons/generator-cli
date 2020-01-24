@@ -7,14 +7,14 @@ module.exports = function (generator) {
     questions.push({
         type: "input",
         name: "name",
-        message: "Cluster name",
+        message: "Kubernetes - Cluster name",
         default: generator.appname // Default to current folder name
     });    
 
     questions.push({
         type: "list",
         name: "location",
-        message: "Azure location",
+        message: "Kubernetes - Cluster location",
         choices: az.locations(generator),
         default: "westeurope"
     });
@@ -69,9 +69,9 @@ module.exports = function (generator) {
     questions.push({
         type: "checkbox",
         name: "features",
-        message: "Application features",
+        message: "Kubernetes - Cluster features",
         choices: features,
-        default: ["network-plugin", "network-policy", "rbac", "cert-manager"]
+        default: ["network-plugin", "network-policy", "rbac"]
     });
 
     questions.push({

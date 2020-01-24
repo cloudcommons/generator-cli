@@ -20,7 +20,7 @@
         "value": "../azure:devops:terraform"
     },
     {
-        "name": "Other - Terraform empty project",
+        "name": "Terraform - Configuration",
         "value": "../terraform"
     }  
 ]

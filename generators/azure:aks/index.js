@@ -20,7 +20,6 @@ module.exports = class extends Generator {
   }
 
   configuring() {
-    this.composeWith(require.resolve('../terraform'));
   }
 
   default() {
@@ -34,16 +33,8 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.log("Initialising Terraform...")
-    try {
-      this.spawnCommandSync('terraform', ['init']);
-    }
-    catch (e) {
-      this.log("Error executing terraform init. Is terraform installed? ", e);
-    }
   }
 
   end() {
-    this.log("All set! Please validate your terraform script with 'terraform validate'");
   }
 };

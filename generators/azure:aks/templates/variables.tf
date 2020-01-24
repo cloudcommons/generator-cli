@@ -57,12 +57,12 @@ variable "ACR_ENABLED" {
 
 variable "ACR_SKU" {
     type = string
-    description = "Container Registry SKU: Basic, Standard, Premium"    
+    description = "Container Registry SKU: Basic, Standard, Premium"
+    default = "Basic"
 }
 
 variable "RBAC_ENABLED" {
     type = bool
     description = "(Optional) Enable Kubernetes Role-Based Access Control. Defaults to true"
-  
 }
 

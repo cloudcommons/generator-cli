@@ -1,70 +1,33 @@
+var config = require('./js/config');
+var fsTools = require ('../../common/fsTools');
+
 /**
  * Application writer
  */
 module.exports = function (generator, answers) {
-    var args = {
-        name: answers.name,
-        location: answers.location,
-        adminUser: answers.adminUser,
-        kubernetesVersion: answers.kubernetesVersion,
-        vms: answers.vms,
-        vmsize: answers.vmsize,
-        sshKey: answers.sshKey,
-        clientId: answers.clientId,
-        clientSecret: answers.clientSecret,
-        certManagerVersion: answers.certManagerVersion,
+
+    answers = Object.assign({
         acrEnabled: answers.features.includes("acr"),
-        acrSku: answers.acrSku,
-        rbacEnabled: answers.features.includes("rbac"),
-        issuerEmail: answers.issuerEmail
-    };
+        rbacEnabled: answers.features.includes("rbac")
+    }, answers);
     
-    copy(generator, "aks.tf", args);
-    copy(generator, "acr.tf", args);
-    copy(generator, "outputs.tf", args);
-    copy(generator, "providers.tf", args);
-    copy(generator, "resource-group.tf", args);
-    copy(generator, "terraform.tfvars", args);
-    copy(generator, "variables.tf", args);
+    fsTools.copy(generator, "aks.tf", answers);
+    fsTools.copy(generator, "acr.tf", answers);
+    fsTools.copy(generator, "outputs.tf", answers);
+    fsTools.copy(generator, "providers.tf", answers);
+    fsTools.copy(generator, "resource-group.tf", answers);
+    config.copy(generator.fs, answers);
+    fsTools.copy(generator, "variables.tf", answers);
     if (answers.features.includes("cert-manager")) {
-        copy(generator, `cert-manager/${args.certManagerVersion}/crds.yml`, args);
-        copy(generator, `cert-manager/${args.certManagerVersion}/cluster-issuer.yml`, args);
-        copyTo(generator, `cert-manager/${args.certManagerVersion}/jetstack-helm-repo.tf`, "cert-manager-jetstack-helm-repo.tf", args);
-        copyTo(generator, `cert-manager/${args.certManagerVersion}/cert-manager.tf`, "cert-manager.tf", args);
+        fsTools.copy(generator, `cert-manager/${answers.certManagerVersion}/crds.yml`, answers);
+        fsTools.copy(generator, `cert-manager/${answers.certManagerVersion}/cluster-issuer.yml`, answers);
+        fsTools.copyTo(generator, `cert-manager/${answers.certManagerVersion}/jetstack-helm-repo.tf`, "cert-manager-jetstack-helm-repo.tf", answers);
+        fsTools.copyTo(generator, `cert-manager/${answers.certManagerVersion}/cert-manager.tf`, "cert-manager.tf", answers);
     }
     if (true) // Future condition to copy Tiller-related rubbish when people use Helm v2
     {
-        copyTo(generator, "helm/v2/cluster-role.tf", "tiller-cluster-role.tf");
-        copyTo(generator, "helm/v2/role-binding.tf", "tiller-role-binding.tf");
-        copyTo(generator, "helm/v2/service-account.tf", "tiller-service-account.tf");
+        fsTools.copyTo(generator, "helm/v2/cluster-role.tf", "tiller-cluster-role.tf");
+        fsTools.copyTo(generator, "helm/v2/role-binding.tf", "tiller-role-binding.tf");
+        fsTools.copyTo(generator, "helm/v2/service-account.tf", "tiller-service-account.tf");
     }
-}
-
-/**
- * Copies a file from the source path to the exact same location in destination
- * @param {*} generator Yeoman generator
- * @param {*} source Source path
- * @param {*} parameters Object with parameters to replace
- */
-function copy(generator, source, parameters) {
-    generator.fs.copyTpl(
-        generator.templatePath(source),
-        generator.destinationPath(source),
-        parameters
-    );
-}
-
-/**
- * Copies a file from the source to a given destination path
- * @param {*} generator Yeoman generator
- * @param {*} source Source path
- * @param {*} destination Target path
- * @param {*} parameters Object with parameters to replace
- */
-function copyTo(generator, source, destination, parameters) {
-    generator.fs.copyTpl(
-        generator.templatePath(source),
-        generator.destinationPath(destination),
-        parameters
-    );
 }
