@@ -1,6 +1,4 @@
 var features = require('./choices/features');
-var editions = require('./choices/database-editions')
-var sizes = require('./choices/database-sizes')
 var az = require('../../common/az');
 var getConfig = require('../../common/getConfig')
 
