@@ -1,0 +1,66 @@
+[
+    {
+        "value": "Basic",
+        "name": "Basic"
+    },
+    {
+        "value": "Standard",
+        "name": "Standard"
+    },
+    {
+        "value": "Premium",
+        "name": "Premium"
+    },
+    {
+        "value": "DataWarehouse",
+        "name": "DataWarehouse"
+    },
+    {
+        "value": "Business",
+        "name": "Business"
+    },
+    {
+        "value": "BusinessCritical",
+        "name": "BusinessCritical"
+    },
+    {
+        "value": "Free",
+        "name": "Free"
+    },
+    {
+        "value": "GeneralPurpose",
+        "name": "GeneralPurpose"
+    },
+    {
+        "value": "Hyperscale",
+        "name": "Hyperscale"
+    },
+    {
+        "value": "Premium",
+        "name": "Premium"
+    },
+    {
+        "value": "PremiumRS",
+        "name": "PremiumRS"
+    },
+    {
+        "value": "Standard",
+        "name": "Standard"
+    },
+    {
+        "value": "Stretch",
+        "name": "Stretch"
+    },
+    {
+        "value": "System2",
+        "name": "System2"
+    },
+    {
+        "value": "PremiumRS",
+        "name": "PremiumRS"
+    },
+    {
+        "value": "Web",
+        "name": "Web"
+    }
+]

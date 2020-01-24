@@ -6,7 +6,7 @@ module.exports = class extends Generator {
 
   constructor(args, opts) {
     super(args, opts);
-    this.configName = "azure:sql";
+    this.configName = "azure:sql:database";
   }
 
   initializing() {
@@ -21,10 +21,6 @@ module.exports = class extends Generator {
   }
 
   configuring() {
-    if (this.answers.features.includes('database'))
-    {
-      this.composeWith(require.resolve('../azure:sql:database'));
-    }    
   }
 
   default() {    
@@ -49,5 +45,4 @@ module.exports = class extends Generator {
 };
 
 function cleanupSecrets(answers) {
-  answers.serverAdminPassword = null;
 }

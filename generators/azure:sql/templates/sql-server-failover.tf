@@ -1,5 +1,5 @@
 resource "azurerm_sql_failover_group" "<%= name %>" {
-  name                = "<%= name %>-failover"
+  name                = "${var.SQL_NAME_PREFIX}-${terraform.workspace}"
   resource_group_name = azurerm_sql_server.<%= name %>[0].resource_group_name
   server_name         = azurerm_sql_server.<%= name %>[0].name
   databases           = [azurerm_sql_database.<%= name %>.id]

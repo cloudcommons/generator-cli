@@ -8,9 +8,13 @@
         "value": "../azure:app"
     },
     {
-        "name": "Azure - SQL Database",
+        "name": "Azure - SQL Server",
         "value": "../azure:sql"
     },
+    {
+        "name": "Azure - SQL Server - Database",
+        "value": "../azure:sql:database"
+    },    
     {
         "name": "Azure - DevOps - Terraform pipeline",
         "value": "../azure:devops:terraform"
