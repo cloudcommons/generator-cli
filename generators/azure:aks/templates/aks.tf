@@ -4,7 +4,7 @@ locals {
 
 module "kubernetes" {
   source                    = "cloudcommons/kubernetes/azure"
-  version                   = "0.1.4"
+  version                   = "0.1.5"
   name                      = local.name
   location                  = local.location
   resource_group            = local.resource_group
