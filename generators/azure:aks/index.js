@@ -6,9 +6,10 @@ module.exports = class extends Generator {
 
   constructor(args, opts) {
     super(args, opts);
+    this.configName = "azure:aks";
   }
 
-  initializing() {    
+  initializing() {
   }
 
   async prompting() {
@@ -36,5 +37,7 @@ module.exports = class extends Generator {
   }
 
   end() {
+    this.config.set(this.configName, this.answers);
+    this.config.save();
   }
 };
