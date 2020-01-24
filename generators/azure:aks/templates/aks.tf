@@ -1,5 +1,5 @@
 locals {
-  name = "${var.KUBERNETES_CLUSTER_NAME}-${terraform.workspace}"
+  name = "${var.KUBERNETES_CLUSTER_NAME}-${terraform.workspace}-${local.uid}"
 }
 
 module "kubernetes" {

@@ -22,6 +22,7 @@ module.exports = class extends Generator {
     configuring() {
         this.composeWith(require.resolve(this.answers.subGenerator));
         this.composeWith(require.resolve('../terraform'));
+        this.composeWith(require.resolve('../terraform:randomid'));
     }
 
     default() {

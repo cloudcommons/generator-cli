@@ -31,7 +31,7 @@ variable "SQL_ADMIN_PASSWORD" {
 
 resource "azurerm_sql_server" "<%= name %>" {
   count                        = length(var.SQL_LOCATIONS)
-  name                         = "${var.SQL_NAME_PREFIX}-${var.SQL_LOCATIONS[count.index]}-${terraform.workspace}"
+  name                         = "${var.SQL_NAME_PREFIX}-${var.SQL_LOCATIONS[count.index]}-${terraform.workspace}-${local.uid}"
   resource_group_name          = var.RESOURCE_GROUP_NAME
   location                     = var.SQL_LOCATIONS[count.index]
   version                      = var.SQL_VERSION
