@@ -9,7 +9,7 @@ module.exports = {
             LOCATION: answers.location,
             AKS_MANAGED_RESOURCE_GROUP: answers.aksResourceGroup,
             DOCKER_REPO_SERVER: answers.dockerRepoServer,
-            DOCKER_REPO_USERNAME: answers.dockerRepoPassword,
+            DOCKER_REPO_USERNAME: answers.dockerRepoUser,
             DOCKER_REPO_EMAIL: answers.dockerRepoEmail,
             DOCKER_SECRET_NAME: answers.dockerSecretName,
             INGRESS_ENABLED: answers.ingressEnabled,
