@@ -9,6 +9,7 @@ module.exports = class extends Generator {
     }
 
     initializing() {
+        this.log(`Writing to '${this.destinationPath()}'`);
     }
 
     async prompting() {

@@ -37,6 +37,7 @@ module.exports = class extends Generator {
   }
 
   end() {
+    this.answers.clientSecret = null;
     this.config.set(this.configName, this.answers);
     this.config.save();
   }

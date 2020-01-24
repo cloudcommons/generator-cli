@@ -51,7 +51,7 @@ module.exports = function (generator) {
     });
 
     questions.push({
-        type: "password",
+        type: "input",
         name: "sshKey",
         message: "Kubernetes - SSH Key",
         default: getConfig(generator, "sshKey")
@@ -76,7 +76,7 @@ module.exports = function (generator) {
         name: "features",
         message: "Kubernetes - Cluster features",
         choices: features,
-        default: getConfig(generator, "clientSecret", ["network-plugin", "network-policy", "rbac"])
+        default: getConfig(generator, "features", ["network-plugin", "network-policy", "rbac"])
     });
 
     questions.push({
@@ -85,7 +85,7 @@ module.exports = function (generator) {
         message: "Cert-manager - Version",
         choices: ["v0.8", "v0.9","v0.10.1"],
         when: (answers) => answers.features.includes("cert-manager"),
-        default: getConfig(generator, "clientSecret", "v0.10.1")
+        default: getConfig(generator, "certManagerVersion", "v0.10.1")
     });         
 
     questions.push({
