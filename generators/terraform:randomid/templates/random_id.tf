@@ -3,5 +3,5 @@ locals {
 }
 
 resource "random_id" "cloudcommons" {
-  byte_length = 8
+  byte_length = 4
 }
