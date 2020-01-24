@@ -4,7 +4,7 @@ locals {
 }
 
 resource "azurerm_resource_group" "<%= name %>" {
-  name     = "${var.APP}-${terraform.workspace}"
+  name     = "${var.APP}-${terraform.workspace}-${local.uid}"
   location = var.LOCATION
 
   tags = {
