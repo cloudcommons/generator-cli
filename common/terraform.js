@@ -6,9 +6,18 @@ module.exports = {
      * @param {*} terraformConfig 
      * @param {*} configFile
      */
-    writeConfig: function(fs, terraformConfig, configFile = 'terraform.tfvars.json') {
+    writeConfig: function (fs, terraformConfig, configFile = 'terraform.tfvars.json') {
         var existing = fs.readJSON(configFile, {});
         var target = Object.assign({}, existing, terraformConfig);
         fs.writeJSON(configFile, target);
+    },
+    init: function (log, spawnCommandSync) {
+        log("Initialising Terraform...")
+        try {
+            spawnCommandSync('terraform', ['init']);
+        }
+        catch (e) {
+            log("Error executing terraform init. Is terraform installed? ", e);
+        }
     }
 }

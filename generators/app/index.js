@@ -1,5 +1,6 @@
 var Generator = require('yeoman-generator');
 var questions = require('./questions');
+var terraform = require('../../common/terraform');
 
 module.exports = class extends Generator {
 
@@ -32,6 +33,7 @@ module.exports = class extends Generator {
     }
 
     install() {
+        terraform.init(this.log, this.spawnCommandSync);
     }
 
     end() {
