@@ -110,7 +110,7 @@ module.exports = function (generator) {
         name: "patchScheduleDays",
         message: "Redis - Patch schedule - Week days",
         choices: patchSchedule.weekDays,
-        default: getConfig(generator, "patchScheduleDays"),
+        default: getConfig(generator, "patchScheduleDays", []),
         when: (answers) => answers.features.includes("patch-schedule")
     });
 

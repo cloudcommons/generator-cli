@@ -14,7 +14,7 @@ module.exports = {
             REDIS_MINIMUM_TLS: answers.minimumTls,
             REDIS_SUBNET_ID: answers.vnetSubnet,
             REDIS_SUBNET_IP: answers.vnetStaticIp,
-            REDIS_PATCH_SCHEDULE: null, // TODO
+            REDIS_PATCH_SCHEDULE: answers.patchScheduleDays.map(function (day) { return { day_of_week: day, start_hour_utc: answers.patchScheduleTime } }),
             REDIS_SHARD_COUNT: answers.shardCount
         }
 
