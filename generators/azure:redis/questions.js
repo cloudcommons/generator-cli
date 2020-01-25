@@ -71,7 +71,7 @@ module.exports = function (generator) {
         name: "vnetResourceGroup",
         message: "Redis - VNET - Resource Group",
         choices: az.resourceGroups(generator),
-        default: getConfig(generator, "vnetResourceGroup")
+        default: getConfig(generator, "vnetResourceGroup"),
         when: (answers) => answers.features.includes("vnet")
     });
 
