@@ -11,7 +11,7 @@ module.exports = {
             REDIS_FAMILY: answers.family,
             REDIS_SKU: answers.sku,
             REDIS_ENABLE_NON_SSL: !answers.features.sslOnly,
-            REDIS_MINIMUM_TLS: "1.0",
+            REDIS_MINIMUM_TLS: answers.minimumTls,
             REDIS_SUBNET_ID: answers.vnetSubnet,
             REDIS_SUBNET_IP: answers.vnetStaticIp,
             REDIS_PATCH_SCHEDULE: null, // TODO

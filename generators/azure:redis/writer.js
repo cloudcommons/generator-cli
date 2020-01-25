@@ -9,6 +9,7 @@ module.exports = function (generator, answers) {
 
     answers = Object.assign({        
         isPremium: answers.family === "P",
+        minimumTls: "1.2",
         features: {            
             vnet: answers.features.includes("vnet"),
             patchSchedule: answers.features.includes("patch-schedule"),
