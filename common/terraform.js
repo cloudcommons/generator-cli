@@ -1,15 +1,34 @@
+/**
+ * Combines a json object with the content of a json file
+ * @param {*} fs File system
+ * @param {*} jsonObject JSON Object to merge
+ * @param {*} jsonFile JSON file to merge
+ */
+function merge(fs, jsonObject, jsonFile, mergeDefault = {}) {
+    var sourceJson = fs.readJSON(jsonFile, {});
+    var merged = Object.assign(mergeDefault, sourceJson, jsonObject);
+    fs.writeJSON(jsonFile, merged);
+}
+
+
 module.exports = {
     /**
-     * Writes an object into terraform.tfvars.json. If the file exists, the properies from both objects (existing and given) 
-     * are merged and written
-     * @param {*} fs 
-     * @param {*} terraformConfig 
-     * @param {*} configFile
+     * Merges the given json config object into a tfvars.json
+     * @param {*} fs File system
+     * @param {*} config Configuration to merge
+     * @param {*} file Terraform configuration file. Defaults to 'terraform.tfvars.json'
      */
-    writeConfig: function (fs, terraformConfig, configFile = 'terraform.tfvars.json') {
-        var existing = fs.readJSON(configFile, {});
-        var target = Object.assign({}, existing, terraformConfig);
-        fs.writeJSON(configFile, target);
+    writeConfig: function (fs, config, file = 'terraform.tfvars.json') {
+        merge(fs, config, file);
+    },
+    /**
+     * Writes 
+     * @param {*} fs File system
+     * @param {*} variables Variables to merge
+     * @param {*} file Terraform variables file. Defaults to 'variables.tf.json'
+     */
+    writeVariable: function(fs, variables, file = 'variables.tf.json') {
+        merge(fs, variables, file);
     },
     init: function (log, spawnCommandSync) {
         log("Initialising Terraform...")
