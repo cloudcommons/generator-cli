@@ -10,7 +10,7 @@ module.exports = {
             REDIS_CAPACITY: answers.capacity,
             REDIS_FAMILY: answers.family,
             REDIS_SKU: answers.sku,
-            REDIS_ENABLE_NON_SSL: !answers.features.sslOnly,
+            REDIS_ENABLE_NON_SSL: answers.features.nonSsl,
             REDIS_MINIMUM_TLS: answers.minimumTls,
             REDIS_SUBNET_ID: answers.vnetSubnet,
             REDIS_SUBNET_IP: answers.vnetStaticIp,

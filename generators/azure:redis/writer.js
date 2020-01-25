@@ -13,7 +13,7 @@ module.exports = function (generator, answers) {
         features: {            
             vnet: answers.features.includes("vnet"),
             patchSchedule: answers.features.includes("patch-schedule"),
-            sslOnly: answers.features.includes("ssl-only"),
+            nonSsl: answers.features.includes("non-SSL"),
             shard: answers.features.includes("shard"),            
         }
     }, answers);

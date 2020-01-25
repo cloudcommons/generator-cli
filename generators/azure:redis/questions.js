@@ -63,7 +63,7 @@ module.exports = function (generator) {
         name: "features",
         message: "Redis - Features",
         choices: (answers) => answers.family === "C" ? features.C : features.C.concat(features.P),
-        default: getConfig(generator, "features", ["ssl-only"])
+        default: getConfig(generator, "features", [])
     });
 
     questions.push({
