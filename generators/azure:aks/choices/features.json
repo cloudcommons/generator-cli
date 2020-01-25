@@ -16,7 +16,7 @@
         "value": "cert-manager"
     },
     {
-        "name": "Atarray (Experimental - Key Vault Secret Injector for AKS)",
+        "name": "Atarraya (Experimental - Key Vault Secret Injector for AKS)",
         "value": "atarraya"
     },
     {
