@@ -1,0 +1,22 @@
+{
+    "C": [
+        {
+            "name": "Enforce SSL",
+            "value": "ssl-only"
+        }
+    ],
+    "P": [
+        {
+            "name": "(Premium) VNET Deployment",
+            "value": "vnet"
+        }, 
+        {
+            "name": "(Premium) Sharded cache",
+            "value": "shard"
+        },        
+        {
+            "name": "(Premium) Patch schedule",
+            "value": "patch-schedule"
+        }
+    ]
+}

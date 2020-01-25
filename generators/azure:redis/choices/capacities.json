@@ -1,0 +1,54 @@
+{
+    "C": [
+        {
+            "name": "C0 (250 MB - Low network - 256 clients)",
+            "value": 0
+        },
+        {
+            "name": "C1 (1 GB - Low network - 1,000 clients)",
+            "value": 1
+        },
+        {
+            "name": "C2 (2.5 GB - Moderate network - 2,000 clients)",
+            "value": 2
+        },
+        {
+            "name": "C3 (6 GB - Moderate network - 5,000 clients)",
+            "value": 3
+        },
+        {
+            "name": "C4 (13 GB - Moderate network - 10,000 clients)",
+            "value": 4
+        },
+        {
+            "name": "C5 (26 GB - High network - 15,000 clients)",
+            "value": 5
+        },
+        {
+            "name": "C6 (53 GB - Highest network - 20,000 clients)",
+            "value": 6
+        }
+    ],
+    "P": [
+        {
+            "name": "P1 (6 GB - Moderate network - 7,500 clients)",
+            "value": 1
+        },
+        {
+            "name": "P2 (13 GB - High network - 15,000 clients)",
+            "value": 2
+        },
+        {
+            "name": "P3 (26 GB - High network - 30,000 clients)",
+            "value": 3
+        },
+        {
+            "name": "P4 (53 GB - Highest network - 40,000 clients)",
+            "value": 4
+        },
+        {
+            "name": "P5 (120 GB - Highest network - 40,000 clients)",
+            "value": 5
+        }
+    ]
+}

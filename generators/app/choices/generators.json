@@ -14,7 +14,11 @@
     {
         "name": "Azure - SQL Server - Database",
         "value": "../azure:sql:database"
-    },    
+    }, 
+    {
+        "name": "Azure - Redis",
+        "value": "../azure:redis"
+    },       
     {
         "name": "Azure - DevOps - Terraform pipeline",
         "value": "../azure:devops:terraform"

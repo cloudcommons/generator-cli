@@ -14,6 +14,7 @@
   "repository": "https://github.com/cloudcommons/generator-cloudcommons",
   "license": "MIT",
   "dependencies": {
+    "ip-range-check": "^0.2.0",
     "yeoman-generator": "^4.4.0"
   }
 }
