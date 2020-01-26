@@ -5,6 +5,10 @@ function az(generator, args) {
 
     var json = rgs.output.toString().trim().substring(1);
     json = json.substring(0, json.length - 2);
+    if (json && json.startsWith(",ERROR:")) {
+        generator.log(json);
+        throw json;
+    }
     return JSON.parse(json);
 }
 
@@ -63,8 +67,26 @@ module.exports.storageAccounts = function (generator, resourceGroup) {
     });
 }
 
-module.exports.storageContainers = function(generator, account) {
-    return az(generator, ['storage', 'container', 'list', '--account-name', account]).map(function (account) {
-        return account.name;
-    });    
+module.exports.storageContainers = function (generator, account) {
+    return az(generator, ['storage', 'container', 'list', '--account-name', account]).map(function (container) {
+        return container.name;
+    });
+}
+
+module.exports.vnets = function (generator, resourceGroup) {
+    return az(generator, ['network', 'vnet', 'list', '-g', resourceGroup]).map(function (vnet) {
+        return vnet.name;
+    });
+}
+module.exports.vnetSubnets = function (generator, resourceGroup, vnet) {
+    return az(generator, ['network', 'vnet', 'subnet', 'list', '-g', resourceGroup, '--vnet-name', vnet]).map(function (subnet) {
+        return {
+            name: subnet.name,
+            value: subnet.id
+        }
+    });
+}
+
+module.exports.vnetSubnetInformation = function (generator, subnetId) {
+    return az(generator, ['network', 'vnet', 'subnet', 'show', '--ids', subnetId]);
 }

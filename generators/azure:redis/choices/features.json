@@ -1,0 +1,22 @@
+{
+    "C": [
+        {
+            "name": "Enable non-SSL ports (For development purposes only)",
+            "value": "non-SSL"
+        }
+    ],
+    "P": [
+        {
+            "name": "(Premium) VNET Deployment",
+            "value": "vnet"
+        }, 
+        {
+            "name": "(Premium) Sharded cache",
+            "value": "shard"
+        },        
+        {
+            "name": "(Premium) Patch schedule",
+            "value": "patch-schedule"
+        }
+    ]
+}

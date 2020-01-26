@@ -1,16 +1,16 @@
 var Generator = require('yeoman-generator');
 var writer = require('./writer');
 var questions = require('./questions');
+var config = require('../../common/config');
 
 module.exports = class extends Generator {
 
   constructor(args, opts) {
     super(args, opts);
-    this.option("azure");
+    this.configName = "azure:search";
   }
 
   initializing() {
-    this.log('Welcome to CloudCommons')
   }
 
   async prompting() {
@@ -19,13 +19,12 @@ module.exports = class extends Generator {
   }
 
   paths() {
-  
   }
 
   configuring() {
   }
 
-  default() {
+  default() {    
   }
 
   writing() {
@@ -36,16 +35,16 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.log("Initialising Terraform...")
-    try {
-      this.spawnCommandSync('terraform', ['init']);
-    }
-    catch(e) {
-      this.log("Error executing terraform init. Is terraform installed? ", e);
-    } 
+
   }
 
   end() {
-    this.log("All set! Please validate your terraform script with 'terraform validate'");
-  }
+    cleanupSecrets(this.answers);    
+    config.set(this, this.configName, this.answers);
+    config.save(this);
+  }  
 };
+
+function cleanupSecrets(answers) {
+  
+}

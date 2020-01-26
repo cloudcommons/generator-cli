@@ -14,6 +14,14 @@
     {
         "name": "Azure - SQL Server - Database",
         "value": "../azure:sql:database"
+    }, 
+    {
+        "name": "Azure - Redis",
+        "value": "../azure:redis"
+    },
+    {
+        "name": "Azure - Cognitive Search",
+        "value": "../azure:search"
     },    
     {
         "name": "Azure - DevOps - Terraform pipeline",

@@ -1,6 +1,7 @@
 var Generator = require('yeoman-generator');
 var writer = require('./writer');
 var questions = require('./questions');
+var config = require('../../common/config');
 
 module.exports = class extends Generator {
 
@@ -37,13 +38,19 @@ module.exports = class extends Generator {
   }
 
   end() {
-    if (this.answers.features.exists('azure-network')) {
+    if (this.answers.features.includes('azure-network')) {
       this.log(`IMPORTANT: When using Azure CNI, AKS Service Principal '${this.answers.clientId}' should have 'Network Contributor' permissions at '${this.answers.aksResourceGroup}' in order to Ensure Load Balancers.`);
       this.log(`If you are experiencing issues with Load Balancers, please check with your Azure Administrator the Service Principal has the appropiate permissions.`);
       this.log("More information: https://github.com/Azure/AKS/issues/357#issuecomment-394583518")
     }    
     
-    this.config.set(this.configName, this.answers);
-    this.config.save();
+    config.set(this, this.configName, cleanupSecrets(this.answers));
+    config.save(this);
   }
 };
+
+function cleanupSecrets(answers) {
+  answers.dockerRepoPassword = null;
+
+  return answers;
+}

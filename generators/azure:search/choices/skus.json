@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Free",
+        "value": "free"
+    },
+    {
+        "name": "Basic",
+        "value": "basic"
+    },
+    {
+        "name": "Standard",
+        "value": "standard"
+    },
+    {
+        "name": "Standard 2 (Requires Microsoft to enable on their backend",
+        "value": "standard2"
+    },
+    {
+        "name": "Standard 3 (Requires Microsoft to enable on their backend",
+        "value": "standard3"
+    }
+]

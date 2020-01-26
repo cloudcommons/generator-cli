@@ -1,6 +1,7 @@
 var Generator = require('yeoman-generator');
 var writer = require('./writer');
 var questions = require('./questions');
+var config = require('../../common/config');
 
 module.exports = class extends Generator {
 
@@ -37,8 +38,12 @@ module.exports = class extends Generator {
   }
 
   end() {
-    this.answers.clientSecret = null;
-    this.config.set(this.configName, this.answers);
-    this.config.save();
+    config.set(this, this.configName, cleanupSecrets(this.answers));
+    config.save(this);
   }
 };
+
+function cleanupSecrets(answers) {
+  answers.clientSecret = null;
+  return answers;
+}
