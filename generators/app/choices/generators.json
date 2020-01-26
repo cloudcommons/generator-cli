@@ -18,7 +18,11 @@
     {
         "name": "Azure - Redis",
         "value": "../azure:redis"
-    },       
+    },
+    {
+        "name": "Azure - Cognitive Search",
+        "value": "../azure:search"
+    },    
     {
         "name": "Azure - DevOps - Terraform pipeline",
         "value": "../azure:devops:terraform"
