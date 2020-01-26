@@ -13,8 +13,8 @@
     "email": "sesispla@outlook.com",
     "url": "https://www.sesispla.net"
   },
-  "homepage": "https://github.com/cloudcommons/generator-terraform-cli",
-  "repository": "https://github.com/cloudcommons/generator-terraform-cli",
+  "homepage": "https://github.com/cloudcommons/cli",
+  "repository": "https://github.com/cloudcommons/cli",
   "license": "MIT",
   "dependencies": {
     "ip-range-check": "^0.2.0",
