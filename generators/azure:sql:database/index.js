@@ -1,6 +1,7 @@
 var Generator = require('yeoman-generator');
 var writer = require('./writer');
 var questions = require('./questions');
+var config = require('../../common/config');
 
 module.exports = class extends Generator {
 
@@ -38,11 +39,11 @@ module.exports = class extends Generator {
   }
 
   end() {
-    cleanupSecrets(this.answers);   // Secrets are not stored in the .yo-rc file, as they are stored in clear
-    this.config.set(this.configName, this.answers);
-    this.config.save();
+    config.set(this, this.configName, cleanupSecrets(this.answers));
+    config.save(this);
   }  
 };
 
 function cleanupSecrets(answers) {
+  return answers;
 }

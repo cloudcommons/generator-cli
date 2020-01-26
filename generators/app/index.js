@@ -9,7 +9,7 @@ module.exports = class extends Generator {
     }
 
     initializing() {
-        this.log(`Writing to '${this.destinationPath()}'`);
+
     }
 
     async prompting() {
@@ -22,8 +22,10 @@ module.exports = class extends Generator {
 
     configuring() {
         this.composeWith(require.resolve(this.answers.subGenerator));
-        this.composeWith(require.resolve('../terraform'));
-        this.composeWith(require.resolve('../terraform:randomid'));
+        if (this.answers.subGenerator !== "../terraform") {
+            this.composeWith(require.resolve('../terraform'));
+            this.composeWith(require.resolve('../terraform:randomid'));
+        }
     }
 
     default() {

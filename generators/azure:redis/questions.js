@@ -1,12 +1,21 @@
 var features = require('./choices/features');
 var az = require('../../common/az');
-var getConfig = require('../../common/getConfig')
 var families = require('./choices/families');
 var capacities = require ('./choices/capacities');
 var skus = require('./choices/skus');
 var checkIpRange = require('ip-range-check');
 var patchSchedule = require ('./choices/patch-schedule');
+var config = require('../../common/config');
 
+/**
+ * Gets the default value from the Yeoman storage
+ * @param {*} generator 
+ * @param {*} key 
+ * @param {*} defaultValue 
+ */
+function getConfig(generator, key, defaultValue) {
+    return config.getDefault(generator, key, defaultValue);
+}
 
 module.exports = function (generator) {
     var questions = [];
