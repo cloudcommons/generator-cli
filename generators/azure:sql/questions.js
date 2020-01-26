@@ -1,7 +1,16 @@
 var features = require('./choices/features');
 var az = require('../../common/az');
-var getConfig = require('../../common/getConfig')
+var config = require('../../common/config');
 
+/**
+ * Gets the default value from the Yeoman storage
+ * @param {*} generator 
+ * @param {*} key 
+ * @param {*} defaultValue 
+ */
+function getConfig(generator, key, defaultValue) {
+    return config.getDefault(generator, key, defaultValue);
+}
 
 module.exports = function (generator) {
     var questions = [];
@@ -27,7 +36,7 @@ module.exports = function (generator) {
         message: "Server - Features",
         choices: features,
         default: getConfig(generator, "features", ["database"])
-    });    
+    });
 
     questions.push({
         type: "list",
@@ -45,7 +54,7 @@ module.exports = function (generator) {
         choices: az.locations(generator),
         default: (answers) => getConfig(generator, "serverLocations", [answers.serverLocation]),
         when: (answers) => answers.features.includes("fail-over")
-    });    
+    });
 
     questions.push({
         type: "input",

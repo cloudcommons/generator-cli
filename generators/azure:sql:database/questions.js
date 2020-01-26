@@ -1,7 +1,17 @@
 var editions = require('./choices/database-editions')
 var sizes = require('./choices/database-sizes')
 var az = require('../../common/az');
-var getConfig = require('../../common/getConfig')
+var config = require('../../common/config');
+
+/**
+ * Gets the default value from the Yeoman storage
+ * @param {*} generator 
+ * @param {*} key 
+ * @param {*} defaultValue 
+ */
+function getConfig(generator, key, defaultValue) {
+    return config.getDefault(generator, key, defaultValue);
+}
 
 
 module.exports = function (generator) {

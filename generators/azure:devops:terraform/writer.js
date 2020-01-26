@@ -9,8 +9,7 @@ module.exports = function (generator, answers) {
         safeName: generateSafeName(answers.name),
         terraformVersion: '0.12.19'
     };
-
-    copy(generator, "LICENSE");
+    
     if (answers.features.includes("templates")) {
         copy(generator, "azure-pipelines/cloudcommons-terraform-validate.yaml", args);
         copy(generator, "azure-pipelines/cloudcommons-terraform-build.yaml", args);

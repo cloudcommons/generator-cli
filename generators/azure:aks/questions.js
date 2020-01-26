@@ -1,6 +1,16 @@
 var az = require('../../common/az');
 var features = require('./choices/features.json');
-var getConfig = require('../../common/getConfig')
+var config = require('../../common/config');
+
+/**
+ * Gets the default value from the Yeoman storage
+ * @param {*} generator 
+ * @param {*} key 
+ * @param {*} defaultValue 
+ */
+function getConfig(generator, key, defaultValue) {
+    return config.getDefault(generator, key, defaultValue);
+}
 
 module.exports = function (generator) {
     var questions = [];
@@ -9,8 +19,8 @@ module.exports = function (generator) {
         type: "input",
         name: "name",
         message: "Kubernetes - Cluster name",
-        default: getConfig(generator, "name", generator.appname)    
-    });    
+        default: getConfig(generator, "name", generator.appname)
+    });
 
     questions.push({
         type: "list",
@@ -34,14 +44,14 @@ module.exports = function (generator) {
         message: "Kubernetes - Virtual machine size",
         choices: (answers) => az.vmSkus(generator, answers.location),
         default: getConfig(generator, "vmsize", "Standard_DS3_v2")
-    });       
+    });
 
     questions.push({
         type: "input",
         name: "vms",
         message: "Kubernetes - Nodes",
         default: getConfig(generator, "vms", 3)
-    });    
+    });
 
     questions.push({
         type: "input",
@@ -55,21 +65,21 @@ module.exports = function (generator) {
         name: "sshKey",
         message: "Kubernetes - SSH Key",
         default: getConfig(generator, "sshKey")
-    });        
+    });
 
     questions.push({
         type: "input",
         name: "clientId",
         message: "Kubernetes - Service Principal Id",
         default: getConfig(generator, "clientId")
-    }); 
-    
+    });
+
     questions.push({
         type: "password",
         name: "clientSecret",
         message: "Kubernetes - Service Principal Secret",
         default: getConfig(generator, "clientSecret")
-    });    
+    });
 
     questions.push({
         type: "checkbox",
@@ -83,10 +93,10 @@ module.exports = function (generator) {
         type: "list",
         name: "certManagerVersion",
         message: "Cert-manager - Version",
-        choices: ["v0.8", "v0.9","v0.10.1"],
+        choices: ["v0.8", "v0.9", "v0.10.1"],
         when: (answers) => answers.features.includes("cert-manager"),
         default: getConfig(generator, "certManagerVersion", "v0.10.1")
-    });         
+    });
 
     questions.push({
         type: "input",
@@ -94,7 +104,7 @@ module.exports = function (generator) {
         message: "Cert-manager - Issuer e-mail",
         when: (answers) => answers.features.includes("cert-manager"),
         default: getConfig(generator, "issuerEmail")
-    });         
+    });
 
     questions.push({
         type: "list",

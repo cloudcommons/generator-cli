@@ -37,8 +37,7 @@ module.exports = {
      * @param {*} defaultValue 
      */
     getDefault: function (generator, key, defaultValue) {
-        var generatorConfig = this.get(generator, generator.configName);
-        generator.log(JSON.stringify(generatorConfig));
+        var generatorConfig = this.get(generator, generator.configName);        
         return generatorConfig && generatorConfig[key] ? generatorConfig[key] : defaultValue;
     },
     /**

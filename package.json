@@ -1,7 +1,10 @@
 {
-  "name": "@cloudcommons/generator-cloudcommons",
-  "version": "0.1.4",
-  "description": "A generator to produce cloud common boilerplate code",
+  "name": "@cloudcommons/generator-cli",
+  "version": "0.1.5",
+  "description": "A generator to produce cloud common boilerplate code using Terraform",
+  "bin": {
+    "cccli": "yo @cloudcommons/cli"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,8 +13,8 @@
     "email": "sesispla@outlook.com",
     "url": "https://www.sesispla.net"
   },
-  "homepage": "https://github.com/cloudcommons/generator-cloudcommons",
-  "repository": "https://github.com/cloudcommons/generator-cloudcommons",
+  "homepage": "https://github.com/cloudcommons/generator-terraform-cli",
+  "repository": "https://github.com/cloudcommons/generator-terraform-cli",
   "license": "MIT",
   "dependencies": {
     "ip-range-check": "^0.2.0",

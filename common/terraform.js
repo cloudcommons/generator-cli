@@ -7,11 +7,19 @@ var workspace = null;
  * @param {*} args 
  */
 function terraform(generator, args) {
+    if (workspace != null) {
+        return workspace;
+    }
+    
     var rgs = generator.spawnCommandSync('terraform', args, {
         stdio: [process.stdout]
     });
     var output = rgs.output.toString().trim();
-    var workspace = output.substring(1, output.length - 2);
+    workspace = output.substring(1, output.length - 2);
+    if (workspace == null) {
+        workspace = "default";
+    }
+    
     return workspace;
 }
 

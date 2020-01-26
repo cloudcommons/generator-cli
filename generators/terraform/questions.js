@@ -1,7 +1,18 @@
 var backends = require('./choices/backends');
 var versions = require('./choices/versions');
-var getConfig = require('../../common/getConfig')
 var az = require('../../common/az');
+var config = require('../../common/config');
+
+/**
+ * Gets the default value from the Yeoman storage
+ * @param {*} generator 
+ * @param {*} key 
+ * @param {*} defaultValue 
+ */
+function getConfig(generator, key, defaultValue) {
+    return config.getDefault(generator, key, defaultValue);
+}
+
 
 module.exports = function (generator) {
     var questions = [];
@@ -96,5 +107,5 @@ function addAzureQuestions(generator, questions) {
         message: "Terraform - Azure - Key",
         default: getConfig(generator, "azureRmContainerKey"),
         when: (answers) => answers.backendType === "azurerm"
-    });    
+    });
 }

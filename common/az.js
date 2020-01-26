@@ -69,7 +69,7 @@ module.exports.storageAccounts = function (generator, resourceGroup) {
 
 module.exports.storageContainers = function (generator, account) {
     return az(generator, ['storage', 'container', 'list', '--account-name', account]).map(function (container) {
-        return account.name;
+        return container.name;
     });
 }
 
