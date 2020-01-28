@@ -2,9 +2,6 @@
   "name": "@cloudcommons/generator-cli",
   "version": "0.1.6",
   "description": "A generator to produce cloud common boilerplate code using Terraform",
-  "bin": {
-    "cccli": "yo @cloudcommons/cli"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

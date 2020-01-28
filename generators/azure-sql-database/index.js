@@ -7,7 +7,7 @@ module.exports = class extends Generator {
 
   constructor(args, opts) {
     super(args, opts);
-    this.configName = "azure:devops:terraform";
+    this.configName = "azure-sql-database";
   }
 
   initializing() {
@@ -35,16 +35,12 @@ module.exports = class extends Generator {
   }
 
   install() {
+
   }
 
   end() {
     config.set(this, this.configName, cleanupSecrets(this.answers));
     config.save(this);
-
-    this.log("Completed! Please dont forget to:");
-    this.log(`1) Configure your YAML pipelines in Azure DevOps`);
-    this.log(`2) Create environment the environment variables for the Azure back-end`);
-    this.log(`3) A Service Connection named ${this.answers.subscription} exists in your Azure DevOps`);    
   }
 };
 
