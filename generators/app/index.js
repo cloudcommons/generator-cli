@@ -21,10 +21,17 @@ module.exports = class extends Generator {
     }
 
     configuring() {
-        this.composeWith(require.resolve(this.answers.subGenerator));
-        if (this.answers.subGenerator !== "../terraform") {
+        if (!Array.isArray(this.answers.subGenerators)) {
+            this.answers.subGenerators = [this.answers.subGenerators];
+        }
+
+        this.answers.subGenerators.forEach(subGenerator => this.composeWith(require.resolve(subGenerator)));
+        if (!this.answers.subGenerators.includes("../terraform")) {
             this.composeWith(require.resolve('../terraform'));
-            this.composeWith(require.resolve('../terraform:randomid'));
+        }
+
+        if (!this.answers.subGenerators.includes('../terraform-randomid')) {
+            this.composeWith(require.resolve('../terraform-randomid'));
         }
     }
 
