@@ -24,7 +24,7 @@ module.exports = class extends Generator {
         this.composeWith(require.resolve(this.answers.subGenerator));
         if (this.answers.subGenerator !== "../terraform") {
             this.composeWith(require.resolve('../terraform'));
-            this.composeWith(require.resolve('../terraform-randomid'));
+            this.composeWith(require.resolve('../terraform:randomid'));
         }
     }
 

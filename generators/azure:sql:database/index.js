@@ -7,7 +7,7 @@ module.exports = class extends Generator {
 
   constructor(args, opts) {
     super(args, opts);
-    this.configName = "azure-aks";
+    this.configName = "azure:sql:database";
   }
 
   initializing() {
@@ -24,7 +24,7 @@ module.exports = class extends Generator {
   configuring() {
   }
 
-  default() {
+  default() {    
   }
 
   writing() {
@@ -35,15 +35,15 @@ module.exports = class extends Generator {
   }
 
   install() {
+
   }
 
   end() {
     config.set(this, this.configName, cleanupSecrets(this.answers));
     config.save(this);
-  }
+  }  
 };
 
 function cleanupSecrets(answers) {
-  answers.clientSecret = null;
   return answers;
 }

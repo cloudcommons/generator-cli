@@ -7,7 +7,7 @@ module.exports = class extends Generator {
 
   constructor(args, opts) {
     super(args, opts);
-    this.configName = "azure-sql";
+    this.configName = "azure:search";
   }
 
   initializing() {
@@ -22,12 +22,9 @@ module.exports = class extends Generator {
   }
 
   configuring() {
-    if (this.answers.features.includes('database')) {
-      this.composeWith(require.resolve('../azure-sql-database'));
-    }
   }
 
-  default() {
+  default() {    
   }
 
   writing() {
@@ -42,12 +39,12 @@ module.exports = class extends Generator {
   }
 
   end() {
-    config.set(this, this.configName, cleanupSecrets(this.answers));
+    cleanupSecrets(this.answers);    
+    config.set(this, this.configName, this.answers);
     config.save(this);
-  }
+  }  
 };
 
 function cleanupSecrets(answers) {
-  answers.serverAdminPassword = null;
-  return answers;
+  
 }

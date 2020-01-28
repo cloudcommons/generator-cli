@@ -7,7 +7,7 @@ module.exports = class extends Generator {
 
   constructor(args, opts) {
     super(args, opts);
-    this.configName = "azure-search";
+    this.configName = "azure:redis";
   }
 
   initializing() {
@@ -24,7 +24,7 @@ module.exports = class extends Generator {
   configuring() {
   }
 
-  default() {
+  default() {    
   }
 
   writing() {
@@ -39,12 +39,11 @@ module.exports = class extends Generator {
   }
 
   end() {
-    cleanupSecrets(this.answers);
-    config.set(this, this.configName, this.answers);
+    config.set(this, this.configName, cleanupSecrets(this.answers));
     config.save(this);
-  }
+  }  
 };
 
 function cleanupSecrets(answers) {
-
+  return answers;
 }

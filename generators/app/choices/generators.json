@@ -1,34 +1,34 @@
 [
     {
         "name": "Azure - Kubernetes",
-        "value": "../azure-aks"
+        "value": "../azure:aks"
     },
     {
         "name": "Azure - Kubernetes - Application",
-        "value": "../azure-aks-app"
+        "value": "../azure:aks:app"
     },
     {
         "name": "Azure - SQL Server",
-        "value": "../azure-sql"
+        "value": "../azure:sql"
     },
     {
         "name": "Azure - SQL Server - Database",
-        "value": "../azure-sql-database"
-    },
+        "value": "../azure:sql:database"
+    }, 
     {
         "name": "Azure - Redis",
-        "value": "../azure-redis"
+        "value": "../azure:redis"
     },
     {
         "name": "Azure - Cognitive Search",
-        "value": "../azure-search"
-    },
+        "value": "../azure:search"
+    },    
     {
         "name": "Azure - DevOps - Terraform pipeline",
-        "value": "../azure-devops-terraform"
+        "value": "../azure:devops:terraform"
     },
     {
         "name": "Terraform - Configuration",
         "value": "../terraform"
-    }
+    }  
 ]
