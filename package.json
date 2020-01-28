@@ -1,6 +1,6 @@
 {
   "name": "@cloudcommons/generator-cli",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "description": "A generator to produce cloud common boilerplate code using Terraform",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
