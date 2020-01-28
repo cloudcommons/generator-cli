@@ -108,6 +108,22 @@ module.exports = {
         return "${" + string + "}"
     },
     /**
+     * Generates a key valid value from a string
+     * @param {*} string 
+     */
+    generateKey: function(string) {
+        if (!string) return null;
+        return string.replace(/[\s!*.,#\\/!]+/g, '-').toLowerCase();
+    },
+    /**
+     * Validates if the given string meets the regular expression criteria to act as terraform resource name
+     * @param {*} string 
+     */
+    validateKey: function(string) {
+        if (string && string.match("^([a-z][a-z0-9]*)(-[a-z0-9]+)*$")) return true;
+        else return "Invalid name. Object names should meet kebab casing. Lower case only (^([a-z][a-z0-9]*)(-[a-z0-9]+)*$)";
+    },
+    /**
      * Returns the current Terraform workspace
      */
     workspace: function(generator) {

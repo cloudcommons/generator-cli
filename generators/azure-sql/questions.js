@@ -1,6 +1,7 @@
 var features = require('./choices/features');
 var az = require('../../common/az');
 var config = require('../../common/config');
+var terraform = require('../../common/terraform');
 
 /**
  * Gets the default value from the Yeoman storage
@@ -19,7 +20,8 @@ module.exports = function (generator) {
         type: "input",
         name: "serverName",
         message: "Server - Name",
-        default: getConfig(generator, "serverName", `${generator.appname}-sql`)
+        default: getConfig(generator, "serverName", `${terraform.generateKey(generator.appname)}-sql`),
+        validate: terraform.validateKey
     });
 
     questions.push({

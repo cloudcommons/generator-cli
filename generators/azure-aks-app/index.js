@@ -7,7 +7,7 @@ module.exports = class extends Generator {
 
   constructor(args, opts) {
     super(args, opts);
-    this.configName = "azure-aks:app";
+    this.configName = "azure-aks-app";
   }
 
   initializing() {    

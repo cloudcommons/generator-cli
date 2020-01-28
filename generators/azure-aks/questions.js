@@ -1,4 +1,5 @@
 var az = require('../../common/az');
+var terraform = require('../../common/terraform');
 var features = require('./choices/features');
 var config = require('../../common/config');
 
@@ -19,7 +20,8 @@ module.exports = function (generator) {
         type: "input",
         name: "name",
         message: "Kubernetes - Cluster name",
-        default: getConfig(generator, "name", generator.appname)
+        default: getConfig(generator, "name", `${terraform.generateKey(generator.appname)}-cluster`),
+        validate: terraform.validateKey
     });
 
     questions.push({

@@ -1,4 +1,5 @@
 var config = require('../../common/config');
+var terraform = require('../../common/terraform');
 
 module.exports = function (generator) {
     var questions = [];
@@ -7,7 +8,8 @@ module.exports = function (generator) {
         type: "input",
         name: "name",
         message: "Project name",
-        default: config.getDefault(generator, "name", generator.appname)// Default to current folder name
+        default: config.getDefault(generator, "name", terraform.generateKey(generator.appname)),
+        validate: terraform.validateKey
     });
 
     questions.push({

@@ -2,23 +2,21 @@
  * Application writer
  */
 module.exports = function (generator, answers) {
-    var args = {
-        name: answers.name,
-        terraformRoot: answers.terraformRoot,
-        subscription: answers.subscription,
+
+    answers = Object.assign({
         safeName: generateSafeName(answers.name),
         terraformVersion: '0.12.19'
-    };
-    
+    }, answers);
+
     if (answers.features.includes("templates")) {
-        copy(generator, "azure-pipelines/cloudcommons-terraform-validate.yaml", args);
-        copy(generator, "azure-pipelines/cloudcommons-terraform-build.yaml", args);
-        copy(generator, "azure-pipelines/cloudcommons-terraform-deploy.yaml", args);
+        copy(generator, "azure-pipelines/cloudcommons-terraform-validate.yaml", answers);
+        copy(generator, "azure-pipelines/cloudcommons-terraform-build.yaml", answers);
+        copy(generator, "azure-pipelines/cloudcommons-terraform-deploy.yaml", answers);
     }
 
     if (answers.features.includes("pipelines")) {
-        copy(generator, "azure-pipelines-ci.yaml", args);
-        copy(generator, "azure-pipelines-cd.yaml", args);
+        copy(generator, "azure-pipelines-ci.yaml", answers);
+        copy(generator, "azure-pipelines-cd.yaml", answers);
     }
 }
 

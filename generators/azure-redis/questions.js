@@ -6,6 +6,7 @@ var skus = require('./choices/skus');
 var checkIpRange = require('ip-range-check');
 var patchSchedule = require ('./choices/patch-schedule');
 var config = require('../../common/config');
+var terraform = require('../../common/terraform');
 
 /**
  * Gets the default value from the Yeoman storage
@@ -24,7 +25,8 @@ module.exports = function (generator) {
         type: "input",
         name: "name",
         message: "Redis - Name",
-        default: getConfig(generator, "name", `${generator.appname}-redis`)
+        default: getConfig(generator, "name", `${terraform.generateKey(generator.appname)}-redis`),
+        validate: terraform.validateKey
     });
 
     questions.push({

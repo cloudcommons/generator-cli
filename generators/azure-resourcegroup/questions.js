@@ -1,6 +1,6 @@
 var az = require('../../common/az');
 var config = require('../../common/config');
-
+var terraform = require('../../common/terraform');
 /**
  * Gets the default value from the Yeoman storage
  * @param {*} generator 
@@ -18,7 +18,8 @@ module.exports = function (generator) {
         type: "input",
         name: "name",
         message: "Resource group - Name",
-        default: getConfig(generator, "name", generator.appname) // Default to current folder name 
+        default: getConfig(generator, "name", terraform.generateKey(generator.appname)),
+        validate: terraform.validateKey
     });
 
     questions.push({

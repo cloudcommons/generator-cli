@@ -9,7 +9,7 @@
     },
     {
         "name": "Azure - Kubernetes - Application",
-        "value": "../azure-aks:app"
+        "value": "../azure-aks-app"
     },
     {
         "name": "Azure - SQL Server",

@@ -2,6 +2,7 @@ var editions = require('./choices/database-editions')
 var sizes = require('./choices/database-sizes')
 var az = require('../../common/az');
 var config = require('../../common/config');
+var terraform = require('../../common/terraform');validate: terraform.validateKey
 
 /**
  * Gets the default value from the Yeoman storage
@@ -28,7 +29,8 @@ function addDatabaseQuestions(questions, generator) {
         type: "input",
         name: "databaseName",
         message: "Database - Name",
-        default: getConfig(generator, "databaseName", generator.appname) // Default to current folder name 
+        default: getConfig(generator, "databaseName", terraform.generateKey(generator.appname)),
+        validate: terraform.validateKey
     });
 
     questions.push({
