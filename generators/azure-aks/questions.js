@@ -1,5 +1,5 @@
 var az = require('../../common/az');
-var features = require('./choices/features.json.js');
+var features = require('./choices/features');
 var config = require('../../common/config');
 
 /**
