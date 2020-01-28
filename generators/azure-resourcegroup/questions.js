@@ -1,5 +1,3 @@
-var editions = require('./choices/database-editions')
-var sizes = require('./choices/database-sizes')
 var az = require('../../common/az');
 var config = require('../../common/config');
 
