@@ -9,10 +9,6 @@ module.exports = {
                     description: "Application this resource belongs to",
                     default: ""
                 },
-                RESOURCE_GROUP_NAME: {
-                    type: "string",
-                    description: ("(Required) The name of the resource group. Must be unique on your Azure subscription.")
-                },
                 SQL_LOCATIONS: {
                     type: "list(string)",
                     description: ("(Required) List of locations on which SQL should be deployed")
@@ -35,6 +31,13 @@ module.exports = {
                     description: "(Required) SQL Server default password. This property is ignored once created."
                 }
             }
+        }
+
+        if (!terraform.isDependency(answers.resourceGroup)) {
+            variables.RESOURCE_GROUP_NAME = {
+                type: "string",
+                description: ("(Required) The name of the resource group. Must be unique on your Azure subscription.")
+            };
         }
 
         terraform.writeVariables(fs, variables);

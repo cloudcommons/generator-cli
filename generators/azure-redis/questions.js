@@ -7,6 +7,7 @@ var checkIpRange = require('ip-range-check');
 var patchSchedule = require ('./choices/patch-schedule');
 var config = require('../../common/config');
 var terraform = require('../../common/terraform');
+var resources = require('../../common/resources');
 
 /**
  * Gets the default value from the Yeoman storage
@@ -33,7 +34,7 @@ module.exports = function (generator) {
         type: "list",
         name: "resourceGroup",
         message: "Redis - Resource Group",
-        choices: az.resourceGroups(generator),
+        choices: resources.resourceGroups(generator),
         default: getConfig(generator, "resourceGroup")
     });
 

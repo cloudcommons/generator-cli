@@ -1,4 +1,5 @@
 var features = require('./choices/features');
+var resources = require('../../common/resources');
 var az = require('../../common/az');
 var config = require('../../common/config');
 var terraform = require('../../common/terraform');
@@ -28,7 +29,7 @@ module.exports = function (generator) {
         type: "list",
         name: "resourceGroup",
         message: "Server - Resource Group",
-        choices: az.resourceGroups(generator),
+        choices: resources.resourceGroups(generator),
         default: getConfig(generator, "resourceGroup")
     });
 

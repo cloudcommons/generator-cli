@@ -3,6 +3,7 @@ var variables = require('./js/variables');
 var output = require('./js/output');
 var providers = require('./js/providers');
 var fsTools = require('../../common/fsTools');
+var terraform = require('../../common/terraform');
 
 /**
  * Application writer
@@ -10,6 +11,8 @@ var fsTools = require('../../common/fsTools');
 module.exports = function (generator, answers) {
 
     answers = Object.assign({
+        resourceGroupReference: terraform.resolveDependency(`${answers.resourceGroup}.name`, "var.SEARCH_RESOURCE_GROUP"),
+        locationReference: terraform.resolveDependency(`${answers.resourceGroup}.location`, "var.SEARCH_LOCATION"),
     }, answers);
     
     fsTools.copy(generator, "azure-search.tf", answers);

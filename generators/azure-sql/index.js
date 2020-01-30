@@ -2,6 +2,7 @@ var Generator = require('yeoman-generator');
 var writer = require('./writer');
 var questions = require('./questions');
 var config = require('../../common/config');
+var resources = require('../../common/resources');
 
 module.exports = class extends Generator {
 
@@ -16,6 +17,7 @@ module.exports = class extends Generator {
   async prompting() {
     var userQuestions = questions(this);
     this.answers = await this.prompt(userQuestions);
+    resources.push("azurerm_sql_server", `azurerm_sql_server.${this.answers.serverName}`);
   }
 
   paths() {
@@ -23,7 +25,9 @@ module.exports = class extends Generator {
 
   configuring() {
     if (this.answers.features.includes('database')) {
-      this.composeWith(require.resolve('../azure-sql-database'));
+      this.composeWith(require.resolve('../azure-sql-database'), {
+        arguments: [`azurerm_sql_server.${this.answers.serverName}.0`]
+      });
     }
   }
 

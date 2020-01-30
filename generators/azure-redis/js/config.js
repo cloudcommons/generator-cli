@@ -5,8 +5,6 @@ module.exports = {
 
         var config = {
             REDIS_NAME: answers.name,
-            REDIS_LOCATION: answers.redisLocation,
-            REDIS_RESOURCE_GROUP: answers.resourceGroup,
             REDIS_CAPACITY: answers.capacity,
             REDIS_FAMILY: answers.family,
             REDIS_SKU: answers.sku,
@@ -16,6 +14,13 @@ module.exports = {
             REDIS_SUBNET_IP: answers.vnetStaticIp,
             REDIS_PATCH_SCHEDULE: answers.patchScheduleDays ? answers.patchScheduleDays.map(function (day) { return { day_of_week: day, start_hour_utc: answers.patchScheduleTime } }) : null,
             REDIS_SHARD_COUNT: answers.shardCount
+        }
+
+        if (!terraform.isDependency(answers.resourceGroupReference)) {
+            Object.assign({
+                REDIS_LOCATION: answers.redisLocation,
+                REDIS_RESOURCE_GROUP: answers.resourceGroup,
+            }, config);
         }
 
         terraform.writeConfig(fs, config, configFile);

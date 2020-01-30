@@ -8,14 +8,6 @@ module.exports = {
                     type: "string",
                     description: ("(Required) The name of the Search Service. Changing this forces a new resource to be created.")
                 },
-                SEARCH_LOCATION: {
-                    type: "string",
-                    description: "(Required) Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created."
-                },
-                SEARCH_RESOURCE_GROUP: {
-                    type: "string",
-                    description: ("(Required) The name of the resource group in which to create the Search Service. Changing this forces a new resource to be created.")
-                },
                 SEARCH_SKU: {
                     type: "string",
                     description: ("(Required) Valid values are basic, free and standard. standard2 and standard3 are also valid, but can only be used when it's enabled on the backend by Microsoft support. free provisions the service in shared clusters. standard provisions the service in dedicated clusters. Changing this forces a new resource to be created.")
@@ -36,6 +28,19 @@ module.exports = {
                     default: ""
                 }
             }
+        }
+
+        if (!terraform.isDependency(answers.resourceGroupReference)) {
+            variables.variable = Object.assign({
+                SEARCH_LOCATION: {
+                    type: "string",
+                    description: "(Required) Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created."
+                },
+                SEARCH_RESOURCE_GROUP: {
+                    type: "string",
+                    description: ("(Required) The name of the resource group in which to create the Search Service. Changing this forces a new resource to be created.")
+                }
+            }, variables.variable);
         }
 
         terraform.writeVariables(fs, variables);

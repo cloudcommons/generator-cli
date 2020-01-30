@@ -1,7 +1,7 @@
 var Generator = require('yeoman-generator');
 var questions = require('./questions');
 var terraform = require('../../common/terraform');
-
+var resources = require('../../common/resources');
 module.exports = class extends Generator {
 
     constructor(args, opts) {
@@ -9,7 +9,7 @@ module.exports = class extends Generator {
     }
 
     initializing() {
-
+        resources.load(this);
     }
 
     async prompting() {
@@ -26,6 +26,11 @@ module.exports = class extends Generator {
         }
 
         this.answers.subGenerators.forEach(subGenerator => this.composeWith(require.resolve(subGenerator)));
+
+        if (this.answers.subGenerators.includes('../terraform-import')) {
+            return;
+        }
+
         if (!this.answers.subGenerators.includes("../terraform")) {
             this.composeWith(require.resolve('../terraform'));
         }
@@ -45,6 +50,10 @@ module.exports = class extends Generator {
     }
 
     install() {
+        if (this.answers.subGenerators.includes('../terraform-import')) {
+            return;
+        }
+
         terraform.init(this.log, this.spawnCommandSync);
     }
 

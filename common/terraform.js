@@ -7,19 +7,23 @@ var workspace = null;
  * @param {*} args 
  */
 function terraform(generator, args) {
-    if (workspace != null) {
-        return workspace;
-    }
-    
     var rgs = generator.spawnCommandSync('terraform', args, {
         stdio: [process.stdout]
     });
     var output = rgs.output.toString().trim();
-    workspace = output.substring(1, output.length - 2);
+    return output.substring(1, output.length - 2);
+}
+
+function getWorkspace(generator) {
+    if (workspace != null) {
+        return workspace;
+    }
+
+    workspace = terraform(generator, ['workspace', 'show']);
     if (workspace == null) {
         workspace = "default";
     }
-    
+
     return workspace;
 }
 
@@ -62,7 +66,7 @@ module.exports = {
      * @param {*} variables Variables to merge
      * @param {*} file Terraform variables file. Defaults to 'variables.tf.json'
      */
-    writeVariables: function(fs, variables, file = 'variables.tf.json') {
+    writeVariables: function (fs, variables, file = 'variables.tf.json') {
         var merged = merge(fs, variables, file, "variable");
         write(fs, file, merged);
     },
@@ -72,7 +76,7 @@ module.exports = {
      * @param {*} output outputs to merge
      * @param {*} file Terraform variables file. Defaults to 'output.tf.json'
      */
-    writeOutput: function(fs, output, file = 'output.tf.json') {
+    writeOutput: function (fs, output, file = 'output.tf.json') {
         var merged = merge(fs, output, file, "output");
         write(fs, file, merged);
     },
@@ -82,10 +86,10 @@ module.exports = {
      * @param {*} providers providers to merge
      * @param {*} file Terraform variables file. Defaults to 'provider.tf.json'
      */
-    writeProviders: function(fs, providers, file = 'providers.tf.json') {
+    writeProviders: function (fs, providers, file = 'providers.tf.json') {
         var merged = merge(fs, providers, file, "provider");
         write(fs, file, merged);
-    },    
+    },
     /**
      * Initialises the current terraform folder
      * @param {*} log 
@@ -104,14 +108,14 @@ module.exports = {
      * Turns a Javascript string into a Terraform variable notation
      * @param {*} string String to convert into Terraform string variable
      */
-    toVariable: function(string) {
+    toVariable: function (string) {
         return "${" + string + "}"
     },
     /**
      * Generates a key valid value from a string
      * @param {*} string 
      */
-    generateKey: function(string) {
+    generateKey: function (string) {
         if (!string) return null;
         return string.replace(/[\s!*.,#\\/!]+/g, '-').toLowerCase();
     },
@@ -119,18 +123,43 @@ module.exports = {
      * Validates if the given string meets the regular expression criteria to act as terraform resource name
      * @param {*} string 
      */
-    validateKey: function(string) {
+    validateKey: function (string) {
         if (string && string.match("^([a-z][a-z0-9]*)(-[a-z0-9]+)*$")) return true;
         else return "Invalid name. Object names should meet kebab casing. Lower case only (^([a-z][a-z0-9]*)(-[a-z0-9]+)*$)";
     },
     /**
      * Returns the current Terraform workspace
      */
-    workspace: function(generator) {
+    workspace: function (generator) {
         if (!workspace) {
-            workspace = terraform(generator, ['workspace', 'show']);
+            workspace = getWorkspace(generator);
         }
 
         return workspace;
-    }   
+    },
+    /**
+     * Imports an azureid into the given terraform resource
+     * @param {*} generator 
+     * @param {*} name Terraform resource name
+     * @param {*} azureId Azure resource id
+     */
+    import: function (generator, name, azureId) {
+        generator.log(`terraform import ${name} ${azureId}`);
+        return terraform(generator, ['import', name, azureId]);
+    },
+    /**
+     * Given a parameter, finds out if it is a reference to another Terraform. If it is, returns that value. Variable otherwise.
+     * @param {*} value 
+     * @param {*} variable 
+     */
+    resolveDependency(value, variable) {
+        return this.isDependency(value) ? value : variable;
+    },
+    /**
+     * Given a value, finds out if it a dependency with another Terraform resource 
+     * @param {*} value 
+     */
+    isDependency(value) {
+        return value && value.includes('.');
+    }
 }

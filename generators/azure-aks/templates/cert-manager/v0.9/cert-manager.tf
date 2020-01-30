@@ -8,7 +8,7 @@ resource "null_resource" "cert_manager" {
     working_dir = "cert-manager/v0.9.1"
     command     = "kubectl apply -f crds.yml --kubeconfig ./.kube/config && kubectl apply -f cluster-issuer.yml --kubeconfig ./.kube/config"
     environment = {
-      name           = local.name
+      name           = local.aks_name
       resource_group = local.resource_group
     }
   }
