@@ -1,6 +1,9 @@
 # Development workspace
 workspace
 
+# Outputs
+outputs
+
 # Logs
 logs
 *.log

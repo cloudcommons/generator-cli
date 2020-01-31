@@ -52,8 +52,20 @@ jobs:
       inlineScript: |
           az --version
           az account show
-          npm test
-          
+          npm run test:ci
+
+  - task: PublishTestResults@2
+    inputs:   
+      testResultsFormat: xUnit,
+      testResultsFiles:
+      searchFolder: '$(System.DefaultWorkingDirectory)/outputs'
+      testRunTitle: '$(vmImage) - Node $(nodeVersionSpec) - Terraform $(terraformVersion)'
+      testResultsFiles: '**/test-*.xml'
+      mergeTestResults: true
+      failTaskOnFailedTests: false
+      buildPlatform: $(vmImage)
+      buildConfiguration: 'Node $(nodeVersionSpec) - Terraform $(terraformVersion)'
+
   - script: |
       npm publish --dry-run
     displayName: 'NPM - Publish (dry run)'
