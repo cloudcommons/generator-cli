@@ -8,14 +8,6 @@ module.exports = {
                     type: "string",
                     description: ("(Required) The name of the Redis instance. Changing this forces a new resource to be created.")
                 },
-                REDIS_LOCATION: {
-                    type: "string",
-                    description: " (Required) The location of the resource group."
-                },
-                REDIS_RESOURCE_GROUP: {
-                    type: "string",
-                    description: ("(Required) The name of the resource group in which to create the Redis instance.")
-                },
                 REDIS_CAPACITY: {
                     type: "string",
                     description: "(Required) The size of the Redis cache to deploy. Valid values for a SKU family of C (Basic/Standard) are 0, 1, 2, 3, 4, 5, 6, and for P (Premium) family are 1, 2, 3, 4."
@@ -59,6 +51,19 @@ module.exports = {
                     default: null
                 }
             }
+        }
+                
+        if (!terraform.isDependency(answers.resourceGroupReference)) {            
+            variables.variable = Object.assign({
+                REDIS_LOCATION: {
+                    type: "string",
+                    description: " (Required) The location of the resource group."
+                },
+                REDIS_RESOURCE_GROUP: {
+                    type: "string",
+                    description: ("(Required) The name of the resource group in which to create the Redis instance.")
+                }
+            }, variables.variable)
         }
 
         terraform.writeVariables(fs, variables, configFile);

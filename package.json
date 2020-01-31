@@ -3,7 +3,7 @@
   "version": "0.1.8",
   "description": "A generator to produce cloud common boilerplate code using Terraform",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node node_modules/mocha/bin/mocha --recursive --timeout 10000 --reporter=mocha-multi-reporters --reporter-options configFile=reporters.json"
   },
   "author": {
     "name": "Sergio Sisternes",
@@ -18,6 +18,12 @@
     "yeoman-generator": "^4.4.0"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "fs-extra": "^8.1.0",
+    "mocha": "^7.0.1",
+    "mocha-multi-reporters": "^1.1.7",
+    "yeoman-assert": "^3.1.1",
+    "yeoman-test": "^2.1.0",
     "yo": "^3.1.1"
   }
 }

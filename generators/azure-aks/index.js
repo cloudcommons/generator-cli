@@ -2,6 +2,7 @@ var Generator = require('yeoman-generator');
 var writer = require('./writer');
 var questions = require('./questions');
 var config = require('../../common/config');
+var resources = require('../../common/resources');
 
 module.exports = class extends Generator {
 
@@ -11,11 +12,13 @@ module.exports = class extends Generator {
   }
 
   initializing() {
+    resources.load(this);
   }
 
   async prompting() {
     var userQuestions = questions(this);
     this.answers = await this.prompt(userQuestions);
+    resources.push("module", `module.${this.answers.name}-kubernetes`);
   }
 
   paths() {
@@ -39,7 +42,8 @@ module.exports = class extends Generator {
 
   end() {
     config.set(this, this.configName, cleanupSecrets(this.answers));
-    config.save(this);
+    resources.save(this);
+    config.save(this);    
   }
 };
 

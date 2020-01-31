@@ -34,5 +34,9 @@
     {
         "name": "Terraform - Configuration",
         "value": "../terraform"
-    }  
+    },
+    {
+        "name": "Terraform - Import",
+        "value": "../terraform-import"
+    }   
 ]

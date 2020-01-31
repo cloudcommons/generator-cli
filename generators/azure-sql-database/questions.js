@@ -2,7 +2,8 @@ var editions = require('./choices/database-editions')
 var sizes = require('./choices/database-sizes')
 var az = require('../../common/az');
 var config = require('../../common/config');
-var terraform = require('../../common/terraform');validate: terraform.validateKey
+var terraform = require('../../common/terraform');
+var resources = require('../../common/resources');
 
 /**
  * Gets the default value from the Yeoman storage
@@ -25,12 +26,31 @@ module.exports = function (generator) {
 }
 
 function addDatabaseQuestions(questions, generator) {
+
     questions.push({
         type: "input",
         name: "databaseName",
         message: "Database - Name",
         default: getConfig(generator, "databaseName", terraform.generateKey(generator.appname)),
         validate: terraform.validateKey
+    });
+
+    questions.push({
+        type: "list",
+        name: "databaseResourceGroup",
+        message: "Database - Server - Resource Group",
+        choices: resources.resourceGroups(generator),
+        default: getConfig(generator, "databaseServerResourceGroup"),
+        when: !generator.options.server
+    });
+
+    questions.push({
+        type: "list",
+        name: "databaseServer",
+        message: "Database - Server - Name",
+        choices: (answers) => resources.sqlServers(generator, answers.databaseResourceGroup),
+        default: getConfig(generator, "databaseServer"),
+        when: !generator.options.server
     });
 
     questions.push({
