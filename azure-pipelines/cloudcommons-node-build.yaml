@@ -16,7 +16,7 @@ jobs:
       windows_node_12:
         vmImage: 'windows-latest'
         nodeVersionSpec: '12.x'    
-  displayName: '$(vmImage) $(nodeVersionSpec) - Build - ${{ parameters.name}}'
+  displayName: 'Build - ${{ parameters.name}}'
   pool:
     vmImage: $(vmImage)
 
