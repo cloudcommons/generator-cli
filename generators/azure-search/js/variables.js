@@ -15,12 +15,12 @@ module.exports = {
                 SEARCH_REPLICA_COUNT: {
                     type: "string",
                     description: "(Optional) Default is 1. Valid values include 1 through 12. Valid only when sku is standard. Changing this forces a new resource to be created.",
-                    default: null
+                    default: 1
                 },
                 SEARCH_PARTITION_COUNT: {
                     type: "string",
                     description: "(Optional) Default is 1. Valid values include 1, 2, 3, 4, 6, or 12. Valid only when sku is standard. Changing this forces a new resource to be created.",
-                    default: null
+                    default: 1
                 },
                 SEARCH_APP: {
                     type: "string",
@@ -30,7 +30,7 @@ module.exports = {
             }
         }
 
-        if (!terraform.isDependency(answers.resourceGroupReference)) {
+        if (!terraform.isDependency(answers.resourceGroup)) {
             variables.variable = Object.assign({
                 SEARCH_LOCATION: {
                     type: "string",
