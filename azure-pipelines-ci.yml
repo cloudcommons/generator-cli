@@ -9,26 +9,11 @@ pr:
   branches:
     include:
     - 'master'
-    - 'develop'
 
-strategy:
-  maxParallel: 2
-  matrix:    
-    linux_node_12:
-      vmImage: 'ubuntu-latest'
-      nodeVersionSpec: '12.x'
-    mac_node_12:
-      vmImage: 'macos-latest'
-      nodeVersionSpec: '12.x'
-    windows_node_12:
-      vmImage: 'windows-latest'
-      nodeVersionSpec: '12.x'    
-
-steps:
-- template: azure-pipelines/cloudcommons-node-build.yaml 
-  parameters:
-    azureSubscription: $(AZURE_SUBSCRIPTION)
-    pool: $(vmImage)
-    nodeVersionSpec: $(nodeVersionSpec)
-
-
+stages:
+- stage: 'build'
+  displayName: 'Generator - Continous Integration'
+  jobs:
+  - template: azure-pipelines/cloudcommons-node-build.yaml 
+    parameters:
+      azureSubscription: $(AZURE_SUBSCRIPTION)
