@@ -3,7 +3,7 @@
   "version": "0.1.7",
   "description": "A generator to produce cloud common boilerplate code using Terraform",
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha --timeout 10000"
+    "test": "node node_modules/mocha/bin/mocha --timeout 10000"
   },
   "author": {
     "name": "Sergio Sisternes",
