@@ -1,7 +1,6 @@
 var helpers = require('yeoman-test');
 var path = require('path');
 var assert = require('yeoman-assert');
-var fs = require('fs-extra');
 
 describe("cloudcommons/cli:azure-search", function () {
     describe('Basic search - Remote resource group', () => {
@@ -128,7 +127,7 @@ describe("cloudcommons/cli:azure-search", function () {
             assert.fileContent('variables.tf.json', '"SEARCH_NAME":');
             assert.fileContent('variables.tf.json', '"SEARCH_SKU":');
             assert.fileContent('variables.tf.json', '"SEARCH_REPLICA_COUNT":');
-            assert.fileContent('variables.tf.json', '"SEARCH_PARTITION_COUNT":');            
+            assert.fileContent('variables.tf.json', '"SEARCH_PARTITION_COUNT":');
             assert.fileContent('variables.tf.json', '"SEARCH_LOCATION":');
             assert.fileContent('variables.tf.json', '"SEARCH_RESOURCE_GROUP":');
         });
@@ -186,7 +185,7 @@ describe("cloudcommons/cli:azure-search", function () {
             assert.fileContent('variables.tf.json', '"SEARCH_NAME":');
             assert.fileContent('variables.tf.json', '"SEARCH_SKU":');
             assert.fileContent('variables.tf.json', '"SEARCH_REPLICA_COUNT":');
-            assert.fileContent('variables.tf.json', '"SEARCH_PARTITION_COUNT":');            
+            assert.fileContent('variables.tf.json', '"SEARCH_PARTITION_COUNT":');
             assert.noFileContent('variables.tf.json', '"SEARCH_LOCATION":');
             assert.noFileContent('variables.tf.json', '"SEARCH_RESOURCE_GROUP":');
         });
@@ -197,7 +196,7 @@ describe("cloudcommons/cli:azure-search", function () {
             assert.fileContent('terraform.tfvars.json', '"SEARCH_PARTITION_COUNT": 4');
             assert.fileContent('terraform.tfvars.json', '"SEARCH_REPLICA_COUNT": 3');
             assert.noFileContent('terraform.tfvars.json', '"SEARCH_RESOURCE_GROUP": "cloudcommons-resource-group"')
-            assert.noFileContent('terraform.tfvars.json', '"SEARCH_LOCATION": "westeu"');            
+            assert.noFileContent('terraform.tfvars.json', '"SEARCH_LOCATION": "westeu"');
         });
 
         it('Creates the right output values', () => {
@@ -215,5 +214,5 @@ describe("cloudcommons/cli:azure-search", function () {
             assert.fileContent('providers.tf.json', '"provider":');
             assert.fileContent('providers.tf.json', '"azurerm":');
         });
-    });    
+    });
 });
