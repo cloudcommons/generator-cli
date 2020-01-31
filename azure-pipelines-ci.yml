@@ -20,4 +20,6 @@ stages:
   displayName: 'Generator - Continous Integration'
   jobs:
   - template: azure-pipelines/cloudcommons-node-build.yaml 
+    parameters:
+      azureSubscription: $(AZURE_SUBSCRIPTION)
 

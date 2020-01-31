@@ -17,13 +17,20 @@ jobs:
     displayName: 'Node.js - Install'
 
   - task: Npm@1
+    displayName: 'NPM - Install'
     inputs:
       command: 'install'
 
-  - task: Npm@1
-    inputs:
-      command: 'custom'
-      customCommand: 'test'
+- task: AzureCLI@2
+  displayName: 'NPM - Test'
+  inputs:
+    azureSubscription: '${{ parameters.azureSubscription }}'
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+        az --version
+        az account show
+        npm test
 
   - script: |
       npm publish --dry-run
