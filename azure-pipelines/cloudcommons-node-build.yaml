@@ -1,11 +1,12 @@
 parameters:  
   name: 'generator'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
+  maxParallel: 1
 
 jobs:
 - job: Build${{ parameters.name}}
   strategy:
-    maxParallel: 2
+    maxParallel: ${{ parameters.maxParallel }}
     matrix:    
       linux_node_12_terraform_0_12_19:
         vmImage: 'ubuntu-latest'
