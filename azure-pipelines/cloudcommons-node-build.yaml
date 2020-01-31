@@ -1,24 +1,70 @@
-parameters:
-  pool: 'ubuntu-latest'
+parameters:  
   name: 'generator'
-  nodeVersionSpec: '12.x'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
+  maxParallel: 1
 
 jobs:
 - job: Build${{ parameters.name}}
+  strategy:
+    maxParallel: ${{ parameters.maxParallel }}
+    matrix:    
+      linux_node_12_terraform_0_12_19:
+        vmImage: 'ubuntu-latest'
+        nodeVersionSpec: '12.x'
+        terraformVersion: '0.12.19'
+        scriptType: bash
+      mac_node_12_terraform_0_12_19:
+        vmImage: 'macos-latest'
+        nodeVersionSpec: '12.x'
+        terraformVersion: '0.12.19'
+        scriptType: bash
+      windows_node_12_terraform_0_12_19:
+        vmImage: 'windows-latest'
+        nodeVersionSpec: '12.x'
+        terraformVersion: '0.12.19'
+        scriptType: ps
   displayName: 'Build - ${{ parameters.name}}'
   pool:
-    vmImage: ${{ parameters.pool }}
+    vmImage: $(vmImage)
 
   steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '${{ parameters.nodeVersionSpec}}'
+      versionSpec: '$(nodeVersionSpec)'
     displayName: 'Node.js - Install'
 
   - task: Npm@1
+    displayName: 'NPM - Install'
     inputs:
       command: 'install'
+
+  - task: TerraformInstaller@0
+    displayName: 'Terraform - Install'
+    inputs:
+      terraformVersion: '$(terraformVersion)'      
+
+  - task: AzureCLI@2
+    displayName: 'NPM - Test'
+    inputs:
+      azureSubscription: '${{ parameters.azureSubscription }}'
+      scriptType: $(scriptType)
+      scriptLocation: inlineScript
+      inlineScript: |
+          az --version
+          az account show
+          npm test
+
+  - task: PublishTestResults@2
+    displayName: 'NPM - Test - Publish results'
+    inputs:   
+      testResultsFormat: 'xUnit'
+      testResultsFiles: '**/test-*.xml'
+      searchFolder: '$(System.DefaultWorkingDirectory)/outputs'
+      testRunTitle: '$(vmImage) - Node $(nodeVersionSpec) - Terraform $(terraformVersion)'      
+      mergeTestResults: true
+      failTaskOnFailedTests: false
+      buildPlatform: $(vmImage)
+      buildConfiguration: 'Node $(nodeVersionSpec) - Terraform $(terraformVersion)'
 
   - script: |
       npm publish --dry-run

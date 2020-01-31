@@ -1,6 +1,6 @@
 function az(generator, args) {
     var rgs = generator.spawnCommandSync('az', args, {
-        stdio: [process.stdout]
+        stdio: ['ignore', 'pipe', process.stderr]
     });
 
     var json = rgs.output.toString().trim().substring(1);
