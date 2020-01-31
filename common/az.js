@@ -1,10 +1,11 @@
+
 function az(generator, args) {
+
     var rgs = generator.spawnCommandSync('az', args, {
-        stdio: [process.stdout]
+        stdio: ['ignore', 'pipe', process.stderr]
     });
 
-    var json = rgs.output.toString().trim().substring(1);
-    json = json.substring(0, json.length - 2);
+    var json = rgs.stdout.toString();
     if (json && json.startsWith(",ERROR:")) {
         generator.log(json);
         throw json;
