@@ -10,6 +10,8 @@ function terraform(generator, args) {
     var rgs = generator.spawnCommandSync('terraform', args, {
         stdio: ['ignore', 'pipe', process.stderr]
     });
+
+    if (rgs.output === null) throw "No response from terraform. Please check if it is installed";
     var output = rgs.output.toString().trim();
     return output.substring(1, output.length - 2);
 }
