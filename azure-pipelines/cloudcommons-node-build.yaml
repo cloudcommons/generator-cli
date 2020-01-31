@@ -20,6 +20,11 @@ jobs:
     inputs:
       command: 'install'
 
+  - task: Npm@1
+    inputs:
+      command: 'custom'
+      customCommand: 'test'
+
   - script: |
       npm publish --dry-run
     displayName: 'NPM - Publish (dry run)'
