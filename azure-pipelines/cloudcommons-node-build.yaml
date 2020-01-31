@@ -55,6 +55,7 @@ jobs:
           npm test
 
   - task: PublishTestResults@2
+    displayName: 'NPM - Test - Publish results'
     inputs:   
       testResultsFormat: 'xUnit'
       testResultsFiles: '**/test-*.xml'
