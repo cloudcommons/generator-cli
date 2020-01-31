@@ -52,7 +52,7 @@ jobs:
       inlineScript: |
           az --version
           az account show
-          npm run test:ci
+          npm test
 
   - task: PublishTestResults@2
     inputs:   
