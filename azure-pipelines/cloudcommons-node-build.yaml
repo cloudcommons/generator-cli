@@ -4,16 +4,29 @@ parameters:
   nodeVersionSpec: '12.x'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
 
+strategy:
+  matrix:
+    maxParallel: 2
+    linux_node_12:
+      vmImage: 'ubuntu-latest'
+      nodeVersionSpec: '12.x'
+    mac_node_12:
+      vmImage: 'macos-latest'
+      nodeVersionSpec: '12.x'
+    windows_node_12:
+      vmImage: 'windows-latest'
+      nodeVersionSpec: '12.x'
+
 jobs:
 - job: Build${{ parameters.name}}
   displayName: 'Build - ${{ parameters.name}}'
   pool:
-    vmImage: ${{ parameters.pool }}
+    vmImage: $(vmImage)
 
   steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '${{ parameters.nodeVersionSpec}}'
+      versionSpec: '$(nodeVersionSpec)'
     displayName: 'Node.js - Install'
 
   - task: Npm@1
