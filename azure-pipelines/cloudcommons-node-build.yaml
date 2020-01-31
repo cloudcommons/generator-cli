@@ -56,11 +56,10 @@ jobs:
 
   - task: PublishTestResults@2
     inputs:   
-      testResultsFormat: xUnit,
-      testResultsFiles:
-      searchFolder: '$(System.DefaultWorkingDirectory)/outputs'
-      testRunTitle: '$(vmImage) - Node $(nodeVersionSpec) - Terraform $(terraformVersion)'
+      testResultsFormat: 'xUnit'
       testResultsFiles: '**/test-*.xml'
+      searchFolder: '$(System.DefaultWorkingDirectory)/outputs'
+      testRunTitle: '$(vmImage) - Node $(nodeVersionSpec) - Terraform $(terraformVersion)'      
       mergeTestResults: true
       failTaskOnFailedTests: false
       buildPlatform: $(vmImage)
