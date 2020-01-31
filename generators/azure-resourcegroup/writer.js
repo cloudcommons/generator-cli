@@ -13,7 +13,7 @@ module.exports = function (generator, answers) {
         databaseCreateMode: answers.databaseRestore === false ? "Default" : "Copy"
     }, answers);
 
-    fsTools.copyTo(generator, `resource-group.tf`, `${answers.name}-resource-group.tf`,answers);
+    fsTools.copyTo(generator, `resource-group.tf`, `${answers.name}-resource-group.tf`,answers);    
     config.copy(generator.fs, answers);
     outputs.copy(generator.fs, answers);
     variables.copy(generator.fs, answers);

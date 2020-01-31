@@ -1,6 +1,6 @@
 function az(generator, args) {
     var rgs = generator.spawnCommandSync('az', args, {
-        stdio: [process.stdout]
+        stdio: ['ignore', 'pipe', process.stderr]
     });
 
     var json = rgs.output.toString().trim().substring(1);
@@ -9,11 +9,22 @@ function az(generator, args) {
         generator.log(json);
         throw json;
     }
-    return JSON.parse(json);
+    try {
+        return JSON.parse(json);
+    } catch (e) {
+        generator.log(`Error parsing az response: ${json}`);
+        generator.log(`${e}`);
+        throw e;
+    }
 }
 
-module.exports.resourceGroups = function (generator) {
-    return az(generator, ['group', 'list', '-o', 'json']);
+module.exports.resourceGroups = function (generator, name = 'name', value = 'name') {
+    return az(generator, ['group', 'list', '-o', 'json']).map(rg => {
+        return {
+            name: rg[name],
+            value: rg[value]
+        }
+    });
 }
 
 module.exports.dnsZones = function (generator, resourceGroup) {
@@ -24,11 +35,11 @@ module.exports.vmSkus = function (generator, location) {
     return az(generator, ['vm', 'list-skus', '-l', location, '-o', 'json']);
 }
 
-module.exports.locations = function (generator) {
+module.exports.locations = function (generator, name = 'displayName', value = 'name') {
     return az(generator, ['account', 'list-locations', '-o', 'json']).map(function (location) {
         return {
-            name: location.displayName,
-            value: location.name
+            name: location[name],
+            value: location[value]
         }
     });
 }
@@ -43,20 +54,20 @@ module.exports.aksVersions = function (generator, location) {
     });
 }
 
-module.exports.sqlServers = function (generator, resourceGroup) {
+module.exports.sqlServers = function (generator, resourceGroup, name = 'name', value = 'id') {
     return az(generator, ['sql', 'server', 'list', '-g', resourceGroup]).map(function (server) {
         return {
-            name: server.name,
-            value: server.id
+            name: server[name],
+            value: server[value]
         }
     });
 }
 
-module.exports.sqlDatabases = function (generator, serverId) {
+module.exports.sqlDatabases = function (generator, serverId, name = 'name', value = 'id') {
     return az(generator, ['sql', 'db', 'list', '--ids', serverId]).map(function (database) {
         return {
-            name: database.name,
-            value: database.id
+            name: database[name],
+            value: database[value]
         }
     });
 }
@@ -78,11 +89,20 @@ module.exports.vnets = function (generator, resourceGroup) {
         return vnet.name;
     });
 }
-module.exports.vnetSubnets = function (generator, resourceGroup, vnet) {
+module.exports.vnetSubnets = function (generator, resourceGroup, vnet, name = 'name', value = 'id') {
     return az(generator, ['network', 'vnet', 'subnet', 'list', '-g', resourceGroup, '--vnet-name', vnet]).map(function (subnet) {
         return {
-            name: subnet.name,
-            value: subnet.id
+            name: subnet[name],
+            value: subnet[value]
+        }
+    });
+}
+
+module.exports.resources = function (generator, resourceGroup, name = 'name', value = 'id') {
+    return az(generator, ['resource', 'list', '-g', resourceGroup]).map((resource) => {
+        return {
+            name: resource[name],
+            value: resource[value]
         }
     });
 }

@@ -16,6 +16,7 @@ module.exports = class extends Generator {
   async prompting() {
     var userQuestions = questions(this);
     this.answers = await this.prompt(userQuestions);
+    resources.push("module", `module.${this.answers.name}`);
   }
 
   paths() {

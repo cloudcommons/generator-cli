@@ -1,12 +1,11 @@
-locals {
-    name = "${var.REDIS_NAME}-${terraform.workspace}-${local.uid}"
+locals {  
     isRedisPremium = var.REDIS_FAMILY == "P" ? true : false
 }
 
 resource "azurerm_redis_cache" "<%= name %>" {
-  name                      = local.name
-  location                  = var.REDIS_LOCATION
-  resource_group_name       = var.REDIS_RESOURCE_GROUP
+  name                      = redis_name = "${var.REDIS_NAME}-${terraform.workspace}-${local.uid}"
+  location                  = <%= locationReference %>
+  resource_group_name       = <%= resourceGroupReference %>
   capacity                  = var.REDIS_CAPACITY
   family                    = var.REDIS_FAMILY
   sku_name                  = var.REDIS_SKU

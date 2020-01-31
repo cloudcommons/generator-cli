@@ -2,6 +2,7 @@ var az = require('../../common/az');
 var config = require('../../common/config')
 var skus = require('./choices/skus');
 var terraform = require('../../common/terraform');
+var resources = require('../../common/resources');
 
 /**
  * Gets the default value from the Yeoman storage
@@ -27,8 +28,8 @@ module.exports = function (generator) {
     questions.push({
         type: "list",
         name: "resourceGroup",
-        message: "Azure Cognitive Search- - Resource Group",
-        choices: az.resourceGroups(generator),
+        message: "Azure Cognitive Search - Resource Group",
+        choices: resources.resourceGroups(generator),
         default: getConfig(generator, "resourceGroup")
     });
 
@@ -37,7 +38,8 @@ module.exports = function (generator) {
         name: "location",
         message: "Azure Cognitive Search - Location",
         choices: az.locations(generator),
-        default: getConfig(generator, "location")
+        default: getConfig(generator, "location"),
+        when: (answers) => !terraform.isDependency(answers.resourceGroup)
     });
 
     questions.push({
