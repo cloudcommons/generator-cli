@@ -11,14 +11,17 @@ jobs:
         vmImage: 'ubuntu-latest'
         nodeVersionSpec: '12.x'
         terraformVersion: '0.12.19'
+        scriptType: bash
       mac_node_12_terraform_0_12_19:
         vmImage: 'macos-latest'
         nodeVersionSpec: '12.x'
         terraformVersion: '0.12.19'
+        scriptType: bash
       windows_node_12_terraform_0_12_19:
         vmImage: 'windows-latest'
         nodeVersionSpec: '12.x'
         terraformVersion: '0.12.19'
+        scriptType: ps
   displayName: 'Build - ${{ parameters.name}}'
   pool:
     vmImage: $(vmImage)
@@ -43,7 +46,7 @@ jobs:
     displayName: 'NPM - Test'
     inputs:
       azureSubscription: '${{ parameters.azureSubscription }}'
-      scriptType: bash
+      scriptType: $(scriptType)
       scriptLocation: inlineScript
       inlineScript: |
           az --version
