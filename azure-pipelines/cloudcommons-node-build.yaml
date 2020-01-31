@@ -7,15 +7,18 @@ jobs:
   strategy:
     maxParallel: 2
     matrix:    
-      linux_node_12:
+      linux_node_12_terraform_0_12_19:
         vmImage: 'ubuntu-latest'
         nodeVersionSpec: '12.x'
-      mac_node_12:
+        terraformVersion: '0.12.19'
+      mac_node_12_terraform_0_12_19:
         vmImage: 'macos-latest'
         nodeVersionSpec: '12.x'
-      windows_node_12:
+        terraformVersion: '0.12.19'
+      windows_node_12_terraform_0_12_19:
         vmImage: 'windows-latest'
-        nodeVersionSpec: '12.x'    
+        nodeVersionSpec: '12.x'
+        terraformVersion: '0.12.19'
   displayName: 'Build - ${{ parameters.name}}'
   pool:
     vmImage: $(vmImage)
@@ -30,6 +33,11 @@ jobs:
     displayName: 'NPM - Install'
     inputs:
       command: 'install'
+
+  - task: TerraformInstaller@0
+    displayName: 'Terraform - Install'
+    inputs:
+      terraformVersion: '$(terraformVersion)'      
 
   - task: AzureCLI@2
     displayName: 'NPM - Test'
