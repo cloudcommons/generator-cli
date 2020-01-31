@@ -21,17 +21,17 @@ jobs:
     inputs:
       command: 'install'
 
-- task: AzureCLI@2
-  displayName: 'NPM - Test'
-  inputs:
-    azureSubscription: '${{ parameters.azureSubscription }}'
-    scriptType: bash
-    scriptLocation: inlineScript
-    inlineScript: |
-        az --version
-        az account show
-        npm test
-
+  - task: AzureCLI@2
+    displayName: 'NPM - Test'
+    inputs:
+      azureSubscription: '${{ parameters.azureSubscription }}'
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+          az --version
+          az account show
+          npm test
+          
   - script: |
       npm publish --dry-run
     displayName: 'NPM - Publish (dry run)'
