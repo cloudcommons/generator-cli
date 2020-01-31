@@ -8,7 +8,7 @@ var workspace = null;
  */
 function terraform(generator, args) {
     var rgs = generator.spawnCommandSync('terraform', args, {
-        stdio: [process.stdout]
+        stdio: ['ignore', 'pipe', process.stderr]
     });
     var output = rgs.output.toString().trim();
     return output.substring(1, output.length - 2);
