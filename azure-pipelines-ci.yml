@@ -1,7 +1,15 @@
-# Node.js
-# Build a general Node.js project with npm.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+strategy:
+  maxParallel: 2
+  matrix:    
+    linux_node_12:
+      vmImage: 'ubuntu-latest'
+      nodeVersionSpec: '12.x'
+    mac_node_12:
+      vmImage: 'macos-latest'
+      nodeVersionSpec: '12.x'
+    windows_node_12:
+      vmImage: 'windows-latest'
+      nodeVersionSpec: '12.x'
 
 trigger:
   branches:
@@ -17,18 +25,6 @@ pr:
 
 stages:
 - stage: 'build'
-  strategy:
-    maxParallel: 2
-    matrix:    
-      linux_node_12:
-        vmImage: 'ubuntu-latest'
-        nodeVersionSpec: '12.x'
-      mac_node_12:
-        vmImage: 'macos-latest'
-        nodeVersionSpec: '12.x'
-      windows_node_12:
-        vmImage: 'windows-latest'
-        nodeVersionSpec: '12.x'
   displayName: 'Generator - Continous Integration'
   jobs:
   - template: azure-pipelines/cloudcommons-node-build.yaml 
