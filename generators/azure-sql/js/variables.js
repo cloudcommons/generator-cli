@@ -29,7 +29,7 @@ module.exports = {
         }
 
         if (!terraform.isDependency(answers.resourceGroup)) {
-            variables.RESOURCE_GROUP_NAME = {
+            variables.variable.RESOURCE_GROUP_NAME = {
                 type: "string",
                 description: ("(Required) The name of the resource group. Must be unique on your Azure subscription.")
             };
