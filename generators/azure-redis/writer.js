@@ -24,7 +24,7 @@ module.exports = function (generator, answers) {
     }, answers);
 
     variables.copy(generator.fs, answers);
-    fsTools.copy(generator, "redis.tf", answers);
+    fsTools.copyTo(generator, "redis.tf", `${answers.name}-redis.tf`, answers);
     config.copy(generator.fs, answers);
     outputs.copy(generator.fs, answers);
     providers.copy(generator.fs, answers);
