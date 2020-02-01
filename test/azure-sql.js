@@ -1,8 +1,6 @@
 var helpers = require('yeoman-test');
 var path = require('path');
 var assert = require('yeoman-assert');
-var terraform = require('../common/terraform');
-const { spawn } = require('child_process');
 
 describe("cloudcommons/cli:resource-group", function () {
     describe('Creates a SQL Server', () => {
