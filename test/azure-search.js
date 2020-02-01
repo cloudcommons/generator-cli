@@ -1,7 +1,6 @@
 var helpers = require('yeoman-test');
 var path = require('path');
 var assert = require('yeoman-assert');
-process.setMaxListeners(0);
 
 describe("cloudcommons/cli:azure-search", function () {
     describe('Azure Cognitive Search - Basic', () => {
