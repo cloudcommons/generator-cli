@@ -77,7 +77,7 @@ function addRestoreQuestions(questions, generator) {
         type: "confirm",
         name: "databaseRestore",
         message: "Database - Restore from existing database?",
-        default: getConfig(generator, "databaseRestore")
+        default: getConfig(generator, "databaseRestore", false)
     });
 
     questions.push({

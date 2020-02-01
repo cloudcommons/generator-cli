@@ -24,6 +24,6 @@ module.exports = function (generator, answers) {
     providers.copy(generator.fs, answers);
     outputs.copy(generator.fs, answers);
     if (answers.features.includes("fail-over")) {
-        fsTools.copyTo(generator, 'sql-server-failover.tf', `${answers.name}-sql-server-failover.tf`, answers);
+        fsTools.copyTo(generator, 'sql-server-failover.tf', `${answers.databaseName}-failover.tf`, answers);
     }
 }
