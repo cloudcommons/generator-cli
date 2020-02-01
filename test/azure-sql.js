@@ -2,7 +2,7 @@ var helpers = require('yeoman-test');
 var path = require('path');
 var assert = require('yeoman-assert');
 
-describe("cloudcommons/cli:resource-group", function () {
+describe("cloudcommons/cli:azure-sql", function () {
     describe('Creates a SQL Server', () => {
         describe('Using an existing resource group', () => {
             var prompts = {
