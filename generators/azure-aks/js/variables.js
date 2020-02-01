@@ -4,10 +4,6 @@ module.exports = {
     copy: function (fs, answers) {
         var variables = {
             "variable": {
-                APP: {
-                    type: "string",
-                    description: "(Required) Application name this cluster belongs to"
-                },
                 CREATOR: {
                     type: "string",
                     description: "Creator of this deployment"

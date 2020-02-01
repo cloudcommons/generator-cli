@@ -21,11 +21,6 @@ module.exports = {
                     type: "string",
                     description: "(Optional) Default is 1. Valid values include 1, 2, 3, 4, 6, or 12. Valid only when sku is standard. Changing this forces a new resource to be created.",
                     default: 1
-                },
-                SEARCH_APP: {
-                    type: "string",
-                    description: "(Optional) Application this resource belongs to",
-                    default: ""
                 }
             }
         }

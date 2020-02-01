@@ -4,11 +4,6 @@ module.exports = {
     copy: function (fs, answers, configFile = 'variables.tf.json') {
         var variables = {
             "variable": {
-                APP: {
-                    type: "string",
-                    description: "Application this resource belongs to",
-                    default: ""
-                },
                 SQL_LOCATIONS: {
                     type: "list(string)",
                     description: ("(Required) List of locations on which SQL should be deployed")
