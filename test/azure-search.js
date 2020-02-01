@@ -5,20 +5,22 @@ var assert = require('yeoman-assert');
 describe("cloudcommons/cli:azure-search", function () {
     describe('Azure Cognitive Search - Basic', () => {
         describe('Existing resource group', () => {
+            var prompts = {
+                name: 'cloudcommons',
+                resourceGroup: 'cloudcommons-resource-group',
+                location: 'westeu',
+                sku: 'basic'
+            };
+
             before(done => {
                 helpers
                     .run(path.join(__dirname, '../generators/azure-search'))
-                    .withPrompts({
-                        name: 'cloudcommons',
-                        resourceGroup: 'cloudcommons-resource-group',
-                        location: 'westeu',
-                        sku: 'basic'
-                    })
+                    .withPrompts(prompts)
                     .on('end', done);
             });
 
             it('Generates the right files', () => {
-                assert.file('azure-search.tf');
+                assert.file(`${prompts.name}-search.tf`);
                 assert.file('terraform.tfvars.json');
                 assert.file('variables.tf.json');
                 assert.file('providers.tf.json');
@@ -59,20 +61,22 @@ describe("cloudcommons/cli:azure-search", function () {
         });
 
         describe('New resource group', () => {
+            var prompts = {
+                name: 'cloudcommons',
+                resourceGroup: 'azurerm_resource_group.cloudcommons',
+                location: 'westeu',
+                sku: 'basic'
+            };
+
             before(done => {
                 helpers
                     .run(path.join(__dirname, '../generators/azure-search'))
-                    .withPrompts({
-                        name: 'cloudcommons',
-                        resourceGroup: 'azurerm_resource_group.cloudcommons',
-                        location: 'westeu',
-                        sku: 'basic'
-                    })
+                    .withPrompts(prompts)
                     .on('end', done);
             });
 
             it('Generates the right files', () => {
-                assert.file('azure-search.tf');
+                assert.file(`${prompts.name}-search.tf`);
                 assert.file('terraform.tfvars.json');
                 assert.file('variables.tf.json');
                 assert.file('providers.tf.json');
@@ -104,22 +108,24 @@ describe("cloudcommons/cli:azure-search", function () {
 
     describe('Azure Cognitive Standard - Standard', () => {
         describe('Existing resource group', () => {
+            var prompts = {
+                name: 'cloudcommons',
+                resourceGroup: 'cloudcommons-resource-group',
+                location: 'westeu',
+                sku: 'standard',
+                partitionCount: 4,
+                replicaCount: 3
+            };
+
             before(done => {
                 helpers
                     .run(path.join(__dirname, '../generators/azure-search'))
-                    .withPrompts({
-                        name: 'cloudcommons',
-                        resourceGroup: 'cloudcommons-resource-group',
-                        location: 'westeu',
-                        sku: 'standard',
-                        partitionCount: 4,
-                        replicaCount: 3
-                    })
+                    .withPrompts(prompts)
                     .on('end', done);
             });
 
             it('Generates the right files', () => {
-                assert.file('azure-search.tf');
+                assert.file(`${prompts.name}-search.tf`);
                 assert.file('terraform.tfvars.json');
                 assert.file('variables.tf.json');
                 assert.file('providers.tf.json');
@@ -162,22 +168,24 @@ describe("cloudcommons/cli:azure-search", function () {
         });
 
         describe('New resource group', () => {
+            var prompts = {
+                name: 'cloudcommons',
+                resourceGroup: 'azurerm_resource_group.cloudcommons',
+                location: 'westeu',
+                sku: 'standard',
+                partitionCount: 4,
+                replicaCount: 3
+            };
+
             before(done => {
                 helpers
                     .run(path.join(__dirname, '../generators/azure-search'))
-                    .withPrompts({
-                        name: 'cloudcommons',
-                        resourceGroup: 'azurerm_resource_group.cloudcommons',
-                        location: 'westeu',
-                        sku: 'standard',
-                        partitionCount: 4,
-                        replicaCount: 3
-                    })
+                    .withPrompts(prompts)
                     .on('end', done);
             });
 
             it('Generates the right files', () => {
-                assert.file('azure-search.tf');
+                assert.file(`${prompts.name}-search.tf`);
                 assert.file('terraform.tfvars.json');
                 assert.file('variables.tf.json');
                 assert.file('providers.tf.json');

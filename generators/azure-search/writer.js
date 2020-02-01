@@ -14,7 +14,7 @@ module.exports = function (generator, answers) {
         locationReference: terraform.resolveDependency(answers.resourceGroup, `${answers.resourceGroup}.location`, "var.SEARCH_LOCATION"),
     }, answers);
     
-    fsTools.copy(generator, "azure-search.tf", answers);
+    fsTools.copyTo(generator, "azure-search.tf", `${answers.name}-search.tf`, answers);
     providers.copy(generator.fs, answers);
     variables.copy(generator.fs, answers);
     config.copy(generator.fs, answers);
