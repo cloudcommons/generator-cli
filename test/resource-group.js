@@ -25,7 +25,6 @@ describe("cloudcommons/cli:resource-group", function () {
         });
 
         it('Defines terraform variables', () => {
-            assert.fileContent('variables.tf.json', '"APP":');
             assert.fileContent('variables.tf.json', '"RESOURCE_GROUP_NAME":');
             assert.fileContent('variables.tf.json', '"LOCATION":');
         });
