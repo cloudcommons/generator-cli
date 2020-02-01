@@ -53,7 +53,7 @@ module.exports = {
             }
         }
                 
-        if (!terraform.isDependency(answers.resourceGroupReference)) {            
+        if (!terraform.isDependency(answers.resourceGroup)) {            
             variables.variable = Object.assign({
                 REDIS_LOCATION: {
                     type: "string",

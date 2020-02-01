@@ -15,7 +15,7 @@ module.exports = function (generator, answers) {
         serverVersion: "12.0",
         failOver: answers.features.includes("fail-over"),
         serverLocations: answers.features.includes("fail-over") ? answers.serverLocations : [answers.serverLocation],
-        resourceGroupReference: terraform.resolveDependency(`${answers.resourceGroup}.name`, "var.RESOURCE_GROUP_NAME")
+        resourceGroupReference: terraform.resolveDependency(answers.resourceGroup, `${answers.resourceGroup}.name`, "var.RESOURCE_GROUP_NAME")
     }, answers);
 
     fsTools.copyTo(generator, 'sql-server.tf', `${answers.name}-sql-server.tf`, answers);

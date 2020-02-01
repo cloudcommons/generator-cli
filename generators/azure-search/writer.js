@@ -10,8 +10,8 @@ var terraform = require('../../common/terraform');
  */
 module.exports = function (generator, answers) {    
     answers = Object.assign({
-        resourceGroupReference: terraform.resolveDependency(`${answers.resourceGroup}.name`, "var.SEARCH_RESOURCE_GROUP"),
-        locationReference: terraform.resolveDependency(`${answers.resourceGroup}.location`, "var.SEARCH_LOCATION"),
+        resourceGroupReference: terraform.resolveDependency(answers.resourceGroup, `${answers.resourceGroup}.name`, "var.SEARCH_RESOURCE_GROUP"),
+        locationReference: terraform.resolveDependency(answers.resourceGroup, `${answers.resourceGroup}.location`, "var.SEARCH_LOCATION"),
     }, answers);
     
     fsTools.copy(generator, "azure-search.tf", answers);
