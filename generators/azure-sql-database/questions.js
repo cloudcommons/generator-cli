@@ -32,7 +32,8 @@ function addDatabaseQuestions(questions, generator) {
         name: "databaseName",
         message: "Database - Name",
         default: getConfig(generator, "databaseName", terraform.generateKey(generator.appname)),
-        validate: terraform.validateKey
+        validate: terraform.validateKey,
+        when: !generator.options.databaseName
     });
 
     questions.push({
