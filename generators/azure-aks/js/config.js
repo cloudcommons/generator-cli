@@ -4,7 +4,6 @@ module.exports = {
     copy: function (fs, answers, configFile = 'terraform.tfvars.json') {
 
         var config = {
-            APP: answers.name,
             CREATOR: "cloudcommons",
             KUBERNETES_CLUSTER_NAME: answers.name,
             LOCATION: answers.location,
@@ -16,8 +15,11 @@ module.exports = {
             OS_DISK_SIZE_GB: 60,
             KUBERNETES_CLIENT_ID: answers.clientId,
             KUBERNETES_CLIENT_SECRET: answers.clientSecret,
-            ACR_SKU: answers.acrSku,
             RBAC_ENABLED: answers.rbacEnabled
+        };
+
+        if (!terraform.isDependency(answers.resourceGroup)) {
+            config.AKS_RESOURCE_GROUP_NAME = answers.resourceGroup;
         }
 
         terraform.writeConfig(fs, config, configFile);

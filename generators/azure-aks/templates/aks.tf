@@ -7,7 +7,7 @@ module "<%= name %>-kubernetes" {
   version                   = "0.1.5"
   name                      = local.aks_name
   location                  = local.location
-  resource_group            = local.resource_group
+  resource_group            = <%= resourceGroupReference %>
   app                       = var.APP
   kubernetes_version        = var.KUBERNETES_VERSION
   linux_admin_username      = var.ADMIN_USER

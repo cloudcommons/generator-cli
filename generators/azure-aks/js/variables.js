@@ -55,6 +55,13 @@ module.exports = {
             }
         }
 
+        if (!terraform.isDependency(answers.resourceGroup)) {
+            variables.variable.AKS_RESOURCE_GROUP_NAME = {
+                type: "string",
+                description: ("(Required) The name of the resource group. Must be unique on your Azure subscription.")
+            };
+        }
+
         terraform.writeVariables(fs, variables);
     }
 }

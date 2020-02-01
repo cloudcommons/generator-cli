@@ -8,6 +8,11 @@ module.exports = {
                     type: "string",
                     description: "Application to which the resources belongs to",
                     default: answers.app
+                },
+                CREATOR: {
+                    type: "string",
+                    description: "Creator of the resources",
+                    default: "cloudcommons"                   
                 }
             }
         }
