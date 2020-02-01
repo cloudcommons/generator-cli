@@ -18,7 +18,7 @@ describe("cloudcommons/cli:azure-redis", function () {
                 helpers
                     .run(path.join(__dirname, '../generators/azure-redis'))
                     .withPrompts(prompts)
-                    .on('end', done);
+                    .once('end', done);
             });            
 
             it('Generates the right files', () => {
@@ -91,7 +91,7 @@ describe("cloudcommons/cli:azure-redis", function () {
                 helpers
                     .run(path.join(__dirname, '../generators/azure-redis'))
                     .withPrompts(prompts)
-                    .on('end', done);
+                    .once('end', done);
             });
 
             it('Generates the right files', () => {
@@ -166,7 +166,7 @@ describe("cloudcommons/cli:azure-redis", function () {
                 helpers
                     .run(path.join(__dirname, '../generators/azure-redis'))
                     .withPrompts(prompts)
-                    .on('end', done);
+                    .once('end', done);
             });
 
             it('Generates the right files', () => {
@@ -238,7 +238,7 @@ describe("cloudcommons/cli:azure-redis", function () {
                 helpers
                     .run(path.join(__dirname, '../generators/azure-redis'))
                     .withPrompts(prompts)
-                    .on('end', done);
+                    .once('end', done);
             });
 
             it('Generates the right files', () => {
@@ -318,7 +318,7 @@ describe("cloudcommons/cli:azure-redis", function () {
                     helpers
                         .run(path.join(__dirname, '../generators/azure-redis'))
                         .withPrompts(prompts)
-                        .on('end', done);
+                        .once('end', done);
                 });
 
                 it('Generates the right files', () => {
@@ -392,7 +392,7 @@ describe("cloudcommons/cli:azure-redis", function () {
                     helpers
                         .run(path.join(__dirname, '../generators/azure-redis'))
                         .withPrompts(prompts)
-                        .on('end', done);
+                        .once('end', done);
                 });
 
                 it('Generates the right files', () => {
@@ -469,7 +469,7 @@ describe("cloudcommons/cli:azure-redis", function () {
                     helpers
                         .run(path.join(__dirname, '../generators/azure-redis'))
                         .withPrompts(prompts)
-                        .on('end', done);
+                        .once('end', done);
                 });
 
                 it('Generates the right files', () => {
@@ -552,7 +552,7 @@ describe("cloudcommons/cli:azure-redis", function () {
                     helpers
                         .run(path.join(__dirname, '../generators/azure-redis'))
                         .withPrompts(prompts)
-                        .on('end', done);
+                        .once('end', done);
                 });
 
                 it('Generates the right files', () => {
@@ -625,7 +625,7 @@ describe("cloudcommons/cli:azure-redis", function () {
                     helpers
                         .run(path.join(__dirname, '../generators/azure-redis'))
                         .withPrompts(prompts)
-                        .on('end', done);
+                        .once('end', done);
                 });
 
                 it('Generates the right files', () => {
@@ -701,7 +701,7 @@ describe("cloudcommons/cli:azure-redis", function () {
                     helpers
                         .run(path.join(__dirname, '../generators/azure-redis'))
                         .withPrompts(prompts)
-                        .on('end', done);
+                        .once('end', done);
                 });
 
                 it('Generates the right files', () => {

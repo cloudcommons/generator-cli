@@ -13,7 +13,7 @@ describe("cloudcommons/cli:resource-group", function () {
                     name: 'cloudcommons',
                     location: 'westeu'
                 })
-                .on('end', done);
+                .once('end', done);
         });
 
         it('Generates resource group files', () => {
