@@ -6,8 +6,8 @@ module.exports = {
         var config = {
             APP_NAME: answers.name,
             CREATOR: "cloudcommons",
-            LOCATION: answers.location,
-            AKS_MANAGED_RESOURCE_GROUP: answers.aksResourceGroup,
+            LOCATION: answers.location, // TODO This is used only for for ingress IP Address. We should replace location by reading the location of the AKS cluster.
+            AKS_MANAGED_RESOURCE_GROUP: answers.aksResourceGroup, // TODO We can replace this by prompting the user to choose an existing Kubernetes Cluster (or referencing a local one) and then read the Terraform AKS module output variable
             DOCKER_REPO_SERVER: answers.dockerRepoServer,
             DOCKER_REPO_USERNAME: answers.dockerRepoUser,
             DOCKER_REPO_PASSWORD: answers.dockerRepoPassword,
@@ -37,39 +37,3 @@ module.exports = {
         terraform.writeConfig(fs, config, configFile);
     }
 }
-// CREATOR                    = "CloudCommons"
-// APP_NAME                   = "<%= name %>"
-// LOCATION                   = "<%= location %>"
-// AKS_MANAGED_RESOURCE_GROUP = "<%= aksResourceGroup %>"
-// <% if (privateRegistryEnabled) { %>
-// DOCKER_REPO_SERVER         = "<%= dockerRepoServer %>"
-// DOCKER_REPO_USERNAME       = "<%= dockerRepoUser %>"
-// DOCKER_REPO_PASSWORD       = "<%= dockerRepoPassword %>"
-// DOCKER_REPO_EMAIL          = "<%= dockerRepoEmail %>"
-// DOCKER_SECRET_NAME         = "<%= dockerSecretName %>"
-// <% } %>
-// INGRESS_ENABLED            = <%= ingressEnabled %>
-// <% if (!dnsZoneEnabled) { %>
-// INGRESS_HOSTNAME           = "<%= ingressHostname %>"
-// <% } %>
-// <% if (internalLoadBalancer) { %>
-// INGRESS_SUBNET             = "<%= ingressServiceSubnet %>"
-// INGRESS_IP                 = "<%= privateLoadBalancerIp %>"
-// <% } %>
-// INGRESS_CHART              = "<%= ingressChart %>"
-// INGRESS_CHART_VERSION      = "<%= ingressChartVersion %>"
-// INGRESS_REPLICAS           = <%= ingressReplicas %>
-// INGRESS_SERVICE_SUBNET     = "<%= ingressServiceSubnet %>"
-// APP_IMAGE_REPOSITORY       = "<%= imageName %>"
-// APP_IMAGE_TAG              = "<%= imageTag %>"
-// APP_IMAGE_REPLICACOUNT     = "<%= imageReplicaCount %>"
-// APP_IMAGE_PULLPOLICY       = "<%= imagePullPolicy %>"
-// APP_INGRESS_TLS_ENABLED    = <%= tlsEnabled %>
-// CLUSTER_ISSUER             = "<%= certificateIssuer %>"
-// DNS_ZONE_ENABLED           = dnsZoneEnabled
-// <% if (dnsZoneEnabled) { %>
-// DNS_ZONE_NAME              = "<%= dnsZoneName %>"
-// DNS_ZONE_RESOURCE_GROUP    = "<%= dnsZoneResourceGroup %>"
-// DNS_ZONE_RECORD            = "<%= dnsZoneRecord %>"
-// DNS_TTL                    = "<%= dnsZoneRecordTtl %>"
-// <% } %>
