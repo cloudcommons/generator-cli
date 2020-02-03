@@ -9,7 +9,7 @@ locals {
 
 module "<%= name %>" {
   source                          = "cloudcommons/application/kubernetes"
-  version                         = "0.1.4"
+  version                         = "0.1.6"
   APP_NAME                        = var.APP_NAME
   ENVIRONMENT                     = terraform.workspace
   DEPLOYMENT_REPLICAS             = var.APP_IMAGE_REPLICACOUNT
