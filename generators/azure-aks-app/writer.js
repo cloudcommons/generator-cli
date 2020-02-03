@@ -3,6 +3,7 @@ var config = require('./js/config');
 var variables = require('./js/variables');
 var output = require('./js/outputs');
 var providers = require('./js/providers');
+var resources = require('../../common/resources');
 
 /**
  * Application writer

@@ -72,6 +72,15 @@ module.exports = function (generator) {
         message: "Server - Administrator password",
     });
 
+    questions.push({
+        type: "input",
+        name: "databaseName",
+        message: "Database - Name",
+        default: getConfig(generator, "databaseName", terraform.generateKey(generator.appname)),
+        validate: terraform.validateKey,
+        when: (answers) => answers.features.includes("database")
+    });    
+
     return questions;
 
 }

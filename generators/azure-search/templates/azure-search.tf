@@ -7,7 +7,7 @@ resource "azurerm_search_service" "<%= name %>" {
   partition_count     = var.SEARCH_PARTITION_COUNT
 
   tags = {
-    app         = var.SEARCH_APP
+    app         = var.APP
     environment = terraform.workspace
   }
 }

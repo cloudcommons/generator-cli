@@ -4,10 +4,6 @@ module.exports = {
     copy: function (fs, answers, configFile = 'variables.tf.json') {
         var variables = {
             "variable": {
-                APP: {
-                    type: "string",
-                    description: "Application this resource belongs to"
-                },
                 RESOURCE_GROUP_NAME: {
                     type: "string",
                     description: ("(Required) The name of the resource group. Must be unique on your Azure subscription.")

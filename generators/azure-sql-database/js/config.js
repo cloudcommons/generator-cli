@@ -4,7 +4,7 @@ module.exports = {
     copy: function (fs, answers, configFile = 'terraform.tfvars.json') {
 
         var config = {
-            DATABASE_NAME: answers.databaseName,
+            DATABASE_NAME: answers.name,
             DATABASE_EDITION: answers.databaseEdition,
             DATABASE_REQUESTED_SERVICE_OBJETIVE_NAME: answers.databaseSize,
             DATABASE_CREATE_MODE: answers.databaseCreateMode,

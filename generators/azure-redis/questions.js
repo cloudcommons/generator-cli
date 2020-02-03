@@ -40,10 +40,10 @@ module.exports = function (generator) {
 
     questions.push({
         type: "list",
-        name: "redisLocation",
+        name: "location",
         message: "Redis - Location",
         choices: az.locations(generator),
-        default: getConfig(generator, "redisLocation")
+        default: getConfig(generator, "location")
     });    
 
     questions.push({

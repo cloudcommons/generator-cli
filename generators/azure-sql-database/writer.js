@@ -9,7 +9,7 @@ var outputs = require('./js/outputs');
  */
 module.exports = function (generator, answers) {
     answers = Object.assign({
-        name: answers.databaseName,
+        name: generator.options.databaseName ? generator.options.databaseName: answers.databaseName,
         databaseCreateMode: answers.databaseRestore === false ? "Default" : "Copy",
         databaseServerResourceGroup: generator.options.server ? `${generator.options.server}.resource_group_name` : `var.DATABASE_SERVER_RESOURCE_GROUP`,
         databaseServer: generator.options.server ? `${generator.options.server}.name` : `var.DATABASE_SERVER`,

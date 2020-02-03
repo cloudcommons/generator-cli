@@ -18,11 +18,11 @@ jobs:
         nodeVersionSpec: '12.x'
         terraformVersion: '0.12.19'
         scriptType: bash
-      windows_node_12_terraform_0_12_19:
-        vmImage: 'windows-latest'
-        nodeVersionSpec: '12.x'
-        terraformVersion: '0.12.19'
-        scriptType: ps
+      # windows_node_12_terraform_0_12_19:
+      #   vmImage: 'windows-latest'
+      #   nodeVersionSpec: '12.x'
+      #   terraformVersion: '0.12.19'
+      #   scriptType: ps
   displayName: 'Build - ${{ parameters.name}}'
   pool:
     vmImage: $(vmImage)

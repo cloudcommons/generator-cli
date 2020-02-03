@@ -4,6 +4,7 @@ var variables = require('./js/variables');
 var outputs = require('./js/outputs');
 var providers = require('./js/providers');
 var resources = require('../../common/resources');
+var terraform = require('../../common/terraform');
 
 /**
  * Application writer
@@ -12,7 +13,8 @@ module.exports = function (generator, answers) {
 
     answers = Object.assign({
         acrEnabled: answers.features.includes("acr"),
-        rbacEnabled: answers.features.includes("rbac")
+        rbacEnabled: answers.features.includes("rbac"),
+        resourceGroupReference: terraform.resolveDependency(answers.resourceGroup, `${answers.resourceGroup}.name`, "var.AKS_RESOURCE_GROUP_NAME")
     }, answers);
     
     config.copy(generator.fs, answers);
@@ -20,8 +22,7 @@ module.exports = function (generator, answers) {
     outputs.copy(generator.fs, answers);
     providers.copy(generator.fs, answers);    
     fsTools.copy(generator, "aks.tf", answers); 
-    resources.push("azurerm_kubernetes_cluster", `azurerm_kubernetes_cluster.${answers.name}-kubernetes`);
-    fsTools.copy(generator, "resource-group.tf", answers);
+    resources.push("azurerm_kubernetes_cluster", `azurerm_kubernetes_cluster.${answers.name}-kubernetes`);    
     if (answers.features.includes("cert-manager")) {
         fsTools.copy(generator, `cert-manager/${answers.certManagerVersion}/crds.yml`, answers);
         fsTools.copy(generator, `cert-manager/${answers.certManagerVersion}/cluster-issuer.yml`, answers);

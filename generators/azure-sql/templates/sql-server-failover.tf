@@ -2,7 +2,7 @@ resource "azurerm_sql_failover_group" "<%= name %>" {
   name                = "${var.SQL_NAME_PREFIX}-${terraform.workspace}-${local.uid}"
   resource_group_name = azurerm_sql_server.<%= name %>[0].resource_group_name
   server_name         = azurerm_sql_server.<%= name %>[0].name
-  databases           = [azurerm_sql_database.<%= name %>.id]
+  databases           = [azurerm_sql_database.<%= databaseName %>.id]
   dynamic "partner_servers" {
     for_each = [ for i, s in azurerm_sql_server.<%= name %>: {
       id = s.id
