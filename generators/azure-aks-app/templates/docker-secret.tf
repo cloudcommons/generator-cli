@@ -1,6 +1,6 @@
 locals {
   docker_secret_enabled = var.DOCKER_SECRET_NAME != null ? true : false
-  docker_secret_name = local.docker_secret_enabled && length(kubernetes_secret.docker-secret) > 0 ?  && kubernetes_secret.docker-secret.0.metadata.0.name : null
+  docker_secret_name = local.docker_secret_enabled && length(kubernetes_secret.docker-secret) > 0 ? kubernetes_secret.docker-secret.0.metadata.0.name : null
   dockercfg = {
     auths = {
       "${var.DOCKER_REPO_SERVER}" = {
