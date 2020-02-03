@@ -7,10 +7,6 @@ resource "null_resource" "cert_manager" {
   provisioner "local-exec" {
     working_dir = "cert-manager/v0.9.1"
     command     = "kubectl apply -f crds.yml --kubeconfig ./.kube/config && kubectl apply -f cluster-issuer.yml --kubeconfig ./.kube/config"
-    environment = {
-      name           = local.aks_name
-      resource_group = local.resource_group
-    }
   }
   depends_on = [module.<%= name %>-kubernetes, local_file.kubeconfig]
 }

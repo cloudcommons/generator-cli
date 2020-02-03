@@ -4,10 +4,6 @@ module.exports = {
     copy: function (fs, answers) {
         var variables = {
             "variable": {
-                APP: {
-                    type: "string",
-                    description: "(Required) Application name this cluster belongs to"
-                },
                 CREATOR: {
                     type: "string",
                     description: "Creator of this deployment"
@@ -57,6 +53,13 @@ module.exports = {
                     description: "(Optional) Enable Kubernetes Role-Based Access Control. Defaults to true"
                 }
             }
+        }
+
+        if (!terraform.isDependency(answers.resourceGroup)) {
+            variables.variable.AKS_RESOURCE_GROUP_NAME = {
+                type: "string",
+                description: ("(Required) The name of the resource group. Must be unique on your Azure subscription.")
+            };
         }
 
         terraform.writeVariables(fs, variables);

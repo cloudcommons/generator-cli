@@ -16,9 +16,9 @@ module.exports = {
             REDIS_SHARD_COUNT: answers.shardCount
         }
 
-        if (!terraform.isDependency(answers.resourceGroupReference)) {
-            Object.assign({
-                REDIS_LOCATION: answers.redisLocation,
+        if (!terraform.isDependency(answers.resourceGroup)) {
+            config = Object.assign({
+                REDIS_LOCATION: answers.location,
                 REDIS_RESOURCE_GROUP: answers.resourceGroup,
             }, config);
         }

@@ -151,11 +151,12 @@ module.exports = {
     },
     /**
      * Given a parameter, finds out if it is a reference to another Terraform. If it is, returns that value. Variable otherwise.
-     * @param {*} value 
-     * @param {*} variable 
+     * @param {*} dependency Original variable
+     * @param {*} value Resolved dependency
+     * @param {*} variable Variable to use if this is not a dependency
      */
-    resolveDependency(value, variable) {
-        return this.isDependency(value) ? value : variable;
+    resolveDependency(dependency, value, variable) {
+        return this.isDependency(dependency) ? value : variable;
     },
     /**
      * Given a value, finds out if it a dependency with another Terraform resource 

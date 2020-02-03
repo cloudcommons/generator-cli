@@ -32,7 +32,8 @@ function addDatabaseQuestions(questions, generator) {
         name: "databaseName",
         message: "Database - Name",
         default: getConfig(generator, "databaseName", terraform.generateKey(generator.appname)),
-        validate: terraform.validateKey
+        validate: terraform.validateKey,
+        when: !generator.options.databaseName
     });
 
     questions.push({
@@ -76,7 +77,7 @@ function addRestoreQuestions(questions, generator) {
         type: "confirm",
         name: "databaseRestore",
         message: "Database - Restore from existing database?",
-        default: getConfig(generator, "databaseRestore")
+        default: getConfig(generator, "databaseRestore", false)
     });
 
     questions.push({

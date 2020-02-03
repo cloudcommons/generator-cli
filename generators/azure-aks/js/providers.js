@@ -15,7 +15,6 @@ module.exports = {
                     version: "~> 1.4"
                 },
                 kubernetes: {
-                    alias: "kubernetes",
                     version: "~> 1.10",
                     host: terraform.toVariable(`module.${answers.name}-kubernetes.kube_config.0.host`),
                     client_certificate: terraform.toVariable(`base64decode(module.${answers.name}-kubernetes.kube_config.0.client_certificate)`),

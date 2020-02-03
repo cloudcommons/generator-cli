@@ -2,6 +2,7 @@ var Generator = require('yeoman-generator');
 var writer = require('./writer');
 var questions = require('./questions');
 var config = require('../../common/config');
+var packageJson = require('../../package');
 
 module.exports = class extends Generator {
 
@@ -39,6 +40,7 @@ module.exports = class extends Generator {
 
   end() {
     config.set(this, this.configName, cleanupSecrets(this.answers));
+    config.setGlobal(this, "version", packageJson.version);
     config.save(this);
   }
 };

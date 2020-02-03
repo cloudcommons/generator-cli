@@ -16,6 +16,12 @@ function getConfig(generator, key, defaultValue) {
 
 module.exports = function (generator) {
     var questions = [];
+    questions.push({
+        type: "input",
+        name: "app",
+        message: "Application - Name",
+        default: getConfig(generator, "app", "cloudcommons")
+    });
 
     questions.push({
         type: "list",
@@ -31,7 +37,7 @@ module.exports = function (generator) {
         message: "Terraform - Back-end",
         choices: backends,
         default: getConfig(generator, "backendType")
-    });
+    });    
 
     addRemoteQuestions(generator, questions);
     addAzureQuestions(generator, questions);

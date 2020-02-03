@@ -26,7 +26,7 @@ module.exports = class extends Generator {
   configuring() {
     if (this.answers.features.includes('database')) {
       this.composeWith(require.resolve('../azure-sql-database'), {
-        arguments: [`azurerm_sql_server.${this.answers.serverName}.0`]
+        arguments: [`azurerm_sql_server.${this.answers.serverName}.0`, this.answers.databaseName]
       });
     }
   }

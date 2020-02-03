@@ -4,11 +4,6 @@ module.exports = {
     copy: function (fs, answers, configFile = 'variables.tf.json') {
         var variables = {
             "variable": {
-                APP: {
-                    type: "string",
-                    description: "Application this resource belongs to",
-                    default: ""
-                },
                 SQL_LOCATIONS: {
                     type: "list(string)",
                     description: ("(Required) List of locations on which SQL should be deployed")
@@ -34,7 +29,7 @@ module.exports = {
         }
 
         if (!terraform.isDependency(answers.resourceGroup)) {
-            variables.RESOURCE_GROUP_NAME = {
+            variables.variable.RESOURCE_GROUP_NAME = {
                 type: "string",
                 description: ("(Required) The name of the resource group. Must be unique on your Azure subscription.")
             };

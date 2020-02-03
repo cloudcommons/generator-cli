@@ -2,6 +2,7 @@ var az = require('../../common/az');
 var terraform = require('../../common/terraform');
 var features = require('./choices/features');
 var config = require('../../common/config');
+var resources = require('../../common/resources');
 
 /**
  * Gets the default value from the Yeoman storage
@@ -22,6 +23,14 @@ module.exports = function (generator) {
         message: "Kubernetes - Cluster name",
         default: getConfig(generator, "name", `${terraform.generateKey(generator.appname)}-cluster`),
         validate: terraform.validateKey
+    });
+
+    questions.push({
+        type: "list",
+        name: "resourceGroup",
+        message: "Server - Resource Group",
+        choices: resources.resourceGroups(generator),
+        default: getConfig(generator, "resourceGroup")
     });
 
     questions.push({

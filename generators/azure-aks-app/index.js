@@ -2,6 +2,7 @@ var Generator = require('yeoman-generator');
 var writer = require('./writer');
 var questions = require('./questions');
 var config = require('../../common/config');
+var resources = require('../../common/resources');
 
 module.exports = class extends Generator {
 

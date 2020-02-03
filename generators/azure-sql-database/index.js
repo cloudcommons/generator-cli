@@ -14,6 +14,10 @@ module.exports = class extends Generator {
       type: String,
       required: false
     });
+    this.argument("databaseName", {
+      type: String,
+      required: false
+    })
   }
 
   initializing() {
