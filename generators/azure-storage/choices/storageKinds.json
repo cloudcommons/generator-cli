@@ -1,0 +1,7 @@
+[
+    "BlobStorage",
+    "BlockBlobStorage",
+    "FileStorage",
+    "Storage",
+    "StorageV2"
+]

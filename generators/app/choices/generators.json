@@ -12,6 +12,10 @@
         "value": "../azure-aks-app"
     },
     {
+        "name": "Azure - Storage Account",
+        "value": "../azure-storage"
+    },    
+    {
         "name": "Azure - SQL Server",
         "value": "../azure-sql"
     },
