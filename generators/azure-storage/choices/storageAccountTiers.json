@@ -1,0 +1,7 @@
+{
+    "BlobStorage": ["Standard", "Premium"],
+    "BlockBlobStorage": ["Standard", "Premium"],
+    "FileStorage": ["Premium"],
+    "Storage": ["Standard", "Premium"],
+    "StorageV2": ["Standard", "Premium"]
+}
