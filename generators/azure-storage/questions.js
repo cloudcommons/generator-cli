@@ -5,7 +5,7 @@ var resources = require('../../common/resources');
 var replicationTypes = require('./choices/replicationTypes');
 var storageKinds = require('./choices/storageKinds');
 var storageAccountTiers = require('./choices/storageAccountTiers');
-var storageAccessTiers = require('./choices/storageAccountTiers');
+var storageAccessTiers = require('./choices/storageAccessTiers');
 
 /**
  * Gets the default value from the Yeoman storage
@@ -62,11 +62,11 @@ module.exports = function (generator) {
 
     questions.push({
         type: "list",
-        name: "accessTier",
+        name: "accountAccessTier",
         message: "Storage - Access Tier",
         choices: storageAccessTiers,
-        default: getConfig(generator, "accountTier", "Standard"),
-        when: (answers) => (answers.accountTier === "FileStorage" || answers.accountTier === "StorageV2")
+        default: getConfig(generator, "accountAccessTier", "Hot"),
+        when: (answers) => (answers.accountKind === "BLockblobStorage" || answers.accountKind === "FileStorage" || answers.accountKind === "StorageV2")
     });
 
     questions.push({

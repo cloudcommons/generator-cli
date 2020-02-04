@@ -8,7 +8,7 @@ var terraform = require('../../common/terraform');
 /**
  * Application writer
  */
-module.exports = function (generator, answers) {
+module.exports = function (generator, answers) { 
     answers = Object.assign({
         resourceGroupReference: terraform.resolveDependency(answers.resourceGroup, `${answers.resourceGroup}.name`, "var.RESOURCE_GROUP_NAME"),
         locationReference: terraform.resolveDependency(answers.resourceGroup, `${answers.resourceGroup}.location`, "var.LOCATION")
