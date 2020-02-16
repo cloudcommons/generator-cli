@@ -17,5 +17,5 @@ resource "helm_release" "cert-manager" {
   chart      = "jetstack/cert-manager"
   version    = "v0.10.1"
   namespace  = "cert-manager"
-  depends_on = [module.<%= name %>-kubernetes, null_resource.cert_manager, kubernetes_cluster_role_binding.tiller]
+  depends_on = [module.<%= name %>-kubernetes, null_resource.cert_manager <%= useHelm2 ? ", kubernetes_cluster_role_binding.tiller" : "" %>]
 }

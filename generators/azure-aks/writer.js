@@ -5,12 +5,13 @@ var providers = require('./js/providers');
 /**
  * Application writer
  */
-module.exports = function (terraform, fsTools, answers) {
+module.exports = function (terraform, fsTools, answers, options) {
 
-    answers = Object.assign({
+    answers = Object.assign({        
         acrEnabled: answers.features.includes("acr"),
         rbacEnabled: answers.features.includes("rbac"),
-        resourceGroupReference: terraform.resolveDependency(answers.resourceGroup, `${answers.resourceGroup}.name`, "var.AKS_RESOURCE_GROUP_NAME")
+        resourceGroupReference: terraform.resolveDependency(answers.resourceGroup, `${answers.resourceGroup}.name`, "var.AKS_RESOURCE_GROUP_NAME"),
+        useHelm2: options["helm2"] !== undefined
     }, answers);
 
     config.copy(terraform, answers);
@@ -27,10 +28,16 @@ module.exports = function (terraform, fsTools, answers) {
     if (answers.features.includes("atarraya")) {
         fsTools.copyTo("atarraya/atarraya.tf", "atarraya.tf", answers);
     }
-    if (true) // Future condition to copy Tiller-related rubbish when people use Helm v2
+
+    if (!answers.useHelm2)
     {
+        var helmPrivder = require('./templates/helm/v3/providers.js');
+        helmPrivder.copy(terraform, answers);
+    } else {         
         fsTools.copyTo("helm/v2/cluster-role.tf", "tiller-cluster-role.tf");
         fsTools.copyTo("helm/v2/role-binding.tf", "tiller-role-binding.tf");
         fsTools.copyTo("helm/v2/service-account.tf", "tiller-service-account.tf");
+        var helmPrivder = require('./templates/helm/v2/providers.js');
+        helmPrivder.copy(terraform, answers);
     }
 }

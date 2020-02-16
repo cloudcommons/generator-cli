@@ -90,7 +90,7 @@ module.exports = function (generator, az, terraform, configManager, resources) {
         type: "list",
         name: "certManagerVersion",
         message: "Cert-manager - Version",
-        choices: ["v0.8", "v0.9", "v0.10.1"],
+        choices: ["v0.10.1"],
         when: (answers) => answers.features.includes("cert-manager"),
         default: configManager.getDefault("certManagerVersion", "v0.10.1")
     });

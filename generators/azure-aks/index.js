@@ -29,7 +29,7 @@ module.exports = class extends TerraformGenerator {
   }
 
   writing() {
-    writer(this.terraform, this.fsTools, this.answers);
+    writer(this.terraform, this.fsTools, this.answers, this.options);
     this.addResource(`${this.answers.name}`);
   }
 
