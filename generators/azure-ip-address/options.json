@@ -1,0 +1,27 @@
+{
+    "name": {
+        "desc": "Name of the resource been created",
+        "alias": "n",
+        "type": "String"
+    },
+    "resourceGroup": {
+        "desc": "Resource group to create the resource in",
+        "alias": "g",
+        "type": "String"
+    },
+    "location": {
+        "desc": "Resource location",
+        "alias": "l",
+        "type": "String"
+    },
+    "ipVersion": {
+        "desc": "IP Version",
+        "alias": "v",
+        "type": "String"
+    },
+    "advanced": {
+        "desc": "Enables the advanced configuration wizard for Azure IP",
+        "alias": "a",
+        "type": "String"
+    }
+}

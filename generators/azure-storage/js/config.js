@@ -1,7 +1,5 @@
-var terraform = require('../../../common/terraform');
-
 module.exports = {
-    copy: function (fs, answers, configFile = 'terraform.tfvars.json') {        
+    copy: function (terraform, answers, configFile = 'terraform.tfvars.json') {        
         var config = {
             STORAGE_NAME: answers.name,
             STORAGE_ACCOUNT_KIND: answers.accountKind,
@@ -9,12 +7,12 @@ module.exports = {
             STORAGE_REPLICATION_TYPE: answers.accountReplicationType,
             STORAGE_ACCESS_TIER: answers.accountAccessTier            
         };
-        console.log(answers);
+
         if (!terraform.isDependency(answers.resourceGroup)) {
             config.RESOURCE_GROUP_NAME = answers.resourceGroup;
             config.LOCATION = answers.location;
         }
         
-        terraform.writeConfig(fs, config, configFile);
+        terraform.writeConfig(config, configFile);
     }
 }

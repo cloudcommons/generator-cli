@@ -1,16 +1,21 @@
-var Generator = require('yeoman-generator');
-var writer = require('./writer');
+const TerraformGenerator = require('../../core/TerraformGenerator');
+const getQuestions = require('./questions');
+const options = require('./options');
+const writer = require('./writer');
 
-module.exports = class extends Generator {
+module.exports = class extends TerraformGenerator {
 
   constructor(args, opts) {
     super(args, opts);
+    super.addOptions(options);
   }
 
   initializing() {
   }
 
-  prompting() {
+  async prompting() {
+    var questions = getQuestions(this.az, this.resources);
+    this.answers = this.mergeOptions(options, await this.prompt(questions));
   }
 
   paths() {
@@ -23,7 +28,7 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    writer(this);
+    writer(this.terraform, this.fsTools, this.answers);
   }
 
   conflicts() {
@@ -35,3 +40,42 @@ module.exports = class extends Generator {
   end() {
   }
 };
+
+
+// var Generator = require('yeoman-generator');
+// var writer = require('./writer');
+
+// module.exports = class extends Generator {
+
+//   constructor(args, opts) {
+//     super(args, opts);
+//   }
+
+//   initializing() {
+//   }
+
+//   prompting() {
+//   }
+
+//   paths() {
+//   }
+
+//   configuring() {
+//   }
+
+//   default() {
+//   }
+
+//   writing() {
+//     writer(this);
+//   }
+
+//   conflicts() {
+//   }
+
+//   install() {
+//   }
+
+//   end() {
+//   }
+// };

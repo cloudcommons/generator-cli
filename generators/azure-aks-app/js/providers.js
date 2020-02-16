@@ -1,18 +1,14 @@
-var terraform = require('../../../common/terraform');
-
 module.exports = {
-    copy: function (fs, answers) {
+    copy: function (terraform, answers) {
         var providers = {
             provider: {
-                azurerm: {
-                    alias: "azurerm",
+                azurerm: {                    
                     version: "~> 1.41"
                 },
                 template: {
                     version: "~> 2.1"
                 },
                 kubernetes: {
-                    alias: "kubernetes",
                     version: "~> 1.10"
                 },
                 helm: {
@@ -21,6 +17,6 @@ module.exports = {
             }
         }
 
-        terraform.writeProviders(fs, providers);
+        terraform.writeProviders(providers);
     }
 }

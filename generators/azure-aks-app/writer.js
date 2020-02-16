@@ -1,14 +1,12 @@
-var fsTools = require('../../common/fsTools');
 var config = require('./js/config');
 var variables = require('./js/variables');
 var output = require('./js/outputs');
 var providers = require('./js/providers');
-var resources = require('../../common/resources');
 
 /**
  * Application writer
  */
-module.exports = function (generator, answers) {
+module.exports = function (terraform, fsTools, answers) {
 
     var chartParts = answers.ingressChartAndVersion ? answers.ingressChartAndVersion.split(":") : null;
 
@@ -26,21 +24,21 @@ module.exports = function (generator, answers) {
         dnsZoneEnabled: answers.features.includes("dns") ? true : null,
     }, answers);
 
-    config.copy(generator.fs, answers);
-    variables.copy(generator.fs, answers);
-    output.copy(generator.fs, answers);
-    providers.copy(generator.fs, answers);
-    fsTools.copy(generator, "app.tf", answers);
+    config.copy(terraform, answers);
+    variables.copy(terraform, answers);
+    output.copy(terraform, answers);
+    providers.copy(terraform, answers);
+    fsTools.copy("app.tf", answers);
     if (answers.privateRegistryEnabled) {
-        fsTools.copy(generator, "docker-secret.tf", answers);
+        fsTools.copy("docker-secret.tf", answers);
     }
 
-    fsTools.copy(generator, 'nginx-ingress.tf', answers);
-    fsTools.copy(generator, 'templates/ingress.yml', answers);
+    fsTools.copy('nginx-ingress.tf', answers);
+    fsTools.copy('templates/ingress.yml', answers);
     if (!answers.internalLoadBalancer) {
-        fsTools.copy(generator, 'ip.tf', answers);
+        fsTools.copy('ip.tf', answers);
     }
     if (answers.dnsZoneEnabled) {
-        fsTools.copy(generator, 'dns.tf', answers);
+        fsTools.copy('dns.tf', answers);
     }
 }

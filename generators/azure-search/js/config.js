@@ -1,7 +1,5 @@
-var terraform = require('../../../common/terraform');
-
 module.exports = {
-    copy: function (fs, answers) {
+    copy: function (terraform, answers) {
 
         var config = {
             SEARCH_NAME: answers.name,
@@ -17,6 +15,6 @@ module.exports = {
             }, config);
         }
 
-        terraform.writeConfig(fs, config);
+        terraform.writeConfig(config);
     }
 }

@@ -1,30 +1,18 @@
-var az = require('../../common/az');
-var config = require('../../common/config');
-var terraform = require('../../common/terraform');
-var resources = require('../../common/resources');
 var replicationTypes = require('./choices/replicationTypes');
 var storageKinds = require('./choices/storageKinds');
 var storageAccountTiers = require('./choices/storageAccountTiers');
 var storageAccessTiers = require('./choices/storageAccessTiers');
 
-/**
- * Gets the default value from the Yeoman storage
- * @param {*} generator 
- * @param {*} key 
- * @param {*} defaultValue 
- */
-function getConfig(generator, key, defaultValue) {
-    return config.getDefault(generator, key, defaultValue);
-}
 
-module.exports = function (generator) {
+
+module.exports = function (generator, az, terraform, configManager, resources) {
     var questions = [];
 
     questions.push({
         type: "input",
         name: "name",
         message: "Storage - Account name",
-        default: getConfig(generator, "name", `${terraform.generateKey(generator.appname)}-cluster`),
+        default: configManager.getDefault("name", `${terraform.generateKey(generator.appname)}-cluster`),
         validate: terraform.validateKey
     });
 
@@ -33,15 +21,15 @@ module.exports = function (generator) {
         name: "resourceGroup",
         message: "Storage - Resource Group",
         choices: resources.resourceGroups(generator),
-        default: getConfig(generator, "resourceGroup")
+        default: configManager.getDefault("resourceGroup")
     });
 
     questions.push({
         type: "list",
         name: "location",
         message: "Storage - Location",
-        choices: az.locations(generator),
-        default: getConfig(generator, "location")
+        choices: az.locations(),
+        default: configManager.getDefault("location")
     });
 
     questions.push({
@@ -49,7 +37,7 @@ module.exports = function (generator) {
         name: "accountKind",
         message: "Storage - Kind",
         choices: storageKinds,
-        default: getConfig(generator, "accountKind", "StorageV2")
+        default: configManager.getDefault("accountKind", "StorageV2")
     });
 
     questions.push({
@@ -57,7 +45,7 @@ module.exports = function (generator) {
         name: "accountTier",
         message: "Storage - Account Tier",
         choices: (answers) => storageAccountTiers[answers.accountKind],
-        default: getConfig(generator, "accountTier", "Standard")
+        default: configManager.getDefault("accountTier", "Standard")
     });
 
     questions.push({
@@ -65,7 +53,7 @@ module.exports = function (generator) {
         name: "accountAccessTier",
         message: "Storage - Access Tier",
         choices: storageAccessTiers,
-        default: getConfig(generator, "accountAccessTier", "Hot"),
+        default: configManager.getDefault("accountAccessTier", "Hot"),
         when: (answers) => (answers.accountKind === "BLockblobStorage" || answers.accountKind === "FileStorage" || answers.accountKind === "StorageV2")
     });
 
@@ -74,7 +62,7 @@ module.exports = function (generator) {
         name: "accountReplicationType",
         message: "Storage - Replication type",
         choices: replicationTypes,
-        default: getConfig(generator, "accountReplicationType", "LRS")
+        default: configManager.getDefault("accountReplicationType", "LRS")
     });
 
     return questions;

@@ -1,27 +1,13 @@
-var az = require('../../common/az');
-var terraform = require('../../common/terraform');
 var features = require('./choices/features');
-var config = require('../../common/config');
-var resources = require('../../common/resources');
 
-/**
- * Gets the default value from the Yeoman storage
- * @param {*} generator 
- * @param {*} key 
- * @param {*} defaultValue 
- */
-function getConfig(generator, key, defaultValue) {
-    return config.getDefault(generator, key, defaultValue);
-}
-
-module.exports = function (generator) {
+module.exports = function (generator, az, terraform, configManager, resources) {
     var questions = [];
 
     questions.push({
         type: "input",
         name: "name",
         message: "Kubernetes - Cluster name",
-        default: getConfig(generator, "name", `${terraform.generateKey(generator.appname)}-cluster`),
+        default: configManager.getDefault("name", `${terraform.generateKey(generator.appname)}-cluster`),
         validate: terraform.validateKey
     });
 
@@ -29,67 +15,67 @@ module.exports = function (generator) {
         type: "list",
         name: "resourceGroup",
         message: "Server - Resource Group",
-        choices: resources.resourceGroups(generator),
-        default: getConfig(generator, "resourceGroup")
+        choices: resources.resourceGroups(),
+        default: configManager.getDefault("resourceGroup")
     });
 
     questions.push({
         type: "list",
         name: "location",
         message: "Kubernetes - Cluster location",
-        choices: az.locations(generator),
-        default: getConfig(generator, "location")
+        choices: az.locations(),
+        default: configManager.getDefault("location")
     });
 
     questions.push({
         type: "list",
         name: "kubernetesVersion",
         message: "Kubernetes - Version",
-        choices: (answers) => az.aksVersions(generator, answers.location),
-        default: getConfig(generator, "kubernetesVersion", "1.15.7")
+        choices: (answers) => az.aksVersions(answers.location),
+        default: configManager.getDefault("kubernetesVersion", "1.15.7")
     });
 
     questions.push({
         type: "list",
         name: "vmsize",
         message: "Kubernetes - Virtual machine size",
-        choices: (answers) => az.vmSkus(generator, answers.location),
-        default: getConfig(generator, "vmsize", "Standard_DS3_v2")
+        choices: (answers) => az.vmSkus(answers.location),
+        default: configManager.getDefault("vmsize", "Standard_DS3_v2")
     });
 
     questions.push({
         type: "input",
         name: "vms",
         message: "Kubernetes - Nodes",
-        default: getConfig(generator, "vms", 3)
+        default: configManager.getDefault("vms", 3)
     });
 
     questions.push({
         type: "input",
         name: "adminUser",
         message: "Kubernetes - Virtual Machine Administrator username",
-        default: getConfig(generator, "adminUser", "cloudcommons")
+        default: configManager.getDefault("adminUser", "cloudcommons")
     });
 
     questions.push({
         type: "input",
         name: "sshKey",
         message: "Kubernetes - SSH Key",
-        default: getConfig(generator, "sshKey")
+        default: configManager.getDefault("sshKey")
     });
 
     questions.push({
         type: "input",
         name: "clientId",
         message: "Kubernetes - Service Principal Id",
-        default: getConfig(generator, "clientId")
+        default: configManager.getDefault("clientId")
     });
 
     questions.push({
         type: "password",
         name: "clientSecret",
         message: "Kubernetes - Service Principal Secret",
-        default: getConfig(generator, "clientSecret")
+        default: configManager.getDefault("clientSecret")
     });
 
     questions.push({
@@ -97,7 +83,7 @@ module.exports = function (generator) {
         name: "features",
         message: "Kubernetes - Cluster features",
         choices: features,
-        default: getConfig(generator, "features", ["network-plugin", "network-policy", "rbac"])
+        default: configManager.getDefault("features", ["network-plugin", "network-policy", "rbac"])
     });
 
     questions.push({
@@ -106,7 +92,7 @@ module.exports = function (generator) {
         message: "Cert-manager - Version",
         choices: ["v0.8", "v0.9", "v0.10.1"],
         when: (answers) => answers.features.includes("cert-manager"),
-        default: getConfig(generator, "certManagerVersion", "v0.10.1")
+        default: configManager.getDefault("certManagerVersion", "v0.10.1")
     });
 
     questions.push({
@@ -114,7 +100,7 @@ module.exports = function (generator) {
         name: "issuerEmail",
         message: "Cert-manager - Issuer e-mail",
         when: (answers) => answers.features.includes("cert-manager"),
-        default: getConfig(generator, "issuerEmail")
+        default: configManager.getDefault("issuerEmail")
     });
 
     return questions;

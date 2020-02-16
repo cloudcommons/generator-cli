@@ -1,7 +1,5 @@
-var terraform = require('../../../common/terraform');
-
 module.exports = {
-    copy: function (fs, answers, configFile = 'terraform.tfvars.json') {
+    copy: function (terraform, answers, configFile = 'terraform.tfvars.json') {
 
         var config = {
             APP_NAME: answers.name,
@@ -34,6 +32,6 @@ module.exports = {
             DNS_TTL: answers.dnsZoneRecordTtl
         }
 
-        terraform.writeConfig(fs, config, configFile);
+        terraform.writeConfig(config, configFile);
     }
 }

@@ -300,8 +300,7 @@ describe("cloudcommons/cli:azure-redis", function () {
 
     describe('Redis - Premium - P1', () => {
         describe("Existing Resource Group", () => {
-            describe("VNET Deployment", () => {
-                return it.skip("This test requires mocking Azure CLI");
+            describe("VNET Deployment", () => {                
                 var prompts = {
                     name: 'cloudcommons',
                     resourceGroup: 'cloudcommons-resource-group',
@@ -535,8 +534,7 @@ describe("cloudcommons/cli:azure-redis", function () {
             });
         });
         describe("New Resource Group", () => {
-            describe("VNET Deployment", () => {
-                return it.skip("This test requires mocking Azure CLI");
+            describe("VNET Deployment", () => {                
                 var prompts = {
                     name: 'cloudcommons',
                     resourceGroup: 'azurerm_resource_group.cloudcommons',

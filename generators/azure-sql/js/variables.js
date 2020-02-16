@@ -1,7 +1,5 @@
-var terraform = require('../../../common/terraform');
-
 module.exports = {
-    copy: function (fs, answers, configFile = 'variables.tf.json') {
+    copy: function (terraform, answers, configFile = 'variables.tf.json') {
         var variables = {
             "variable": {
                 SQL_LOCATIONS: {
@@ -35,6 +33,6 @@ module.exports = {
             };
         }
 
-        terraform.writeVariables(fs, variables);
+        terraform.writeVariables(variables);
     }
 }

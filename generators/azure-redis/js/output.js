@@ -1,7 +1,5 @@
-var terraform = require('../../../common/terraform');
-
 module.exports = {
-    copy: function (fs, answers) {
+    copy: function (terraform, answers) {
 
         var outputBase = `azurerm_redis_cache.${answers.name}`;
         var output = {
@@ -39,7 +37,7 @@ module.exports = {
             }
         }
 
-        terraform.writeOutput(fs, output);
+        terraform.writeOutput(output);
     }
 }
 

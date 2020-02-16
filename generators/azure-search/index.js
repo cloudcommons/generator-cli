@@ -1,23 +1,22 @@
-var Generator = require('yeoman-generator');
+// var Generator = require('yeoman-generator');
+var TerraformGenerator = require('../../core/TerraformGenerator');
 var writer = require('./writer');
-var questions = require('./questions');
-var config = require('../../common/config');
-var resources = require('../../common/resources');
+var getQuestions = require('./questions');
+const options = require('./options');
 
-module.exports = class extends Generator {
+module.exports = class extends TerraformGenerator {
 
   constructor(args, opts) {
-    super(args, opts);
-    this.configName = "azure-search";
+    super(args, opts, "azure-search", "azurerm_search_service");
+    super.addOptions(options);
   }
 
   initializing() {
   }
 
   async prompting() {
-    var userQuestions = questions(this);
-    this.answers = await this.prompt(userQuestions);
-    resources.push("azurerm_search_service", `azurerm_search_service.${this.answers.name}`);
+    var questions = getQuestions(this, this.az, this.terraform, this.configManager, this.resources);
+    this.answers = this.mergeOptions(options, await this.prompt(questions));
   }
 
   paths() {
@@ -26,27 +25,27 @@ module.exports = class extends Generator {
   configuring() {
   }
 
-  default() {    
+  default() {
   }
 
   writing() {
-    writer(this, this.answers);
+    writer(this.terraform, this.fsTools, this.answers);
+    this.addResource(this.answers.name);
   }
 
   conflicts() {
   }
 
   install() {
-
   }
 
   end() {
-    cleanupSecrets(this.answers);    
-    config.set(this, this.configName, this.answers);
-    config.save(this);
-  }  
+    this.save(cleanupSecrets(this.answers));
+  }
 };
 
 function cleanupSecrets(answers) {
-  
+  answers.dockerRepoPassword = null;
+
+  return answers;
 }

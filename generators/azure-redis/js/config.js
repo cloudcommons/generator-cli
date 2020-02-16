@@ -1,7 +1,5 @@
-var terraform = require('../../../common/terraform');
-
 module.exports = {
-    copy: function (fs, answers, configFile = 'terraform.tfvars.json') {
+    copy: function (terraform, answers, configFile = 'terraform.tfvars.json') {
 
         var config = {
             REDIS_NAME: answers.name,
@@ -23,6 +21,6 @@ module.exports = {
             }, config);
         }
 
-        terraform.writeConfig(fs, config, configFile);
+        terraform.writeConfig(config, configFile);
     }
 }

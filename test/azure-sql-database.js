@@ -6,10 +6,9 @@ describe("cloudcommons/cli:azure-sql-database", function () {
     describe('Creates a database', () => {
         describe('From scratch', () => {
             describe('Using an existing resource group', () => {
-                return it.skip('This use case requieres mocking the az client');
                 var prompts = {
                     databaseName: 'cloudcommons-db',
-                    databaseResourceGroup: 'cloudcommons',
+                    databaseServerResourceGroup: 'cloudcommons',
                     databaseServer: 'cloudcommons-server',
                     databaseEdition: 'Premium',
                     databaseSize: 'P1',
@@ -48,7 +47,7 @@ describe("cloudcommons/cli:azure-sql-database", function () {
                     assert.fileContent('terraform.tfvars.json', `"DATABASE_CREATE_MODE": "Default"`);
                     assert.noFileContent('terraform.tfvars.json', `"DATABASE_SOURCE_ID":`);
                     assert.fileContent('terraform.tfvars.json', `"DATABASE_SERVER": "${prompts.databaseServer}"`);
-                    assert.fileContent('terraform.tfvars.json', `"DATABASE_SERVER_RESOURCE_GROUP": "${prompts.databaseResourceGroup}"`);
+                    assert.fileContent('terraform.tfvars.json', `"DATABASE_SERVER_RESOURCE_GROUP": "${prompts.databaseServerResourceGroup}"`);
                 });
 
                 it('Creates the right output values', () => {
@@ -70,7 +69,7 @@ describe("cloudcommons/cli:azure-sql-database", function () {
             describe('Creating a new resource group', () => {
                 var prompts = {
                     databaseName: 'cloudcommons-db',
-                    databaseResourceGroup: 'azurerm_resource_group.workspace',
+                    databaseServerResourceGroup: 'azurerm_resource_group.workspace',
                     databaseServer: 'azurerm_sql_server.cloudcommons-server',
                     databaseEdition: 'Premium',
                     databaseSize: 'P1',
@@ -109,7 +108,7 @@ describe("cloudcommons/cli:azure-sql-database", function () {
                     assert.fileContent('terraform.tfvars.json', `"DATABASE_CREATE_MODE": "Default"`);
                     assert.noFileContent('terraform.tfvars.json', `"DATABASE_SOURCE_ID":`);
                     assert.noFileContent('terraform.tfvars.json', `"DATABASE_SERVER": "${prompts.databaseServer}"`);
-                    assert.noFileContent('terraform.tfvars.json', `"DATABASE_SERVER_RESOURCE_GROUP": "${prompts.databaseResourceGroup}"`);
+                    assert.noFileContent('terraform.tfvars.json', `"DATABASE_SERVER_RESOURCE_GROUP": "${prompts.databaseServerResourceGroup}"`);
                 });
 
                 it('Creates the right output values', () => {
@@ -129,10 +128,9 @@ describe("cloudcommons/cli:azure-sql-database", function () {
             });
         });
         describe('Restoring from existing database', () => {
-            return it.skip('This use case requieres mocking the az client');
             var prompts = {
                 databaseName: 'cloudcommons-db',
-                databaseResourceGroup: 'azurerm_resource_group.workspace',
+                databaseServerResourceGroup: 'azurerm_resource_group.workspace',
                 databaseServer: 'azurerm_sql_server.cloudcommons-server',
                 databaseEdition: 'Premium',
                 databaseSize: 'P1',
@@ -172,9 +170,9 @@ describe("cloudcommons/cli:azure-sql-database", function () {
                 assert.fileContent('terraform.tfvars.json', `"DATABASE_EDITION": "${prompts.databaseEdition}"`);
                 assert.fileContent('terraform.tfvars.json', `"DATABASE_REQUESTED_SERVICE_OBJETIVE_NAME": "${prompts.databaseSize}"`);
                 assert.fileContent('terraform.tfvars.json', `"DATABASE_CREATE_MODE": "Copy"`);
-                assert.noFileContent('terraform.tfvars.json', `"DATABASE_SOURCE_ID": "${prompts.restoreDatabaseId}"`);
+                assert.fileContent('terraform.tfvars.json', `"DATABASE_SOURCE_ID": "${prompts.restoreDatabaseId}"`);
                 assert.noFileContent('terraform.tfvars.json', `"DATABASE_SERVER": "${prompts.databaseServer}"`);
-                assert.noFileContent('terraform.tfvars.json', `"DATABASE_SERVER_RESOURCE_GROUP": "${prompts.databaseResourceGroup}"`);
+                assert.noFileContent('terraform.tfvars.json', `"DATABASE_SERVER_RESOURCE_GROUP": "${prompts.databaseServerResourceGroup}"`);
             });
 
             it('Creates the right output values', () => {

@@ -1,7 +1,5 @@
-var terraform = require('../../../common/terraform');
-
 module.exports = {
-    copy: function (fs, answers) {
+    copy: function (terraform, answers) {
         var variables = {
             "variable": {
                 APP_NAME: {
@@ -143,6 +141,6 @@ module.exports = {
             }
         }
 
-        terraform.writeVariables(fs, variables);
+        terraform.writeVariables(variables);
     }
 }

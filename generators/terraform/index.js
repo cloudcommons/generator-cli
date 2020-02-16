@@ -1,35 +1,37 @@
-var Generator = require('yeoman-generator');
-var writer = require('./writer');
-var questions = require('./questions');
-var config = require('../../common/config');
-var packageJson = require('../../package');
 
-module.exports = class extends Generator {
+const TerraformGenerator = require('../../core/TerraformGenerator');
+const writer = require('./writer');
+const getQuestions = require('./questions');
+const options = require('./options');
+const packageJson = require('../../package');
+
+module.exports = class extends TerraformGenerator {
 
   constructor(args, opts) {
-    super(args, opts);
-    this.configName = "terraform";
+    super(args, opts, "terraform", "terraform");
+    super.addOptions(options);
   }
 
   initializing() {
   }
 
   async prompting() {
-    var userQuestions = questions(this);
-    this.answers = await this.prompt(userQuestions);
+    var questions = getQuestions(this.az, this.configManager);
+    this.answers = this.mergeOptions(options, await this.prompt(questions));
   }
 
   paths() {
   }
 
   configuring() {
+    this.composeWith(require.resolve('../terraform-randomid'));
   }
 
   default() {
   }
 
   writing() {
-    writer(this, this.answers);
+    writer(this.terraform, this.fsTools, this.answers);
   }
 
   conflicts() {
@@ -39,9 +41,8 @@ module.exports = class extends Generator {
   }
 
   end() {
-    config.set(this, this.configName, cleanupSecrets(this.answers));
-    config.setGlobal(this, "version", packageJson.version);
-    config.save(this);
+    this.configManager.setGlobal("version", packageJson.version);
+    this.saveGlobal(cleanupSecrets(this.answers));
   }
 };
 

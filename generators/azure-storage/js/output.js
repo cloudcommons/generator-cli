@@ -1,7 +1,5 @@
-var terraform = require('../../../common/terraform');
-
 module.exports = {
-    copy: function (fs, answers) {
+    copy: function (terraform, answers) {
         var output = {
             output: {
                 STORAGE_ACCOUNT_ID: {
@@ -161,6 +159,6 @@ module.exports = {
             }
         }
 
-        terraform.writeOutput(fs, output);
+        terraform.writeOutput(output);
     }
 }                                
