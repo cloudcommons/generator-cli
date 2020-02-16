@@ -60,7 +60,7 @@ module.exports = class {
      * Gets all the resource groups, including local and remote
      */
     resourceGroups() {
-        return this.get('azurerm_public_ip').concat(this.az.resourceGroups());
+        return this.get('azurerm_resource_group').concat(this.az.resourceGroups());
     }
 
     /**
