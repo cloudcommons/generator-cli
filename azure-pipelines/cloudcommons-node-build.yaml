@@ -8,21 +8,6 @@ jobs:
   strategy:
     maxParallel: ${{ parameters.maxParallel }}
     matrix:    
-      linux_node_12_terraform_0_12_19:
-        vmImage: 'ubuntu-latest'
-        nodeVersionSpec: '12.x'
-        terraformVersion: '0.12.19'
-        scriptType: bash
-      mac_node_12_terraform_0_12_19:
-        vmImage: 'macos-latest'
-        nodeVersionSpec: '12.x'
-        terraformVersion: '0.12.19'
-        scriptType: bash
-      windows_node_12_terraform_0_12_19:
-        vmImage: 'windows-latest'
-        nodeVersionSpec: '12.x'
-        terraformVersion: '0.12.19'
-        scriptType: ps
       linux_node_12_terraform_0_12_20:
         vmImage: 'ubuntu-latest'
         nodeVersionSpec: '12.x'
