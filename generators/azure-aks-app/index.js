@@ -24,6 +24,33 @@ module.exports = class extends TerraformGenerator {
   }
 
   configuring() {
+    var ip = null;
+    if (this.answers.features.includes("ingress")) {
+      this.composeWith(require.resolve('../azure-aks-ingress'), {
+        name: this.answers.name,
+        inamespace: this.answers.name,
+        aksManagedResourceGroup: this.answers.aksResourceGroup,
+        dns: this.answers.recordName
+      });
+      ip = `azurerm_public_ip.${this.answers.name}-ingress.id`
+    }
+    
+    if (this.answers.features.includes("dns")) {
+      ip = ip ? ip : this.answers.privateLoadBalancerIp;
+      this.composeWith(require.resolve('../azure-dns-record'), {
+        name: this.answers.name,
+        recordName: this.answers.recordName,
+        type: 'a',
+        record: ip
+      });
+    }
+
+    if(this.answers.features.includes("privateRegistry")) {
+      this.composeWith(require.resolve('../kubernetes-secret-docker'), {
+        name: this.answers.name,
+        kNamespace: `local.namespace`
+      });      
+    }    
   }
 
   default() {

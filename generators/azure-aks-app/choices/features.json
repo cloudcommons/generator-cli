@@ -8,14 +8,6 @@
         "name": "TLS"
     },
     {
-        "value": "livenessProbe",
-        "name": "Deployment liveness probe"
-    },
-    {
-        "value": "readinessProbe",
-        "name": "Deployment readiness probe"
-    },
-    {
         "value": "privateRegistry",
         "name": "Private Docker registry"
     },
