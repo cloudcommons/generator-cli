@@ -4,7 +4,7 @@ module.exports = {
         var providers = {
             provider: {
                 helm: {
-                    version: "~> 0.10"                    
+                    version: "~> 1.0"                    
                 },
                 template: {
                     version: "~> 2.1"                    
