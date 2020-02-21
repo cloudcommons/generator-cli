@@ -1,0 +1,42 @@
+{
+    "name": {
+        "desc": "Name of the ingress",
+        "alias": "n",
+        "type": "String"
+    },
+    "inamespace": {
+        "desc": "Namespace to create the ingress in",
+        "alias": "s",
+        "type": "String"
+    },    
+    "dns": {
+        "desc": "Is a public DNS record been created for this ingress?",
+        "alias": "d",
+        "type": "String"
+    },
+    "ingressType": {
+        "desc": "Type of ingress to create",
+        "alias": "t",
+        "type": "String"
+    },
+    "aksManagedResourceGroup": {
+        "desc": "(Public Load Balancer) AKS Managed resource group to create the IP address",
+        "alias": "g",
+        "type": "String"
+    },
+    "ipLocation": {
+        "desc": "(Public Load Balancer) Location of the IP to create",
+        "alias": "l",
+        "type": "String"
+    },
+    "ingressServiceSubnet": {
+        "desc": "(Internal Load Balancer)Name of the subnet to attach the internal load balancer",
+        "alias": "s",
+        "type": "String"
+    },
+    "privateLoadBalancerIp": {
+        "desc": "(Internal Load Balancer) Internal IP address for the load balancer",
+        "alias": "p",
+        "type": "String"
+    }
+}

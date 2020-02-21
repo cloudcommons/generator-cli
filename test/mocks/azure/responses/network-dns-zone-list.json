@@ -1,0 +1,23 @@
+[
+  {
+    "etag": "000000000-0000-0000-0000-000000000000",
+    "id": "/subscriptions/000000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.Network/dnszones/my-domain.io",
+    "location": "global",
+    "maxNumberOfRecordSets": 10000,
+    "name": "my-domain.io",
+    "nameServers": [
+      "ns1-09.azure-dns.com.",
+      "ns2-09.azure-dns.net.",
+      "ns3-09.azure-dns.org.",
+      "ns4-09.azure-dns.info."
+    ],
+    "numberOfRecordSets": 1,
+    "registrationVirtualNetworks": null,
+    "resolutionVirtualNetworks": null,
+    "resourceGroup": "m",
+    "tags": {
+    },
+    "type": "Microsoft.Network/dnszones",
+    "zoneType": "Public"
+  }
+]

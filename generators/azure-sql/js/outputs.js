@@ -1,10 +1,9 @@
-var terraform = require('../../../common/terraform');
-var merge = require('../../../common/merge');
+var merge = require('../../../core/merge');
 
 module.exports = {
-    copy: function (fs, answers) {
+    copy: function (terraform, answers) {
 
-        var server = `azurerm_sql_server.${answers.serverName}.*`;
+        var server = `azurerm_sql_server.${answers.name}.*`;
         var output = {
             output: {
                 SQL_SERVER_IDS: {
@@ -23,7 +22,7 @@ module.exports = {
         }
 
         if (answers.failOver) {
-            var failoverName = `azurerm_sql_failover_group.${answers.serverName}`
+            var failoverName = `azurerm_sql_failover_group.${answers.name}`
             var failover = {
                 SQL_FAILOVER_ID: {
                     description: "SQL Server failover group id",
@@ -50,10 +49,11 @@ module.exports = {
                     value: terraform.toVariable(`${failoverName}.partner_servers`)
                 }
             };
+            
             output = merge(output, failover);            
         }
 
-        terraform.writeOutput(fs, output);
+        terraform.writeOutput(output);
     }
 }
 

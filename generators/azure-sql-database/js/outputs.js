@@ -1,8 +1,5 @@
-var terraform = require('../../../common/terraform');
-var merge = require('../../../common/merge');
-
 module.exports = {
-    copy: function (fs, answers) {
+    copy: function (terraform, answers) {
         var db = `azurerm_sql_database.${answers.name}`;
         var output = {
             output: {
@@ -21,7 +18,7 @@ module.exports = {
             }
         }
 
-        terraform.writeOutput(fs, output);
+        terraform.writeOutput(output);
     }
 }
 

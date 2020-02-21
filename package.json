@@ -1,9 +1,10 @@
 {
   "name": "@cloudcommons/generator-cli",
-  "version": "0.1.10",
+  "version": "0.2.0",
   "description": "A generator to produce cloud common boilerplate code using Terraform",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --resursive"
+    "test": "node node_modules/mocha/bin/mocha --resursive",
+    "test:grep": "node node_modules/mocha/bin/mocha --resursive --grep cloudcommons/cli:azure-resource-group"
   },
   "author": {
     "name": "Sergio Sisternes",

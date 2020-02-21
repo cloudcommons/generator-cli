@@ -82,9 +82,7 @@ describe("cloudcommons/cli:terraform", function () {
         });
     }); 
     
-    describe('Initialises azurerm provider', () => {
-        return it.skip('This test requires mocking the az client');
-        
+    describe('Initialises azurerm provider', () => {        
         var prompts = {
             app: 'cloudcommons',
             version: '~> v0.12.19',

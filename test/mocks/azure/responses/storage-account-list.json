@@ -1,0 +1,67 @@
+[
+  {
+    "accessTier": "Hot",
+    "azureFilesIdentityBasedAuthentication": null,
+    "creationTime": "2020-01-13T08:20:24.309567+00:00",
+    "customDomain": null,
+    "enableHttpsTrafficOnly": true,
+    "encryption": {
+      "keySource": "Microsoft.Storage",
+      "keyVaultProperties": null,
+      "services": {
+        "blob": {
+          "enabled": true,
+          "lastEnabledTime": "2020-01-13T08:20:24.387690+00:00"
+        },
+        "file": {
+          "enabled": true,
+          "lastEnabledTime": "2020-01-13T08:20:24.387690+00:00"
+        },
+        "queue": null,
+        "table": null
+      }
+    },
+    "failoverInProgress": null,
+    "geoReplicationStats": null,
+    "id": "/subscriptions/000000000-0000-0000-0000-000000000000/resourceGroups/terraform/providers/Microsoft.Storage/storageAccounts/my-container",
+    "identity": null,
+    "isHnsEnabled": null,
+    "kind": "StorageV2",
+    "largeFileSharesState": null,
+    "lastGeoFailoverTime": null,
+    "location": "westeurope",
+    "name": "my-container",
+    "networkRuleSet": {
+      "bypass": "AzureServices",
+      "defaultAction": "Allow",
+      "ipRules": [],
+      "virtualNetworkRules": []
+    },
+    "primaryEndpoints": {
+      "blob": "https://my-container.blob.core.windows.net/",
+      "dfs": "https://my-container.dfs.core.windows.net/",
+      "file": "https://my-container.file.core.windows.net/",
+      "queue": "https://my-container.queue.core.windows.net/",
+      "table": "https://my-container.table.core.windows.net/",
+      "web": "https://my-container.z6.web.core.windows.net/"
+    },
+    "primaryLocation": "westeurope",
+    "provisioningState": "Succeeded",
+    "resourceGroup": "terraform",
+    "secondaryEndpoints": null,
+    "secondaryLocation": null,
+    "sku": {
+      "capabilities": null,
+      "kind": null,
+      "locations": null,
+      "name": "Standard_LRS",
+      "resourceType": null,
+      "restrictions": null,
+      "tier": "Standard"
+    },
+    "statusOfPrimary": "available",
+    "statusOfSecondary": null,
+    "tags": {},
+    "type": "Microsoft.Storage/storageAccounts"
+  }
+]

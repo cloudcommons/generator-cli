@@ -1,0 +1,5 @@
+{
+    "helm2": {
+        "desc": "Install helm2. Helm2 is deprecated and will removed in future versions of this cli"
+    }
+}

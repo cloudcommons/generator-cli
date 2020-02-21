@@ -1,0 +1,23 @@
+[
+  {
+    "id": "/subscriptions/000000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.ContainerRegistry/registries/my-acr",
+    "identity": null,
+    "kind": null,
+    "location": "westeurope",
+    "managedBy": null,
+    "name": "my-acr",
+    "plan": null,
+    "properties": null,
+    "resourceGroup": "my-resource-group",
+    "sku": {
+      "capacity": null,
+      "family": null,
+      "model": null,
+      "name": "Standard",
+      "size": null,
+      "tier": "Standard"
+    },
+    "tags": {},
+    "type": "Microsoft.ContainerRegistry/registries"
+  }
+]

@@ -1,36 +1,63 @@
-var Generator = require('yeoman-generator');
+// var Generator = require('yeoman-generator');
+var TerraformGenerator = require('../../core/TerraformGenerator');
 var writer = require('./writer');
-var questions = require('./questions');
-var config = require('../../common/config');
-var resources = require('../../common/resources');
+var getQuestions = require('./questions');
+const options = require('./options');
 
-module.exports = class extends Generator {
+module.exports = class extends TerraformGenerator {
 
   constructor(args, opts) {
-    super(args, opts);
-    this.configName = "azure-aks-app";
+    super(args, opts, "azure-aks-app", "azure-aks-app");
+    super.addOptions(options);
   }
 
-  initializing() {    
+  initializing() {
   }
 
   async prompting() {
-    var userQuestions = questions(this);
-    this.answers = await this.prompt(userQuestions);
-    resources.push("module", `module.${this.answers.name}`);
+    var questions = getQuestions(this, this.az, this.terraform, this.configManager);
+    this.answers = this.mergeOptions(options, await this.prompt(questions));
+    this.addResource(this.answers.name);
   }
 
   paths() {
   }
 
   configuring() {
+    var ip = null;
+    if (this.answers.features.includes("ingress")) {
+      this.composeWith(require.resolve('../azure-aks-ingress'), {
+        name: this.answers.name,
+        inamespace: this.answers.name,
+        aksManagedResourceGroup: this.answers.aksResourceGroup,
+        dns: this.answers.recordName
+      });
+      ip = `azurerm_public_ip.${this.answers.name}-ingress.id`
+    }
+    
+    if (this.answers.features.includes("dns")) {
+      ip = ip ? ip : this.answers.privateLoadBalancerIp;
+      this.composeWith(require.resolve('../azure-dns-record'), {
+        name: this.answers.name,
+        recordName: this.answers.recordName,
+        type: 'a',
+        record: ip
+      });
+    }
+
+    if(this.answers.features.includes("privateRegistry")) {
+      this.composeWith(require.resolve('../kubernetes-secret-docker'), {
+        name: this.answers.name,
+        kNamespace: `local.namespace`
+      });      
+    }    
   }
 
   default() {
   }
 
   writing() {
-    writer(this, this.answers);
+    writer(this.terraform, this.fsTools, this.answers);
   }
 
   conflicts() {
@@ -40,14 +67,7 @@ module.exports = class extends Generator {
   }
 
   end() {
-    if (this.answers.features.includes('azure-network')) {
-      this.log(`IMPORTANT: When using Azure CNI, AKS Service Principal '${this.answers.clientId}' should have 'Network Contributor' permissions at '${this.answers.aksResourceGroup}' in order to Ensure Load Balancers.`);
-      this.log(`If you are experiencing issues with Load Balancers, please check with your Azure Administrator the Service Principal has the appropiate permissions.`);
-      this.log("More information: https://github.com/Azure/AKS/issues/357#issuecomment-394583518")
-    }    
-    
-    config.set(this, this.configName, cleanupSecrets(this.answers));
-    config.save(this);
+    this.save(cleanupSecrets(this.answers));
   }
 };
 

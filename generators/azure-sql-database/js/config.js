@@ -1,7 +1,5 @@
-var terraform = require('../../../common/terraform');
-
 module.exports = {
-    copy: function (fs, answers, configFile = 'terraform.tfvars.json') {
+    copy: function (terraform, answers, configFile = 'terraform.tfvars.json') {
 
         var config = {
             DATABASE_NAME: answers.name,
@@ -16,6 +14,6 @@ module.exports = {
             config.DATABASE_SERVER_RESOURCE_GROUP = answers.databaseServerResourceGroup;
         }
 
-        terraform.writeConfig(fs, config, configFile);
+        terraform.writeConfig(config, configFile);
     }
 }
