@@ -1,7 +1,0 @@
-[{
-    "value": "internalLoadBalancer",
-    "name": "Load Balancer - Internal"
-},{
-    "value": "publicLoadBalancer",
-    "name": "Load Balancer - Public"
-}]
