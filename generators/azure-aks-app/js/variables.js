@@ -2,14 +2,10 @@ module.exports = {
     copy: function (terraform, answers) {
         var variables = {
             "variable": {
-                APP_NAME: {
+                APP: {
                     type: "string",
                     description: "(Required) Application name this cluster belongs to",
                     default: answers.name
-                },
-                CREATOR: {
-                    type: "string",
-                    description: "(Required) Creator of this deployment"
                 },
                 APP_IMAGE_REPOSITORY: {
                     type: "string",

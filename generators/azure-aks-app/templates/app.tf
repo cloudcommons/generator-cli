@@ -1,15 +1,15 @@
 locals {  
   namespace = module.<%= name %>.namespace
-  app_name  = "${var.APP_NAME}-${terraform.workspace}"
+
   tls_enabled = var.APP_INGRESS_TLS_ENABLED == true
   tls_secret_name = "tls-secret"
-  fqdn = var.MANUAL_INGRESS_HOSTNAME == null ? substr(azurerm_dns_a_record.nginx.fqdn, 0, length(azurerm_dns_a_record.nginx.fqdn) - 1) : var.INGRESS_HOSTNAME
+  fqdn = var.MANUAL_INGRESS_HOSTNAME == null ? substr(azurerm_dns_a_record.<%= name %>.fqdn, 0, length(azurerm_dns_a_record.<%= name %>.fqdn) - 1) : var.INGRESS_HOSTNAME
 }
 
 module "<%= name %>" {
   source                          = "cloudcommons/application/kubernetes"
   version                         = "0.1.9"
-  APP_NAME                        = var.APP_NAME
+  APP_NAME                        = var.APP
   UID                             = local.uid
   ENVIRONMENT                     = terraform.workspace
   DEPLOYMENT_REPLICAS             = var.APP_IMAGE_REPLICACOUNT

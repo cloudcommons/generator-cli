@@ -2,7 +2,7 @@ module.exports = {
     copy: function (terraform, answers, configFile = 'terraform.tfvars.json') {
 
         var config = {
-            APP_NAME: answers.name,
+            APP: answers.name,
             APP_IMAGE_REPOSITORY: answers.imageName,
             APP_IMAGE_TAG: answers.imageTag,
             APP_IMAGE_REPLICACOUNT: answers.imageReplicaCount,
