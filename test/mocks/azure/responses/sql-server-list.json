@@ -1,0 +1,18 @@
+[
+  {
+    "administratorLogin": "admin",
+    "administratorLoginPassword": null,
+    "fullyQualifiedDomainName": "server.database.windows.net",
+    "id": "/subscriptions/000000000-0000-0000-0000-000000000000/resourceGroups/my-server/providers/Microsoft.Sql/servers/my-server",
+    "identity": null,
+    "kind": "v12.0",
+    "location": "westeurope",
+    "name": "my-server",
+    "resourceGroup": "my-server",
+    "state": "Ready",
+    "tags": {
+    },
+    "type": "Microsoft.Sql/servers",
+    "version": "12.0"
+  }
+]

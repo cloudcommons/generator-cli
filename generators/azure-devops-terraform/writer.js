@@ -1,52 +1,21 @@
-/**
- * Application writer
- */
-module.exports = function (generator, answers) {
+
+module.exports = function (fsTools, answers) {
 
     answers = Object.assign({
         safeName: generateSafeName(answers.name),
-        terraformVersion: '0.12.19'
+        terraformVersion: '0.12.19' // TODO Read this value from configuration/answers, to match the terraform version selected by the user and the one set in the pipelines
     }, answers);
 
     if (answers.features.includes("templates")) {
-        copy(generator, "azure-pipelines/cloudcommons-terraform-validate.yaml", answers);
-        copy(generator, "azure-pipelines/cloudcommons-terraform-build.yaml", answers);
-        copy(generator, "azure-pipelines/cloudcommons-terraform-deploy.yaml", answers);
+        fsTools.copy("azure-pipelines/cloudcommons-terraform-validate.yaml", answers);
+        fsTools.copy("azure-pipelines/cloudcommons-terraform-build.yaml", answers);
+        fsTools.copy("azure-pipelines/cloudcommons-terraform-deploy.yaml", answers);
     }
 
     if (answers.features.includes("pipelines")) {
-        copy(generator, "azure-pipelines-ci.yaml", answers);
-        copy(generator, "azure-pipelines-cd.yaml", answers);
+        fsTools.copy("azure-pipelines-ci.yaml", answers);
+        fsTools.copy("azure-pipelines-cd.yaml", answers);
     }
-}
-
-/**
- * Copies a file from the source path to the exact same location in destination
- * @param {*} generator Yeoman generator
- * @param {*} source Source path
- * @param {*} parameters Object with parameters to replace
- */
-function copy(generator, source, parameters) {
-    generator.fs.copyTpl(
-        generator.templatePath(source),
-        generator.destinationPath(source),
-        parameters
-    );
-}
-
-/**
- * Copies a file from the source to a given destination path
- * @param {*} generator Yeoman generator
- * @param {*} source Source path
- * @param {*} destination Target path
- * @param {*} parameters Object with parameters to replace
- */
-function copyTo(generator, source, destination, parameters) {
-    generator.fs.copyTpl(
-        generator.templatePath(source),
-        generator.destinationPath(destination),
-        parameters
-    );
 }
 
 /**

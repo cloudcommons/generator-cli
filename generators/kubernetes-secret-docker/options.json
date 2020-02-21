@@ -1,0 +1,32 @@
+{
+    "name": {
+        "desc": "Name of the resource been created",
+        "alias": "n",
+        "type": "String"
+    },
+    "kNamespace": {
+        "desc": "Kubernetes namespace to create the secret on",
+        "alias": "k",
+        "type": "String"
+    },
+    "server": {
+        "desc": "Private Docker repository server",
+        "alias": "s",
+        "type": "String"
+    },
+    "email": {
+        "desc": "Private Docker repository email",
+        "alias": "e",
+        "type": "String"
+    },
+    "username": {
+        "desc": "Private Docker repository username",
+        "alias": "u",
+        "type": "String"
+    },
+    "password": {
+        "desc": "Private Docker repository password",
+        "alias": "p",
+        "type": "String"
+    }
+}

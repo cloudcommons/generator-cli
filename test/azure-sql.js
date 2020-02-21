@@ -6,7 +6,7 @@ describe("cloudcommons/cli:azure-sql", function () {
     describe('Creates a SQL Server', () => {
         describe('Using an existing resource group', () => {
             var prompts = {
-                serverName: 'cloudcommons-sql',
+                name: 'cloudcommons-sql',
                 resourceGroup: 'cloudcommons',
                 serverLocation: 'westeu',
                 features: [],
@@ -21,7 +21,7 @@ describe("cloudcommons/cli:azure-sql", function () {
             });
 
             it('Generates SQL files', () => {
-                assert.file(`${prompts.serverName}-sql-server.tf`);
+                assert.file(`${prompts.name}-sql-server.tf`);
                 assert.file('terraform.tfvars.json');
                 assert.file('variables.tf.json');
                 assert.file('providers.tf.json');
@@ -40,7 +40,7 @@ describe("cloudcommons/cli:azure-sql", function () {
             it('Includes sql server in the variables', () => {
                 assert.fileContent('terraform.tfvars.json', `"SQL_LOCATIONS":`);
                 assert.fileContent('terraform.tfvars.json', `"${prompts.serverLocation}"`);
-                assert.fileContent('terraform.tfvars.json', `"SQL_NAME_PREFIX": "${prompts.serverName}"`);
+                assert.fileContent('terraform.tfvars.json', `"SQL_NAME_PREFIX": "${prompts.name}"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_VERSION": "12.0"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_ADMIN_LOGIN": "${prompts.serverAdminLogin}"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_ADMIN_PASSWORD": "${prompts.serverAdminPassword}"`);
@@ -48,14 +48,14 @@ describe("cloudcommons/cli:azure-sql", function () {
             });
 
             it('Creates the right output values', () => {
-                var serverName = `azurerm_sql_server.${prompts.serverName}.*`;
-                var failoverName = `azurerm_sql_failover_group.${prompts.serverName}`
+                var name = `azurerm_sql_server.${prompts.name}.*`;
+                var failoverName = `azurerm_sql_failover_group.${prompts.name}`
                 assert.fileContent('output.tf.json', '"SQL_SERVER_IDS":');
-                assert.fileContent('output.tf.json', `${serverName}.id`);
+                assert.fileContent('output.tf.json', `${name}.id`);
                 assert.fileContent('output.tf.json', '"SQL_SERVER_FQDNS":');
-                assert.fileContent('output.tf.json', `${serverName}.fully_qualified_domain_name`);
+                assert.fileContent('output.tf.json', `${name}.fully_qualified_domain_name`);
                 assert.fileContent('output.tf.json', '"SQL_SERVER_IDENTITIES":');
-                assert.fileContent('output.tf.json', `${serverName}.identity`);       
+                assert.fileContent('output.tf.json', `${name}.identity`);       
                 assert.noFileContent('output.tf.json', '"SQL_FAILOVER_ID":');
                 assert.noFileContent('output.tf.json', `${failoverName}.id`);
                 assert.noFileContent('output.tf.json', '"SQL_FAILOVER_LOCATION":');
@@ -78,7 +78,7 @@ describe("cloudcommons/cli:azure-sql", function () {
 
         describe('Creating a existing resource group', () => {
             var prompts = {
-                serverName: 'cloudcommons-sql',
+                name: 'cloudcommons-sql',
                 resourceGroup: 'azurerm_resource_group.workspace',
                 serverLocation: 'westeu',
                 features: [],
@@ -93,7 +93,7 @@ describe("cloudcommons/cli:azure-sql", function () {
             });
 
             it('Generates SQL files', () => {
-                assert.file(`${prompts.serverName}-sql-server.tf`);
+                assert.file(`${prompts.name}-sql-server.tf`);
                 assert.file('terraform.tfvars.json');
                 assert.file('variables.tf.json');
                 assert.file('providers.tf.json');
@@ -112,7 +112,7 @@ describe("cloudcommons/cli:azure-sql", function () {
             it('Includes sql server in the variables', () => {
                 assert.fileContent('terraform.tfvars.json', `"SQL_LOCATIONS":`);
                 assert.fileContent('terraform.tfvars.json', `"${prompts.serverLocation}"`);
-                assert.fileContent('terraform.tfvars.json', `"SQL_NAME_PREFIX": "${prompts.serverName}"`);
+                assert.fileContent('terraform.tfvars.json', `"SQL_NAME_PREFIX": "${prompts.name}"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_VERSION": "12.0"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_ADMIN_LOGIN": "${prompts.serverAdminLogin}"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_ADMIN_PASSWORD": "${prompts.serverAdminPassword}"`);
@@ -120,14 +120,14 @@ describe("cloudcommons/cli:azure-sql", function () {
             });
 
             it('Creates the right output values', () => {
-                var serverName = `azurerm_sql_server.${prompts.serverName}.*`;
-                var failoverName = `azurerm_sql_failover_group.${prompts.serverName}`
+                var name = `azurerm_sql_server.${prompts.name}.*`;
+                var failoverName = `azurerm_sql_failover_group.${prompts.name}`
                 assert.fileContent('output.tf.json', '"SQL_SERVER_IDS":');
-                assert.fileContent('output.tf.json', `${serverName}.id`);
+                assert.fileContent('output.tf.json', `${name}.id`);
                 assert.fileContent('output.tf.json', '"SQL_SERVER_FQDNS":');
-                assert.fileContent('output.tf.json', `${serverName}.fully_qualified_domain_name`);
+                assert.fileContent('output.tf.json', `${name}.fully_qualified_domain_name`);
                 assert.fileContent('output.tf.json', '"SQL_SERVER_IDENTITIES":');
-                assert.fileContent('output.tf.json', `${serverName}.identity`);       
+                assert.fileContent('output.tf.json', `${name}.identity`);       
                 assert.noFileContent('output.tf.json', '"SQL_FAILOVER_ID":');
                 assert.noFileContent('output.tf.json', `${failoverName}.id`);
                 assert.noFileContent('output.tf.json', '"SQL_FAILOVER_LOCATION":');
@@ -152,7 +152,7 @@ describe("cloudcommons/cli:azure-sql", function () {
     describe('Creates a SQL Server with database', () => {
         describe('Using an existing resource group', () => {
             var prompts = {
-                serverName: 'cloudcommons-sql',
+                name: 'cloudcommons-sql',
                 resourceGroup: 'cloudcommons',
                 serverLocation: 'westeu',
                 features: ['database'],
@@ -168,7 +168,7 @@ describe("cloudcommons/cli:azure-sql", function () {
             });
 
             it('Generates SQL files', () => {
-                assert.file(`${prompts.serverName}-sql-server.tf`);
+                assert.file(`${prompts.name}-sql-server.tf`);
                 assert.file('terraform.tfvars.json');
                 assert.file('variables.tf.json');
                 assert.file('providers.tf.json');
@@ -187,7 +187,7 @@ describe("cloudcommons/cli:azure-sql", function () {
             it('Includes sql server in the variables', () => {
                 assert.fileContent('terraform.tfvars.json', `"SQL_LOCATIONS":`);
                 assert.fileContent('terraform.tfvars.json', `"${prompts.serverLocation}"`);
-                assert.fileContent('terraform.tfvars.json', `"SQL_NAME_PREFIX": "${prompts.serverName}"`);
+                assert.fileContent('terraform.tfvars.json', `"SQL_NAME_PREFIX": "${prompts.name}"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_VERSION": "12.0"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_ADMIN_LOGIN": "${prompts.serverAdminLogin}"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_ADMIN_PASSWORD": "${prompts.serverAdminPassword}"`);
@@ -195,14 +195,14 @@ describe("cloudcommons/cli:azure-sql", function () {
             });
 
             it('Creates the right output values', () => {
-                var serverName = `azurerm_sql_server.${prompts.serverName}.*`;
-                var failoverName = `azurerm_sql_failover_group.${prompts.serverName}`
+                var name = `azurerm_sql_server.${prompts.name}.*`;
+                var failoverName = `azurerm_sql_failover_group.${prompts.name}`
                 assert.fileContent('output.tf.json', '"SQL_SERVER_IDS":');
-                assert.fileContent('output.tf.json', `${serverName}.id`);
+                assert.fileContent('output.tf.json', `${name}.id`);
                 assert.fileContent('output.tf.json', '"SQL_SERVER_FQDNS":');
-                assert.fileContent('output.tf.json', `${serverName}.fully_qualified_domain_name`);
+                assert.fileContent('output.tf.json', `${name}.fully_qualified_domain_name`);
                 assert.fileContent('output.tf.json', '"SQL_SERVER_IDENTITIES":');
-                assert.fileContent('output.tf.json', `${serverName}.identity`);       
+                assert.fileContent('output.tf.json', `${name}.identity`);       
                 assert.noFileContent('output.tf.json', '"SQL_FAILOVER_ID":');
                 assert.noFileContent('output.tf.json', `${failoverName}.id`);
                 assert.noFileContent('output.tf.json', '"SQL_FAILOVER_LOCATION":');
@@ -225,7 +225,7 @@ describe("cloudcommons/cli:azure-sql", function () {
 
         describe('Creating a existing resource group', () => {
             var prompts = {
-                serverName: 'cloudcommons-sql',
+                name: 'cloudcommons-sql',
                 resourceGroup: 'azurerm_resource_group.workspace',
                 serverLocation: 'westeu',
                 features: ['database'],
@@ -240,7 +240,7 @@ describe("cloudcommons/cli:azure-sql", function () {
             });
 
             it('Generates SQL files', () => {
-                assert.file(`${prompts.serverName}-sql-server.tf`);
+                assert.file(`${prompts.name}-sql-server.tf`);
                 assert.file('terraform.tfvars.json');
                 assert.file('variables.tf.json');
                 assert.file('providers.tf.json');
@@ -259,7 +259,7 @@ describe("cloudcommons/cli:azure-sql", function () {
             it('Includes sql server in the variables', () => {
                 assert.fileContent('terraform.tfvars.json', `"SQL_LOCATIONS":`);
                 assert.fileContent('terraform.tfvars.json', `"${prompts.serverLocation}"`);
-                assert.fileContent('terraform.tfvars.json', `"SQL_NAME_PREFIX": "${prompts.serverName}"`);
+                assert.fileContent('terraform.tfvars.json', `"SQL_NAME_PREFIX": "${prompts.name}"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_VERSION": "12.0"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_ADMIN_LOGIN": "${prompts.serverAdminLogin}"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_ADMIN_PASSWORD": "${prompts.serverAdminPassword}"`);
@@ -267,14 +267,14 @@ describe("cloudcommons/cli:azure-sql", function () {
             });
 
             it('Creates the right output values', () => {
-                var serverName = `azurerm_sql_server.${prompts.serverName}.*`;
-                var failoverName = `azurerm_sql_failover_group.${prompts.serverName}`
+                var name = `azurerm_sql_server.${prompts.name}.*`;
+                var failoverName = `azurerm_sql_failover_group.${prompts.name}`
                 assert.fileContent('output.tf.json', '"SQL_SERVER_IDS":');
-                assert.fileContent('output.tf.json', `${serverName}.id`);
+                assert.fileContent('output.tf.json', `${name}.id`);
                 assert.fileContent('output.tf.json', '"SQL_SERVER_FQDNS":');
-                assert.fileContent('output.tf.json', `${serverName}.fully_qualified_domain_name`);
+                assert.fileContent('output.tf.json', `${name}.fully_qualified_domain_name`);
                 assert.fileContent('output.tf.json', '"SQL_SERVER_IDENTITIES":');
-                assert.fileContent('output.tf.json', `${serverName}.identity`);       
+                assert.fileContent('output.tf.json', `${name}.identity`);       
                 assert.noFileContent('output.tf.json', '"SQL_FAILOVER_ID":');
                 assert.noFileContent('output.tf.json', `${failoverName}.id`);
                 assert.noFileContent('output.tf.json', '"SQL_FAILOVER_LOCATION":');
@@ -299,7 +299,7 @@ describe("cloudcommons/cli:azure-sql", function () {
     describe('Creates a SQL Server with database failover', () => {
         describe('Using an existing resource group', () => {
             var prompts = {
-                serverName: 'cloudcommons-sql',
+                name: 'cloudcommons-sql',
                 resourceGroup: 'cloudcommons',
                 serverLocations: ['westeu','northeu'],
                 features: ['database', 'fail-over'],
@@ -315,7 +315,7 @@ describe("cloudcommons/cli:azure-sql", function () {
             });
 
             it('Generates SQL files', () => {
-                assert.file(`${prompts.serverName}-sql-server.tf`);
+                assert.file(`${prompts.name}-sql-server.tf`);
                 assert.file(`${prompts.databaseName}-failover.tf`);
                 assert.file('terraform.tfvars.json');
                 assert.file('variables.tf.json');
@@ -337,7 +337,7 @@ describe("cloudcommons/cli:azure-sql", function () {
                 prompts.serverLocations.forEach((location) => {
                     assert.fileContent('terraform.tfvars.json', `"${location}"`);
                 });                
-                assert.fileContent('terraform.tfvars.json', `"SQL_NAME_PREFIX": "${prompts.serverName}"`);
+                assert.fileContent('terraform.tfvars.json', `"SQL_NAME_PREFIX": "${prompts.name}"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_VERSION": "12.0"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_ADMIN_LOGIN": "${prompts.serverAdminLogin}"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_ADMIN_PASSWORD": "${prompts.serverAdminPassword}"`);
@@ -345,14 +345,14 @@ describe("cloudcommons/cli:azure-sql", function () {
             });
 
             it('Creates the right output values', () => {
-                var serverName = `azurerm_sql_server.${prompts.serverName}.*`;
-                var failoverName = `azurerm_sql_failover_group.${prompts.serverName}`
+                var name = `azurerm_sql_server.${prompts.name}.*`;
+                var failoverName = `azurerm_sql_failover_group.${prompts.name}`
                 assert.fileContent('output.tf.json', '"SQL_SERVER_IDS":');
-                assert.fileContent('output.tf.json', `${serverName}.id`);
+                assert.fileContent('output.tf.json', `${name}.id`);
                 assert.fileContent('output.tf.json', '"SQL_SERVER_FQDNS":');
-                assert.fileContent('output.tf.json', `${serverName}.fully_qualified_domain_name`);
+                assert.fileContent('output.tf.json', `${name}.fully_qualified_domain_name`);
                 assert.fileContent('output.tf.json', '"SQL_SERVER_IDENTITIES":');
-                assert.fileContent('output.tf.json', `${serverName}.identity`);       
+                assert.fileContent('output.tf.json', `${name}.identity`);       
                 assert.noFileContent('output.tf.json', '"SQL_FAILOVER_ID":');
                 assert.noFileContent('output.tf.json', `${failoverName}.id`);
                 assert.noFileContent('output.tf.json', '"SQL_FAILOVER_LOCATION":');
@@ -375,7 +375,7 @@ describe("cloudcommons/cli:azure-sql", function () {
 
         describe('Creating a existing resource group', () => {
             var prompts = {
-                serverName: 'cloudcommons-sql',
+                name: 'cloudcommons-sql',
                 resourceGroup: 'azurerm_resource_group.workspace',
                 serverLocation: 'westeu',
                 features: ['database'],
@@ -390,7 +390,7 @@ describe("cloudcommons/cli:azure-sql", function () {
             });
 
             it('Generates SQL files', () => {
-                assert.file(`${prompts.serverName}-sql-server.tf`);
+                assert.file(`${prompts.name}-sql-server.tf`);
                 assert.file('terraform.tfvars.json');
                 assert.file('variables.tf.json');
                 assert.file('providers.tf.json');
@@ -409,7 +409,7 @@ describe("cloudcommons/cli:azure-sql", function () {
             it('Includes sql server in the variables', () => {
                 assert.fileContent('terraform.tfvars.json', `"SQL_LOCATIONS":`);
                 assert.fileContent('terraform.tfvars.json', `"${prompts.serverLocation}"`);
-                assert.fileContent('terraform.tfvars.json', `"SQL_NAME_PREFIX": "${prompts.serverName}"`);
+                assert.fileContent('terraform.tfvars.json', `"SQL_NAME_PREFIX": "${prompts.name}"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_VERSION": "12.0"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_ADMIN_LOGIN": "${prompts.serverAdminLogin}"`);
                 assert.fileContent('terraform.tfvars.json', `"SQL_ADMIN_PASSWORD": "${prompts.serverAdminPassword}"`);
@@ -417,14 +417,14 @@ describe("cloudcommons/cli:azure-sql", function () {
             });
 
             it('Creates the right output values', () => {
-                var serverName = `azurerm_sql_server.${prompts.serverName}.*`;
-                var failoverName = `azurerm_sql_failover_group.${prompts.serverName}`
+                var name = `azurerm_sql_server.${prompts.name}.*`;
+                var failoverName = `azurerm_sql_failover_group.${prompts.name}`
                 assert.fileContent('output.tf.json', '"SQL_SERVER_IDS":');
-                assert.fileContent('output.tf.json', `${serverName}.id`);
+                assert.fileContent('output.tf.json', `${name}.id`);
                 assert.fileContent('output.tf.json', '"SQL_SERVER_FQDNS":');
-                assert.fileContent('output.tf.json', `${serverName}.fully_qualified_domain_name`);
+                assert.fileContent('output.tf.json', `${name}.fully_qualified_domain_name`);
                 assert.fileContent('output.tf.json', '"SQL_SERVER_IDENTITIES":');
-                assert.fileContent('output.tf.json', `${serverName}.identity`);       
+                assert.fileContent('output.tf.json', `${name}.identity`);       
                 assert.noFileContent('output.tf.json', '"SQL_FAILOVER_ID":');
                 assert.noFileContent('output.tf.json', `${failoverName}.id`);
                 assert.noFileContent('output.tf.json', '"SQL_FAILOVER_LOCATION":');

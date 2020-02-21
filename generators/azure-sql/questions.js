@@ -1,27 +1,14 @@
 var features = require('./choices/features');
-var resources = require('../../common/resources');
-var az = require('../../common/az');
-var config = require('../../common/config');
-var terraform = require('../../common/terraform');
 
-/**
- * Gets the default value from the Yeoman storage
- * @param {*} generator 
- * @param {*} key 
- * @param {*} defaultValue 
- */
-function getConfig(generator, key, defaultValue) {
-    return config.getDefault(generator, key, defaultValue);
-}
 
-module.exports = function (generator) {
+module.exports = function (generator, az, terraform, configManager, resources) {
     var questions = [];
 
     questions.push({
         type: "input",
-        name: "serverName",
+        name: "name",
         message: "Server - Name",
-        default: getConfig(generator, "serverName", `${terraform.generateKey(generator.appname)}-sql`),
+        default: configManager.getDefault("name", `${terraform.generateKey(generator.appname)}-sql`),
         validate: terraform.validateKey
     });
 
@@ -29,8 +16,8 @@ module.exports = function (generator) {
         type: "list",
         name: "resourceGroup",
         message: "Server - Resource Group",
-        choices: resources.resourceGroups(generator),
-        default: getConfig(generator, "resourceGroup")
+        choices: resources.resourceGroups(),
+        default: configManager.getDefault("resourceGroup")
     });
 
     questions.push({
@@ -38,15 +25,15 @@ module.exports = function (generator) {
         name: "features",
         message: "Server - Features",
         choices: features,
-        default: getConfig(generator, "features", ["database"])
+        default: configManager.getDefault("features", ["database"])
     });
 
     questions.push({
         type: "list",
         name: "serverLocation",
         message: "Server - Location",
-        choices: az.locations(generator),
-        default: getConfig(generator, "serverLocation"),
+        choices: az.locations(),
+        default: configManager.getDefault("serverLocation"),
         when: (answers) => !answers.features.includes("fail-over")
     });
 
@@ -54,8 +41,8 @@ module.exports = function (generator) {
         type: "checkbox",
         name: "serverLocations",
         message: "Server - Locations (Choose only 2 please)",
-        choices: az.locations(generator),
-        default: (answers) => getConfig(generator, "serverLocations", [answers.serverLocation]),
+        choices: az.locations(),
+        default: (answers) => configManager.getDefault("serverLocations", [answers.serverLocation]),
         when: (answers) => answers.features.includes("fail-over")
     });
 
@@ -63,7 +50,7 @@ module.exports = function (generator) {
         type: "input",
         name: "serverAdminLogin",
         message: "Server - Administrator user",
-        default: getConfig(generator, "serverAdminLogin")
+        default: configManager.getDefault("serverAdminLogin")
     });
 
     questions.push({
@@ -76,7 +63,7 @@ module.exports = function (generator) {
         type: "input",
         name: "databaseName",
         message: "Database - Name",
-        default: getConfig(generator, "databaseName", terraform.generateKey(generator.appname)),
+        default: configManager.getDefault("databaseName", terraform.generateKey(generator.appname)),
         validate: terraform.validateKey,
         when: (answers) => answers.features.includes("database")
     });    

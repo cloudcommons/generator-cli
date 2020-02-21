@@ -1,0 +1,17 @@
+{
+    "databaseName": {
+        "desc": "Name of database",
+        "alias": "db",
+        "type": "String"
+    },
+    "databaseServerResourceGroup": {
+        "desc": "Database server resource group",
+        "alias": "g",
+        "type": "String"
+    },
+    "databaseServer": {
+        "desc": "Database server",
+        "alias": "s",
+        "type": "String"
+    }
+}

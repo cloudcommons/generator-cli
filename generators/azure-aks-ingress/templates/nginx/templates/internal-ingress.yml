@@ -1,0 +1,11 @@
+enabled: true
+controller:
+    ingressClass: ${INGRESS_CLASS}
+    replicaCount: ${INGRESS_REPLICAS}
+    service:
+      loadBalancerIP: "${LOAD_BALANCER_IP}"
+      externalTrafficPolicy: Local
+      annotations: {    
+        service.beta.kubernetes.io/azure-load-balancer-internal: true,
+        service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "${INGRESS_SERVICE_SUBNET}"
+      }

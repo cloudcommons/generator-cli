@@ -1,21 +1,22 @@
-var Generator = require('yeoman-generator');
+// var Generator = require('yeoman-generator');
+var TerraformGenerator = require('../../core/TerraformGenerator');
 var writer = require('./writer');
-var questions = require('./questions');
-var config = require('../../common/config');
+var getQuestions = require('./questions');
+const options = require('./options');
 
-module.exports = class extends Generator {
+module.exports = class extends TerraformGenerator {
 
   constructor(args, opts) {
-    super(args, opts);
-    this.configName = "azure-devops-terraform";
+    super(args, opts, "azure-devops-terraform");
+    super.addOptions(options);
   }
 
   initializing() {
   }
 
   async prompting() {
-    var userQuestions = questions(this);
-    this.answers = await this.prompt(userQuestions);
+    var questions = getQuestions(this, this.terraform, this.configManager);
+    this.answers = this.mergeOptions(options, await this.prompt(questions));
   }
 
   paths() {
@@ -28,7 +29,7 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    writer(this, this.answers);
+    writer(this.fsTools, this.answers);
   }
 
   conflicts() {
@@ -38,13 +39,7 @@ module.exports = class extends Generator {
   }
 
   end() {
-    config.set(this, this.configName, cleanupSecrets(this.answers));
-    config.save(this);
-
-    this.log("Completed! Please dont forget to:");
-    this.log(`1) Configure your YAML pipelines in Azure DevOps`);
-    this.log(`2) Create environment the environment variables for the Azure back-end`);
-    this.log(`3) A Service Connection named ${this.answers.subscription} exists in your Azure DevOps`);    
+    this.save(cleanupSecrets(this.answers));
   }
 };
 

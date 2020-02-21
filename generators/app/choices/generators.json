@@ -1,7 +1,7 @@
 [
     {
         "name": "Azure - Resource group",
-        "value": "../azure-resourcegroup"
+        "value": "../azure-resource-group"
     },    
     {
         "name": "Azure - Kubernetes",
@@ -11,6 +11,18 @@
         "name": "Azure - Kubernetes - Application",
         "value": "../azure-aks-app"
     },
+    {
+        "name": "Azure - Kubernetes - Helm release",
+        "value": "../azure-aks-helm"
+    },
+    {
+        "name": "Azure - Kubernetes - Ingress",
+        "value": "../azure-aks-ingress"
+    },        
+    {
+        "name": "Azure - Storage Account",
+        "value": "../azure-storage"
+    },    
     {
         "name": "Azure - SQL Server",
         "value": "../azure-sql"
@@ -27,6 +39,10 @@
         "name": "Azure - Cognitive Search",
         "value": "../azure-search"
     },
+    {
+        "name": "Azure - DNS Record",
+        "value": "../azure-dns-record"
+    },    
     {
         "name": "Azure - DevOps - Terraform pipeline",
         "value": "../azure-devops-terraform"

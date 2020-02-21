@@ -1,28 +1,28 @@
 parameters:  
   name: 'generator'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
-  maxParallel: 1
+  maxParallel: 2
 
 jobs:
 - job: Build${{ parameters.name}}
   strategy:
     maxParallel: ${{ parameters.maxParallel }}
     matrix:    
-      linux_node_12_terraform_0_12_19:
+      linux_node_12_terraform_0_12_20:
         vmImage: 'ubuntu-latest'
         nodeVersionSpec: '12.x'
-        terraformVersion: '0.12.19'
+        terraformVersion: '0.12.20'
         scriptType: bash
-      mac_node_12_terraform_0_12_19:
+      mac_node_12_terraform_0_12_20:
         vmImage: 'macos-latest'
         nodeVersionSpec: '12.x'
-        terraformVersion: '0.12.19'
+        terraformVersion: '0.12.20'
         scriptType: bash
-      # windows_node_12_terraform_0_12_19:
-      #   vmImage: 'windows-latest'
-      #   nodeVersionSpec: '12.x'
-      #   terraformVersion: '0.12.19'
-      #   scriptType: ps
+      windows_node_12_terraform_0_12_20:
+        vmImage: 'windows-latest'
+        nodeVersionSpec: '12.x'
+        terraformVersion: '0.12.20'
+        scriptType: ps      
   displayName: 'Build - ${{ parameters.name}}'
   pool:
     vmImage: $(vmImage)
@@ -43,16 +43,11 @@ jobs:
     inputs:
       terraformVersion: '$(terraformVersion)'      
 
-  - task: AzureCLI@2
+  - task: Npm@1
     displayName: 'NPM - Test'
     inputs:
-      azureSubscription: '${{ parameters.azureSubscription }}'
-      scriptType: $(scriptType)
-      scriptLocation: inlineScript
-      inlineScript: |
-          az --version
-          az account show
-          npm test
+      command: 'custom'
+      customCommand: 'test'
 
   - task: PublishTestResults@2
     displayName: 'NPM - Test - Publish results'

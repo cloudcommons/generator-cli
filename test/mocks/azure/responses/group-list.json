@@ -1,0 +1,14 @@
+[
+  {
+    "id": "/subscriptions/000000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group",
+    "location": "westeurope",
+    "managedBy": null,
+    "name": "my-resource-group",
+    "properties": {
+      "provisioningState": "Succeeded"
+    },
+    "tags": {
+    },
+    "type": "Microsoft.Resources/resourceGroups"
+  }
+]

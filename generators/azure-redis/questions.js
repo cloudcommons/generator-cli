@@ -1,32 +1,19 @@
 var features = require('./choices/features');
-var az = require('../../common/az');
 var families = require('./choices/families');
 var capacities = require ('./choices/capacities');
 var skus = require('./choices/skus');
 var checkIpRange = require('ip-range-check');
 var patchSchedule = require ('./choices/patch-schedule');
-var config = require('../../common/config');
-var terraform = require('../../common/terraform');
-var resources = require('../../common/resources');
 
-/**
- * Gets the default value from the Yeoman storage
- * @param {*} generator 
- * @param {*} key 
- * @param {*} defaultValue 
- */
-function getConfig(generator, key, defaultValue) {
-    return config.getDefault(generator, key, defaultValue);
-}
 
-module.exports = function (generator) {
+module.exports = function (generator, az, terraform, configManager, resources) {
     var questions = [];
 
     questions.push({
         type: "input",
         name: "name",
         message: "Redis - Name",
-        default: getConfig(generator, "name", `${terraform.generateKey(generator.appname)}-redis`),
+        default: configManager.getDefault("name", `${terraform.generateKey(generator.appname)}-redis`),
         validate: terraform.validateKey
     });
 
@@ -34,16 +21,16 @@ module.exports = function (generator) {
         type: "list",
         name: "resourceGroup",
         message: "Redis - Resource Group",
-        choices: resources.resourceGroups(generator),
-        default: getConfig(generator, "resourceGroup")
+        choices: resources.resourceGroups(),
+        default: configManager.getDefault("resourceGroup")
     });
 
     questions.push({
         type: "list",
         name: "location",
         message: "Redis - Location",
-        choices: az.locations(generator),
-        default: getConfig(generator, "location")
+        choices: az.locations(),
+        default: configManager.getDefault("location")
     });    
 
     questions.push({
@@ -51,7 +38,7 @@ module.exports = function (generator) {
         name: "family",
         message: "Redis - Family",
         choices: families,
-        default: getConfig(generator, "family")
+        default: configManager.getDefault("family")
     });
 
     questions.push({
@@ -59,7 +46,7 @@ module.exports = function (generator) {
         name: "sku",
         message: (answers) => `Redis - ${answers.family} - SKU`,
         choices: (answers) => skus[answers.family],
-        default: (answers) => getConfig(generator, "sku", answers.family === "P" ? "Premium" : "Basic")
+        default: (answers) => configManager.getDefault("sku", answers.family === "P" ? "Premium" : "Basic")
     });    
 
     questions.push({
@@ -67,7 +54,7 @@ module.exports = function (generator) {
         name: "capacity",
         message: (answers) => `Redis - ${answers.family} - ${answers.sku} - Capacity`,
         choices: (answers) => capacities[answers.family],
-        default: getConfig(generator, "capacity")
+        default: configManager.getDefault("capacity")
     });
 
     questions.push({
@@ -75,15 +62,15 @@ module.exports = function (generator) {
         name: "features",
         message: "Redis - Features",
         choices: (answers) => answers.family === "C" ? features.C : features.C.concat(features.P),
-        default: getConfig(generator, "features", [])
+        default: configManager.getDefault("features", [])
     });
 
     questions.push({
         type: "list",
         name: "vnetResourceGroup",
         message: "Redis - VNET - Resource Group",
-        choices: az.resourceGroups(generator),
-        default: getConfig(generator, "vnetResourceGroup"),
+        choices: az.resourceGroups(),
+        default: configManager.getDefault("vnetResourceGroup"),
         when: (answers) => answers.features.includes("vnet")
     });
 
@@ -91,8 +78,8 @@ module.exports = function (generator) {
         type: "list",
         name: "vnetName",
         message: "Redis - VNET - Name",
-        choices: (answers) => az.vnets(generator, answers.vnetResourceGroup),
-        default: getConfig(generator, "vnetName"),
+        choices: (answers) => az.vnets(answers.vnetResourceGroup),
+        default: configManager.getDefault("vnetName"),
         when: (answers) => answers.features.includes("vnet")
     });
 
@@ -100,8 +87,8 @@ module.exports = function (generator) {
         type: "list",
         name: "vnetSubnet",
         message: "Redis - VNET - Subnet",
-        choices: (answers) => az.vnetSubnets(generator, answers.vnetResourceGroup, answers.vnetName),
-        default: getConfig(generator, "vnetSubnet"),
+        choices: (answers) => az.vnetSubnets(answers.vnetResourceGroup, answers.vnetName),
+        default: configManager.getDefault("vnetSubnet"),
         when: (answers) => answers.features.includes("vnet")
     });
 
@@ -109,9 +96,9 @@ module.exports = function (generator) {
         type: "input",
         name: "vnetStaticIp",
         message: (answers) => `Redis - VNET - Subnet - Static IP (${az.vnetSubnetInformation(generator, answers.vnetSubnet).addressPrefix})`,        
-        default: getConfig(generator, "vnetStaticIp"),
+        default: configManager.getDefault("vnetStaticIp"),
         validate: (input, answers) => {
-            var cidr = az.vnetSubnetInformation(generator, answers.vnetSubnet).addressPrefix;          
+            var cidr = az.vnetSubnetInformation(answers.vnetSubnet).addressPrefix;          
             return checkIpRange(input, cidr) ? true : `The value '${input}' is not a valid IP address or is not within '${cidr}' range`;
         },
         when: (answers) => answers.features.includes("vnet")
@@ -122,7 +109,7 @@ module.exports = function (generator) {
         name: "patchScheduleDays",
         message: "Redis - Patch schedule - Week days",
         choices: patchSchedule.weekDays,
-        default: getConfig(generator, "patchScheduleDays", []),
+        default: configManager.getDefault("patchScheduleDays", []),
         when: (answers) => answers.features.includes("patch-schedule")
     });
 
@@ -131,7 +118,7 @@ module.exports = function (generator) {
         name: "patchScheduleTime",
         message: "Redis - Patch schedule - UTC Time to start",
         choices: patchSchedule.time,
-        default: getConfig(generator, "patchScheduleTime"),
+        default: configManager.getDefault("patchScheduleTime"),
         when: (answers) => answers.features.includes("patch-schedule")
     });
 
@@ -139,7 +126,7 @@ module.exports = function (generator) {
         type: "input",
         name: "shardCount",
         message: "Redis - Shard count",
-        default: getConfig(generator, "shardCount", 1),
+        default: configManager.getDefault("shardCount", 1),
         when: (answers) => answers.features.includes("shard")
     });    
 
