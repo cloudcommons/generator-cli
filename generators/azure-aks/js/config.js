@@ -1,11 +1,10 @@
-var terraform = require('../../../common/terraform');
-
 module.exports = {
-    copy: function (fs, answers, configFile = 'terraform.tfvars.json') {
+    copy: function (terraform, answers, configFile = 'terraform.tfvars.json') {
 
         var config = {
             CREATOR: "cloudcommons",
             KUBERNETES_CLUSTER_NAME: answers.name,
+            AKS_RESOURCE_GROUP_NAME: terraform.resolveConfigDependency(answers.resourceGroup),
             LOCATION: answers.location,
             ADMIN_USER: answers.adminUser,
             SSH_KEY: answers.sshKey,
@@ -18,10 +17,6 @@ module.exports = {
             RBAC_ENABLED: answers.rbacEnabled
         };
 
-        if (!terraform.isDependency(answers.resourceGroup)) {
-            config.AKS_RESOURCE_GROUP_NAME = answers.resourceGroup;
-        }
-
-        terraform.writeConfig(fs, config, configFile);
+        terraform.writeConfig(config, configFile);
     }
 }

@@ -6,7 +6,7 @@ describe("cloudcommons/cli:resource-group", function () {
     describe('Creates a Resource Group', () => {
         before(done => {
             helpers
-                .run(path.join(__dirname, '../generators/azure-resourcegroup'))
+                .run(path.join(__dirname, '../generators/azure-resource-group'))
                 .withPrompts({
                     name: 'cloudcommons',
                     location: 'westeu'

@@ -1,7 +1,5 @@
-var terraform = require('../../../common/terraform');
-
 module.exports = {
-    copy: function (fs, answers) {
+    copy: function (terraform, answers) {
         var key = `module.${answers.name}-kubernetes`;
         var output = {
             output: {
@@ -48,7 +46,7 @@ module.exports = {
             }
         }
 
-        terraform.writeOutput(fs, output);
+        terraform.writeOutput(output);
     }
 }
 

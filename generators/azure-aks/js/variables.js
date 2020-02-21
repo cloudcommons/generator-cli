@@ -1,7 +1,5 @@
-var terraform = require('../../../common/terraform');
-
 module.exports = {
-    copy: function (fs, answers) {
+    copy: function (terraform, answers) {
         var variables = {
             "variable": {
                 CREATOR: {
@@ -62,6 +60,6 @@ module.exports = {
             };
         }
 
-        terraform.writeVariables(fs, variables);
+        terraform.writeVariables(variables);
     }
 }

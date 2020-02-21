@@ -1,20 +1,21 @@
-var Generator = require('yeoman-generator');
-var questions = require('./questions');
-var terraform = require('../../common/terraform');
-var resources = require('../../common/resources');
-module.exports = class extends Generator {
+// var Generator = require('yeoman-generator');
+var TerraformGenerator = require('../../core/TerraformGenerator');
+var getQuestions = require('./questions');
+const options = require('./options');
+
+module.exports = class extends TerraformGenerator {
 
     constructor(args, opts) {
         super(args, opts);
+        super.addOptions(options);
     }
 
     initializing() {
-        resources.load(this);
     }
 
     async prompting() {
-        var userQuestions = questions(this);
-        this.answers = await this.prompt(userQuestions);
+        var questions = getQuestions(this, this.az, this.terraform, this.configManager);
+        this.answers = this.mergeOptions(options, await this.prompt(questions));
     }
 
     paths() {
@@ -27,16 +28,12 @@ module.exports = class extends Generator {
 
         this.answers.subGenerators.forEach(subGenerator => this.composeWith(require.resolve(subGenerator)));
 
-        if (this.answers.subGenerators.includes('../terraform-import')) {
+        if (this.terraformInitialised || this.answers.subGenerators.includes('../terraform-import')) {
             return;
         }
 
         if (!this.answers.subGenerators.includes("../terraform")) {
             this.composeWith(require.resolve('../terraform'));
-        }
-
-        if (!this.answers.subGenerators.includes('../terraform-randomid')) {
-            this.composeWith(require.resolve('../terraform-randomid'));
         }
     }
 
@@ -54,7 +51,7 @@ module.exports = class extends Generator {
             return;
         }
 
-        terraform.init(this.log, this.spawnCommandSync);
+        this.terraform.init();
     }
 
     end() {

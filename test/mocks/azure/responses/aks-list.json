@@ -1,0 +1,69 @@
+[
+  {
+    "aadProfile": null,
+    "addonProfiles": null,
+    "agentPoolProfiles": [
+      {
+        "availabilityZones": null,
+        "count": 2,
+        "enableAutoScaling": null,
+        "enableNodePublicIp": false,
+        "maxCount": null,
+        "maxPods": 60,
+        "minCount": null,
+        "name": "default",
+        "nodeTaints": null,
+        "orchestratorVersion": "1.13.5",
+        "osDiskSizeGb": 60,
+        "osType": "Linux",
+        "provisioningState": "Succeeded",
+        "scaleSetEvictionPolicy": null,
+        "scaleSetPriority": null,
+        "type": "AvailabilitySet",
+        "vmSize": "Standard_DS2_v2",
+        "vnetSubnetId": "/subscriptions/000000000-0000-0000-0000-000000000000/resourceGroups/production/providers/Microsoft.Network/virtualNetworks/aks-vnet-production/subnets/Pods"
+      }
+    ],
+    "apiServerAccessProfile": null,
+    "dnsPrefix": "aks",
+    "enablePodSecurityPolicy": null,
+    "enableRbac": true,
+    "fqdn": "aks-04ba6eaf.hcp.westeurope.azmk8s.io",
+    "id": "/subscriptions/000000000-0000-0000-0000-000000000000/resourcegroups/production/providers/Microsoft.ContainerService/managedClusters/aks",
+    "identity": null,
+    "kubernetesVersion": "1.13.5",
+    "linuxProfile": {
+      "adminUsername": "user",
+      "ssh": {
+        "publicKeys": [
+          {
+            "keyData": ""
+          }
+        ]
+      }
+    },
+    "location": "westeurope",
+    "maxAgentPools": 1,
+    "name": "aks",
+    "networkProfile": {
+      "dnsServiceIp": "10.0.128.2",
+      "dockerBridgeCidr": "172.17.0.1/16",
+      "loadBalancerProfile": null,
+      "loadBalancerSku": "Basic",
+      "networkPlugin": "azure",
+      "networkPolicy": null,
+      "podCidr": null,
+      "serviceCidr": "10.0.128.0/18"
+    },
+    "nodeResourceGroup": "MC_production_aks_westeurope",
+    "provisioningState": "Succeeded",
+    "resourceGroup": "production",
+    "servicePrincipalProfile": {
+      "clientId": "000000000-0000-0000-0000-000000000000"
+    },
+    "tags": {
+    },
+    "type": "Microsoft.ContainerService/ManagedClusters",
+    "windowsProfile": null
+  }
+]

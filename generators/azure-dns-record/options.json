@@ -1,0 +1,37 @@
+{
+    "name": {
+        "desc": "DNS terraform name. This won't be part of the FQDN",
+        "alias": "n",
+        "type": "String"
+    },
+    "recordName": {
+        "desc": "DNS record name to create in the Zone that will be part of the FQDN",
+        "alias": "r",
+        "type": "String"
+    },
+    "type": {
+        "desc": "Record type",
+        "alias": "t",
+        "type": "String"
+    },    
+    "record": {
+        "desc": "DNS IP record to associate with the recordName",
+        "alias": "i",
+        "type": "String"        
+    },
+    "zoneResourceGroup": {
+        "desc": "DNS Zone Resource group",
+        "alias": "g",
+        "type": "String"
+    },
+    "zoneName": {
+        "desc": "DNS Zone name",
+        "alias": "z",
+        "type": "String"
+    },
+    "advanced": {
+        "desc": "Enables the advanced configuration wizard for Azure IP",
+        "alias": "a",
+        "type": "String"
+    }
+}

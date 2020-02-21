@@ -1,17 +1,4 @@
-var resources = require('../../common/resources');
-var az = require('../../common/az');
-/**
- * Gets the default value from the Yeoman storage
- * @param {*} generator 
- * @param {*} key 
- * @param {*} defaultValue 
- */
-function getConfig(generator, key, defaultValue) {
-    return config.getDefault(generator, key, defaultValue);
-}
-
-
-module.exports = function (generator) {
+module.exports = function (az, resources) {
     var questions = [];
 
     questions.push({
@@ -32,7 +19,7 @@ module.exports = function (generator) {
         type: "list",
         name: "resourceGroup",
         message: "Terraform - Import - Azure Resource Group",
-        choices: az.resourceGroups(generator),
+        choices: az.resourceGroups(),
         when: (answers) => answers.resourceType !== 'azurerm_resource_group'
     });
 
@@ -40,7 +27,7 @@ module.exports = function (generator) {
         type: "list",
         name: "azureId",
         message: "Terraform - Import - Azure Resource",
-        choices: (answers) => az.resources(generator, answers.resourceGroup),
+        choices: (answers) => az.resources(answers.resourceGroup),
         when: (answers) => answers.resourceType !== 'azurerm_resource_group'
     })
 
@@ -48,7 +35,7 @@ module.exports = function (generator) {
         type: "list",
         name: "resourceGroup",
         message: "Terraform - Import - Azure Resource Group",
-        choices: az.resourceGroups(generator, "name", "id"),
+        choices: az.resourceGroups("name", "id"),
         when: (answers) => answers.resourceType === 'azurerm_resource_group'
     })      
 

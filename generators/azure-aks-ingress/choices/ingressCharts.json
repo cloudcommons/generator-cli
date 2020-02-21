@@ -1,0 +1,4 @@
+[{
+    "value": "stable/nginx-ingress:1.5.0",
+    "name": "NGINX Ingress v1.5.0"
+}]

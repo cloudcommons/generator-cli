@@ -1,57 +1,39 @@
 var editions = require('./choices/database-editions')
 var sizes = require('./choices/database-sizes')
-var az = require('../../common/az');
-var config = require('../../common/config');
-var terraform = require('../../common/terraform');
-var resources = require('../../common/resources');
 
-/**
- * Gets the default value from the Yeoman storage
- * @param {*} generator 
- * @param {*} key 
- * @param {*} defaultValue 
- */
-function getConfig(generator, key, defaultValue) {
-    return config.getDefault(generator, key, defaultValue);
-}
-
-
-module.exports = function (generator) {
+module.exports = function (generator, az, terraform, configManager, resources) {
     var questions = [];
-
-    addDatabaseQuestions(questions, generator);
-    addRestoreQuestions(questions, generator);
-
+    questions = addDatabaseQuestions(questions, generator, terraform, configManager, resources);
+    questions = addRestoreQuestions(questions, az, configManager);
     return questions;
 }
 
-function addDatabaseQuestions(questions, generator) {
-
+function addDatabaseQuestions(questions, generator, terraform, configManager, resources) {    
     questions.push({
         type: "input",
         name: "databaseName",
         message: "Database - Name",
-        default: getConfig(generator, "databaseName", terraform.generateKey(generator.appname)),
+        default: configManager.getDefault("databaseName", terraform.generateKey(generator.appname)),
         validate: terraform.validateKey,
         when: !generator.options.databaseName
     });
 
     questions.push({
         type: "list",
-        name: "databaseResourceGroup",
+        name: "databaseServerResourceGroup",
         message: "Database - Server - Resource Group",
-        choices: resources.resourceGroups(generator),
-        default: getConfig(generator, "databaseServerResourceGroup"),
-        when: !generator.options.server
+        choices: resources.resourceGroups(),
+        default: configManager.getDefault("databaseServerResourceGroup"),
+        when: !generator.options.databaseServer
     });
 
     questions.push({
         type: "list",
         name: "databaseServer",
         message: "Database - Server - Name",
-        choices: (answers) => resources.sqlServers(generator, answers.databaseResourceGroup),
-        default: getConfig(generator, "databaseServer"),
-        when: !generator.options.server
+        choices: (answers) => resources.sqlServers(answers.databaseServerResourceGroup),
+        default: configManager.getDefault("databaseServer"),
+        when: (answers) => !generator.options.databaseServer
     });
 
     questions.push({
@@ -59,7 +41,7 @@ function addDatabaseQuestions(questions, generator) {
         name: "databaseEdition",
         message: "Database - Edition",
         choices: editions,
-        default: getConfig(generator, "databaseEdition", "Standard")
+        default: configManager.getDefault("databaseEdition", "Standard")
     });
 
     questions.push({
@@ -67,25 +49,27 @@ function addDatabaseQuestions(questions, generator) {
         name: "databaseSize",
         message: "Database - Size",
         choices: (answers) => sizes[answers.databaseEdition],
-        default: getConfig(generator, "databaseSize", "S0"),
+        default: configManager.getDefault("databaseSize", "S0"),
         when: (answers) => (answers.databaseEdition === "Standard" || answers.databaseEdition === "Premium")
     });
+
+    return questions;
 }
 
-function addRestoreQuestions(questions, generator) {
+function addRestoreQuestions(questions, az, configManager) {
     questions.push({
         type: "confirm",
         name: "databaseRestore",
         message: "Database - Restore from existing database?",
-        default: getConfig(generator, "databaseRestore", false)
+        default: configManager.getDefault("databaseRestore", false)
     });
 
     questions.push({
         type: "list",
         name: "restoreResourceGroup",
         message: "Restore - Resource Group",
-        choices: az.resourceGroups(generator),
-        default: getConfig(generator, "restoreResourceGroup"),
+        choices: az.resourceGroups(),
+        default: configManager.getDefault("restoreResourceGroup"),
         when: (answers) => answers.databaseRestore === true
     });
 
@@ -93,8 +77,8 @@ function addRestoreQuestions(questions, generator) {
         type: "list",
         name: "restoreServerId",
         message: "Restore - Server",
-        choices: (answers) => az.sqlServers(generator, answers.restoreResourceGroup),
-        default: getConfig(generator, "restoreServerId"),
+        choices: (answers) => az.sqlServers(answers.restoreResourceGroup),
+        default: configManager.getDefault("restoreServerId"),
         when: (answers) => answers.databaseRestore === true
     });
 
@@ -102,8 +86,10 @@ function addRestoreQuestions(questions, generator) {
         type: "list",
         name: "restoreDatabaseId",
         message: "Restore - Database",
-        choices: (answers) => az.sqlDatabases(generator, answers.restoreServerId),
-        default: getConfig(generator, "restoreDatabaseId"),
+        choices: (answers) => az.sqlDatabases(answers.restoreServerId),
+        default: configManager.getDefault("restoreDatabaseId"),
         when: (answers) => answers.databaseRestore === true
     });
+
+    return questions;
 }

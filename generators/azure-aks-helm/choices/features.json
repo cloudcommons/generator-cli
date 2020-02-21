@@ -1,0 +1,18 @@
+[
+    {
+        "value": "ingress",
+        "name": "Ingress service"
+    },
+    {
+        "value": "tls",
+        "name": "TLS"
+    },
+    {
+        "value": "privateRegistry",
+        "name": "Create Docker Secret to access private registry"
+    },
+    {
+        "value": "dns",
+        "name": "Create Azure DNS Record"
+    }
+]

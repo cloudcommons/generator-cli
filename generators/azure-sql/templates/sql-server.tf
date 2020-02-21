@@ -10,6 +10,7 @@ resource "azurerm_sql_server" "<%= name %>" {
   lifecycle {
     ignore_changes = [administrator_login_password]
   }
+  
   tags = {
     app         = var.APP
     environment = terraform.workspace

@@ -1,0 +1,21 @@
+[
+  {
+    "metadata": null,
+    "name": "my-container",
+    "properties": {
+      "etag": "\"0x0000000000000000\"",
+      "hasImmutabilityPolicy": "false",
+      "hasLegalHold": "false",
+      "lastModified": "2019-06-11T09:59:23+00:00",
+      "lease": {
+        "duration": null,
+        "state": null,
+        "status": null
+      },
+      "leaseDuration": null,
+      "leaseState": "available",
+      "leaseStatus": "unlocked",
+      "publicAccess": null
+    }
+  }
+]
