@@ -1,4 +1,5 @@
 var features = require('./choices/features');
+var regex = require('../../core/regex');
 
 module.exports = function (generator, az, terraform, configManager, resources) {
     var questions = [];
@@ -103,5 +104,39 @@ module.exports = function (generator, az, terraform, configManager, resources) {
         default: configManager.getDefault("issuerEmail")
     });
 
+    questions.push({
+        type: "input",
+        name: "minNodeCount",
+        message: "Auto-scaler - Minimum node count",
+        when: (answers) => answers.features.includes("auto-scaler"),
+        validate: validateMinCount,
+        default: configManager.getDefault("issuerEmail")
+    }); 
+
+    questions.push({
+        type: "input",
+        name: "maxNodeCount",
+        message: "Auto-scaler - Maximum node count",
+        when: (answers) => answers.features.includes("auto-scaler"),
+        validate: validateMaxCount,
+        default: configManager.getDefault("issuerEmail")
+    });
+
+    
+
     return questions;
+}
+
+function validateMinCount(value) {
+    var isInteger = regex.isInteger(value);
+    if (isInteger !== true) return isInteger;
+    if (value < 1) return "The minimum number of nodes should be greater than 0"
+    return true;
+}
+
+function validateMaxCount(value, answers) {
+    var isInteger = regex.isInteger(value);
+    if (isInteger !== true) return isInteger;
+    if (answers.minNodeCount < value) return `The maximum number of nodes should greater than the minimum (${minValue})`;
+    return true;
 }

@@ -49,7 +49,22 @@ module.exports = {
                 RBAC_ENABLED: {
                     type: "bool",
                     description: "(Optional) Enable Kubernetes Role-Based Access Control. Defaults to true"
-                }
+                },
+                AUTO_SCALING_ENABLED: {
+                    type: "bool",
+                    description: `(Optional) Should the Kubernetes Auto Scaler be enabled for this Node Pool? Defaults to ${answers.autoScalingEnabled}.`,
+                    default: answers.autoScalingEnabled
+                },
+                AUTO_SCALING_MIN_COUNT: {
+                    type: "number",
+                    description: `(Optional) The minimum number of nodes which should exist in this Node Pool. If specified this must be between 1 and 100. Defaults to ${answers.minNodeCount}.`,
+                    default: answers.minNodeCount
+                },
+                AUTO_SCALING_MAX_COUNT: {
+                    type: "number",
+                    description: `((Optional) The maximum number of nodes which should exist in this Node Pool. If specified this must be between 1 and 100. Defaults to ${answers.maxNodeCount}.`,
+                    default: answers.maxNodeCount
+                }                
             }
         }
 

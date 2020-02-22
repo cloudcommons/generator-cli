@@ -4,7 +4,7 @@ locals {
 
 module "<%= name %>-kubernetes" {
   source                    = "cloudcommons/kubernetes/azure"
-  version                   = "0.1.6"
+  version                   = "0.1.7"
   name                      = local.aks_name
   location                  = var.LOCATION
   resource_group            = <%= resourceGroupReference %>
@@ -19,5 +19,8 @@ module "<%= name %>-kubernetes" {
   node_pool_count           = var.KUBERNETES_AGENT_COUNT  
   creator                   = var.CREATOR
   environment               = terraform.workspace
+  auto_scaling_enable       = var.AUTO_SCALING_ENABLED
+  auto_scaling_min_count    = var.AUTO_SCALING_MIN_COUNT
+  auto_scaling_max_count    = var.AUTO_SCALING_MAX_COUNT
   vnet_ddos_enabled         = false
 }
