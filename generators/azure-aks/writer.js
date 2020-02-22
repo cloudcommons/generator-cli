@@ -10,6 +10,9 @@ module.exports = function (terraform, fsTools, answers, options) {
     answers = Object.assign({        
         acrEnabled: answers.features.includes("acr"),
         rbacEnabled: answers.features.includes("rbac"),
+        autoScalingEnabled: answers.features.includes("auto-scaler"),
+        minNodeCount: this.autoScalingEnabled === true ? answers.minNodeCount : 0,
+        maxNodeCount: this.autoScalingEnabled === true ? answers.maxNodeCount : 0,
         resourceGroupReference: terraform.resolveDependency(answers.resourceGroup, `${answers.resourceGroup}.name`, "var.AKS_RESOURCE_GROUP_NAME"),
         useHelm2: options["helm2"] !== undefined
     }, answers);
