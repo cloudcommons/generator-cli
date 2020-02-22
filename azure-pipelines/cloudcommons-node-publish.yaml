@@ -22,7 +22,8 @@ jobs:
       command: 'install'
 
   - task: Npm@1
-    displayName: 'NPM - Publish'  
+    displayName: 'NPM - Publish'
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
     inputs:
       command: 'custom'
       customCommand: publish --access public
