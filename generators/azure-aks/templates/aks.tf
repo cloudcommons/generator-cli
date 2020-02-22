@@ -4,7 +4,7 @@ locals {
 
 module "<%= name %>-kubernetes" {
   source                    = "cloudcommons/kubernetes/azure"
-  version                   = "0.1.6"
+  version                   = "0.1.7"
   name                      = local.aks_name
   location                  = var.LOCATION
   resource_group            = <%= resourceGroupReference %>
