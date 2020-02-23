@@ -1,6 +1,7 @@
 
 const jsonMerge = require('./merge');
 const axios = require('axios');
+const regex = require('../core/regex');
 var workspace = null;
 
 /**
@@ -204,11 +205,9 @@ module.exports = class {
         var keys = Object.keys(vars.variable);
         var client = getInstance(token);
 
-        client.get(`/organizations/${organisation}/workspaces/${workspace}`)
-            .catch(e => this.log("Error getting organisation data"))
+        client.get(`/organizations/${organisation}/workspaces/${workspace}`)            
             .then(function (response) {
                 var variables = [];
-
                 for (var i = 0; i < keys.length; i++) {
                     var ws = response.data.data;
                     var key = keys[i];
@@ -218,26 +217,30 @@ module.exports = class {
                 }
 
                 createVars(client, variables);
-            });
+            })
+            .catch(e => this.log("Error getting organisation data"));
     }
 
     createAzureRmVariables(organisation, workspace, token) {
         var client = getInstance(token);
-        client.get(`/organizations/${organisation}/workspaces/${workspace}`)
-            .catch(e => this.log("Error getting organisation data"))
+        client.get(`/organizations/${organisation}/workspaces/${workspace}`)            
             .then(function (response) {
                 var variables = [];
                 var ws = response.data.data;
                 variables.push(getVariable(ws.id, "ARM_CLIENT_ID", "env", "(Required) The Client ID which should be used. This can also be sourced from the ARM_CLIENT_ID Environment Variable."))
                 variables.push(getVariable(ws.id, "ARM_TENANT_ID", "env", "(Required) The Tenant ID which should be used. This can also be sourced from the ARM_TENANT_ID Environment Variable."))
-                variables.push(getVariable(ws.id, "ARM_CLIENT_SECRET", "env", "(Required) The Client ID which should be used. This can also be sourced from the ARM_CLIENT_SECRET Environment Variable."))
+                variables.push(getVariable(ws.id, "ARM_CLIENT_SECRET", "env", "(Required) The Client ID which should be used. This can also be sourced from the ARM_CLIENT_SECRET Environment Variable.", null, false ,true))
                 variables.push(getVariable(ws.id, "ARM_SUBSCRIPTION_ID", "env", "(Required) The Client ID which should be used. This can also be sourced from the ARM_SUBSCRIPTION_ID Environment Variable."))
                 createVars(client, variables);
-            });
+            })
+            .catch(e => this.log("Error getting organisation data"));
     }
 }
 
 function getVariable(workspaceId, key, category, description, value = null, hcl = false, sensitive = false) {
+    sensitive = regex.looksSensitive(key) || sensitive; // Any secret that looks sensitive, will be sent to terraform as such
+    hcl = regex.looksLikeTerraformObject(value) || hcl;
+    value = hcl ? JSON.stringify(value) : value; // HCL variables are not JSON friendly and should be serialised properly
     return {
         "data": {
             "type": "vars",
@@ -265,7 +268,7 @@ function createVars(client, vars) {
     for (var i = 0; i < vars.length; i++) {        
         v = vars[i];
         client.post(`/vars`, v).catch(e => {
-            if (e.response.status === 422) { // Variable already exists
+            if (e.response && e.response.status === 422) { // Variable already exists
                 var body = JSON.parse(e.response.config.data);
                 console.log(`'${body.data.attributes.key}' already exists. Skipping...`);
             }

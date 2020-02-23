@@ -47,7 +47,7 @@ module.exports = class extends TerraformGenerator {
       var provider =  this.provider.remote;
       var workspace = `${provider.workspaces.prefix}${this.answers.name}`;
       this.log(`Creating remote variables`);
-      this.terraform.createVariables(this.destinationPath('variables.tf.json'), this.destinationPath('terraform.tf.json'), provider.organization, workspace, this.answers.token);
+      this.terraform.createVariables(this.destinationPath('variables.tf.json'), this.destinationPath('terraform.tfvars.json'), provider.organization, workspace, this.answers.token);
       this.log(`Creating remote AzureRM environment variables`);
       this.terraform.createAzureRmVariables(provider.organization, workspace, this.answers.token);
       this.log(`Environment ready to use`);
