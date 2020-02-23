@@ -67,21 +67,15 @@ module.exports = class extends Generator {
 
     addOptions(options) {
         for (const [option, config] of Object.entries(options)) {
-            switch (config.type) {
-                case "String":
-                    config.type = String;
-                    break;
-                case "Number":
-                    config.type = Number;
-                    break;
-                case "Boolean":
-                    config.type = Boolean;
-                    break;
-                default: config.type = String;
-                    break;
-            }
-
+            config.type = getType(config.type);
             this.option(option, config);
+        }
+    }
+
+    addArguments(args) {
+        for (const [arg, config] of Object.entries(args)) {
+            config.type = getType(config.type);
+            this.argument(arg, config);
         }
     }
 
@@ -93,4 +87,16 @@ module.exports = class extends Generator {
 
         return answers;
     }
+}
+
+function getType(stringType) {
+    switch (stringType) {
+        case "String":
+            return String;
+        case "Number":
+            return Number;
+        case "Boolean":
+            return Boolean;
+        default: return String;
+    }    
 }

@@ -9,7 +9,7 @@ module.exports = class {
      * @param {*} args 
      */
     _az(args) {
-        if (process.env.mockAzure === "true") return this._azMock(args);        
+        if (process.env.test === "true") return this._azMock(args);        
         var rgs = this.spawn('az', args, {
             stdio: ['ignore', 'pipe', process.stderr]
         });

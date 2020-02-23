@@ -56,11 +56,27 @@ function addRemoteQuestions(questions, configManager) {
 
     questions.push({
         type: "input",
-        name: "remoteWorkspace",
-        message: "Terraform - Remote - Workspace",
-        default: configManager.getDefault("remoteWorkspace"),
+        name: "remoteWorkspacePrefix",
+        message: "Terraform - Remote - Workspace prefix",
+        default: (answers) => configManager.getDefault("remoteWorkspacePrefix", `${answers.app}-`),
         when: (answers) => answers.backendType === "remote"
     });
+
+    questions.push({
+        type: "password",
+        name: "remoteToken",
+        message: "Terraform - Remote - Token",
+        default: configManager.getDefault("remoteToken"),
+        when: (answers) => answers.backendType === "remote"
+    });    
+
+    questions.push({
+        type: "confirm",
+        name: "createRemoteVariables",
+        message: "Terraform - Remote - Create variables after creating?",
+        default: configManager.getDefault("createRemoteVariables"),
+        when: (answers) => answers.backendType === "remote"
+    });    
 }
 
 /**

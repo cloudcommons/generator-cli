@@ -5,6 +5,7 @@ var variables = require('./js/variables');
 module.exports = function (terraform, fsTools, answers) {
     fsTools.copy("LICENSE");
     fsTools.copyTo('gitignore', '.gitignore');
-    fsTools.copyTo(`init/${answers.backendType}.tf`, '__init__.tf', answers);
+    var backEnd = require(`./js/backends/${answers.backendType}`);
+    backEnd.copy(terraform, answers);
     variables.copy(terraform, answers);
 }

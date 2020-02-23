@@ -2,8 +2,7 @@ var helpers = require('yeoman-test');
 var path = require('path');
 var assert = require('yeoman-assert');
 
-describe("cloudcommons/cli:azure-ip-address", function () {
-    process.env.mockAzure = "true";
+describe("cloudcommons/cli:azure-ip-address", function () {    
     describe('Creates a Static IP address in west europe', () => {
         var prompts = {
             name: 'cloudcommons',

@@ -20,7 +20,7 @@ describe("cloudcommons/cli:terraform", function () {
         it('Generates required files', () => {
             assert.file('LICENSE');
             assert.file('.gitignore');
-            assert.file('__init__.tf');
+            assert.file('__init__.tf.json');
             assert.file('variables.tf.json');
         });
 
@@ -29,8 +29,8 @@ describe("cloudcommons/cli:terraform", function () {
         });
 
         it('Init file is OK', () => {
-            assert.fileContent('__init__.tf', `required_version = "${prompts.version}"`);
-            assert.fileContent('__init__.tf', `backend "${prompts.backendType}"`);
+            assert.fileContent('__init__.tf.json', `"required_version": "${prompts.version}"`);
+            assert.fileContent('__init__.tf.json', `${prompts.backendType}`);
         });
 
         it('Copies the variables', () => {
@@ -59,7 +59,7 @@ describe("cloudcommons/cli:terraform", function () {
         it('Generates required files', () => {
             assert.file('LICENSE');
             assert.file('.gitignore');
-            assert.file('__init__.tf');
+            assert.file('__init__.tf.json');
             assert.file('variables.tf.json');
         });
 
@@ -68,12 +68,10 @@ describe("cloudcommons/cli:terraform", function () {
         });
 
         it('Init file is OK', () => {
-            assert.fileContent('__init__.tf', `required_version = "${prompts.version}"`);
-            assert.fileContent('__init__.tf', `backend "${prompts.backendType}"`);
-            assert.fileContent('__init__.tf', `hostname`);
-            assert.fileContent('__init__.tf', `= "${prompts.remoteHostname}"`);
-            assert.fileContent('__init__.tf', `organization`);
-            assert.fileContent('__init__.tf', `= "${prompts.remoteOrganization}"`);
+            assert.fileContent('__init__.tf.json', `"required_version": "${prompts.version}"`);
+            assert.fileContent('__init__.tf.json', `"${prompts.backendType}"`);
+            assert.fileContent('__init__.tf.json', `"hostname": "${prompts.remoteHostname}"`);
+            assert.fileContent('__init__.tf.json', `"organization": "${prompts.remoteOrganization}"`);
         });
 
         it('Copies the variables', () => {
@@ -103,7 +101,7 @@ describe("cloudcommons/cli:terraform", function () {
         it('Generates required files', () => {
             assert.file('LICENSE');
             assert.file('.gitignore');
-            assert.file('__init__.tf');
+            assert.file('__init__.tf.json');
             assert.file('variables.tf.json');
         });
 
@@ -112,16 +110,12 @@ describe("cloudcommons/cli:terraform", function () {
         });
 
         it('Init file is OK', () => {
-            assert.fileContent('__init__.tf', `required_version = "${prompts.version}"`);
-            assert.fileContent('__init__.tf', `backend "${prompts.backendType}"`);
-            assert.fileContent('__init__.tf', `resource_group_name`);
-            assert.fileContent('__init__.tf', `= "${prompts.azureRmResourceGroup}"`);
-            assert.fileContent('__init__.tf', `storage_account_name`);
-            assert.fileContent('__init__.tf', `= "${prompts.azureRmStorageAccountName}"`);
-            assert.fileContent('__init__.tf', `container_name`);
-            assert.fileContent('__init__.tf', `= "${prompts.azureRmContainerName}"`);
-            assert.fileContent('__init__.tf', `key`);
-            assert.fileContent('__init__.tf', `= "${prompts.azureRmContainerKey}"`);                        
+            assert.fileContent('__init__.tf.json', `"required_version": "${prompts.version}"`);
+            assert.fileContent('__init__.tf.json', `"${prompts.backendType}"`);
+            assert.fileContent('__init__.tf.json', `"resource_group_name": "${prompts.azureRmResourceGroup}"`);
+            assert.fileContent('__init__.tf.json', `"storage_account_name": "${prompts.azureRmStorageAccountName}"`);
+            assert.fileContent('__init__.tf.json', `"container_name": "${prompts.azureRmContainerName}"`);
+            assert.fileContent('__init__.tf.json', `"key": "${prompts.azureRmContainerKey}"`);
         });
 
         it('Copies the variables', () => {

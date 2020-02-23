@@ -38,6 +38,15 @@ module.exports = class extends TerraformGenerator {
   }
 
   install() {
+    if (this.answers.backendType === "remote" && !(process.env.test === "true")) {
+      this.terraform.init();
+      if (this.answers.createRemoteVariables === true) {
+        this.composeWith(require.resolve('../terraform-workspace'), {
+          name: "dev",
+          token: this.answers.token
+        });
+      }
+    }
   }
 
   end() {

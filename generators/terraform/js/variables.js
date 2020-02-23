@@ -15,6 +15,6 @@ module.exports = {
             }
         }
 
-        terraform.writeVariables(variables);
+        terraform.writeVariables(variables, configFile);
     }
 }
