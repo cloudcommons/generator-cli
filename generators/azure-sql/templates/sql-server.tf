@@ -1,6 +1,6 @@
 resource "azurerm_sql_server" "<%= name %>" {
   count                        = length(var.SQL_LOCATIONS)
-  name                         = "${var.SQL_NAME_PREFIX}-${var.SQL_LOCATIONS[count.index]}-${terraform.workspace}-${local.uid}"
+  name                         = "${var.SQL_NAME_PREFIX}-${var.SQL_LOCATIONS[count.index]}-${var.ENVIRONMENT}-${local.uid}"
   resource_group_name          = <%= resourceGroupReference %>
   location                     = var.SQL_LOCATIONS[count.index]
   version                      = var.SQL_VERSION
@@ -13,7 +13,7 @@ resource "azurerm_sql_server" "<%= name %>" {
   
   tags = {
     app         = var.APP
-    environment = terraform.workspace
+    environment = var.ENVIRONMENT
     instance    = local.uid
   }
 }

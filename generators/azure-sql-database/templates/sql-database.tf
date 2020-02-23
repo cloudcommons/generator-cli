@@ -9,7 +9,7 @@ resource "azurerm_sql_database" "<%= name %>" {
   requested_service_objective_name = var.DATABASE_REQUESTED_SERVICE_OBJETIVE_NAME
   tags = {
     app         = var.APP
-    environment = terraform.workspace
+    environment = var.ENVIRONMENT
     instance    = local.uid
   }
 }

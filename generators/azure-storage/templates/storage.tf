@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "<%= name %>" {
-  name                = lower("${var.STORAGE_NAME}${terraform.workspace}${local.uid}")
+  name                = lower("${var.STORAGE_NAME}${var.ENVIRONMENT}${local.uid}")
   resource_group_name = <%= resourceGroupReference %>
   location            = <%= locationReference %>
   account_kind        = var.STORAGE_ACCOUNT_KIND
@@ -9,7 +9,7 @@ resource "azurerm_storage_account" "<%= name %>" {
 
   tags = {
     app         = var.APP
-    environment = terraform.workspace
+    environment = var.ENVIRONMENT
     instance    = local.uid
   }
 }

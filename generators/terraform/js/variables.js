@@ -4,12 +4,16 @@ module.exports = {
             "variable": {
                 APP: {
                     type: "string",
-                    description: "Application to which the resources belongs to",
+                    description: "(Required) Application to which the resources belongs to",
                     default: answers.app
+                },
+                ENVIRONMENT: {
+                    type: "string",
+                    description: "(Required) Environment name. Used in most cloudcommon names. Short names without special characters are encouraged."
                 },
                 CREATOR: {
                     type: "string",
-                    description: "Creator of the resources",
+                    description: "(Required) Creator of the resources",
                     default: "cloudcommons"                   
                 }
             }
