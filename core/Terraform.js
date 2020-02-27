@@ -185,7 +185,7 @@ module.exports = class {
      * @param {*} value 
      */
     isDependency(value) {
-        return value && value.includes('.');
+        return value && value.includes('.') && !value.startsWith('var.');
     }
 
     /**

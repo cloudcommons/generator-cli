@@ -28,13 +28,14 @@ module.exports = {
                 }
             }
         }
-
+        
         if (!terraform.isDependency(answers.databaseServer)) {
             variables.variable.DATABASE_SERVER = {
                 type: "string",
                 description: "(Required) Database server to create the database at"
             }
-
+        }
+        if (!terraform.isDependency(answers.databaseServerResourceGroup)) {
             variables.variable.DATABASE_SERVER_RESOURCE_GROUP = {
                 type: "string",
                 description: "(Required) Resource group where the SQL Server is located"
