@@ -3,7 +3,7 @@ locals {
 }
 
 resource "azurerm_redis_cache" "<%= name %>" {
-  name                      = redis_name = "${var.REDIS_NAME}-${var.ENVIRONMENT}-${local.uid}"
+  name                      = "${var.REDIS_NAME}-${var.ENVIRONMENT}-${local.uid}"
   location                  = <%= locationReference %>
   resource_group_name       = <%= resourceGroupReference %>
   capacity                  = var.REDIS_CAPACITY
