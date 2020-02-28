@@ -1,14 +1,12 @@
+const coreProviders = require('../../../core/providers');
+
 module.exports = {
     copy: function (terraform, answers) {
         
         var providers = {
             provider: {
-                helm: {
-                    version: "~> 1.0"                    
-                },
-                template: {
-                    version: "~> 2.1"                    
-                },                
+                helm: coreProviders.helm(),
+                template: coreProviders.template()         
             }
         }
 

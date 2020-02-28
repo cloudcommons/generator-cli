@@ -29,9 +29,15 @@ module.exports.local = function () {
     };
 }
 
-module.exports.helm = function(kubernetes) {
+module.exports.helm = function (kubernetes = {}) {
     return {
         version: "~> 1.0.0",
         kubernetes: kubernetes
     }
+}
+
+module.exports.template = function () {
+    return {
+        version: "~> 2.1"
+    };
 }

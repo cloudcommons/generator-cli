@@ -1,11 +1,11 @@
+const coreProviders = require('../../../core/providers');
+
 module.exports = {
     copy: function (terraform, answers) {
         
         var providers = {
             provider: {
-                kubernetes: {
-                    version: "1.10"                    
-                }
+                kubernetes: coreProviders.kubernetes()
             }
         }
 
