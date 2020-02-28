@@ -40,16 +40,16 @@ module.exports = class extends TerraformGenerator {
   conflicts() {
   }
 
-  install() {
+  async install() {
     this.log(`Creating workspace '${this.answers.name}'`)
     this.terraform.createWorkspace(this.answers.name);
     if (this.answers.isRemote) {
       var provider =  this.provider.remote;
       var workspace = `${provider.workspaces.prefix}${this.answers.name}`;
       this.log(`Creating remote variables`);
-      this.terraform.createVariables(this.destinationPath('variables.tf.json'), this.destinationPath('terraform.tfvars.json'), provider.organization, workspace, this.answers.token);
+      await this.terraform.createVariables(this.destinationPath('variables.tf.json'), this.destinationPath('terraform.tfvars.json'), provider.organization, workspace, this.answers.token);
       this.log(`Creating remote AzureRM environment variables`);
-      this.terraform.createAzureRmVariables(provider.organization, workspace, this.answers.token);
+      await this.terraform.createAzureRmVariables(provider.organization, workspace, this.answers.token);
       this.log(`Environment ready to use`);
     }
   }

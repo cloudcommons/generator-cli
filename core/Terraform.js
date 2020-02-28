@@ -198,7 +198,7 @@ module.exports = class {
         return !this.isDependency(value) ? value : undefined
     }
 
-    createVariables(varFile, configFile, organisation, workspace, token) {
+    async createVariables(varFile, configFile, organisation, workspace, token) {
         var vars = require(varFile);
         var config = {};
         try { config = require(configFile); } catch { }
@@ -264,17 +264,18 @@ function getVariable(workspaceId, key, category, description, value = null, hcl 
     };
 }
 
-function createVars(client, vars) {
+async function createVars(client, vars) {
+    
     for (var i = 0; i < vars.length; i++) {        
         v = vars[i];
-        client.post(`/vars`, v).catch(e => {
+        // Sending vars one by one. Otherwise Terraform may return "429 Too many requests"
+        await client.post(`/vars`, v).catch(e => {
             if (e.response && e.response.status === 422) { // Variable already exists
                 var body = JSON.parse(e.response.config.data);
                 console.log(`'${body.data.attributes.key}' already exists. Skipping...`);
             }
             else {
-                console.log(`Error sending variable.`);
-                console.log(e.response);
+                //console.log(`Error sending variable: ${e.response ? e.response.status : ""}: ${e.response ? e.response.statusText : ""}`);
             }
         });
     }
