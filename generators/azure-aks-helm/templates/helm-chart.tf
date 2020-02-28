@@ -1,6 +1,6 @@
 locals {
-  release_name = "${var.RELEASE_NAME}-${terraform.workspace}-${local.uid}"
-  namespace = "${var.RELEASE_NAME}-${terraform.workspace}-${local.uid}"
+  release_name = "${var.RELEASE_NAME}-${var.ENVIRONMENT}-${local.uid}"
+  namespace = "${var.RELEASE_NAME}-${var.ENVIRONMENT}-${local.uid}"
 }
 
 data "template_file" "values_yaml" {

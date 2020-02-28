@@ -15,3 +15,13 @@ module.exports.isInteger = function(value) {
     var error = `'${value}' is not valid integer value`
     return evaluate(expression, value, error);
 }
+
+module.exports.looksSensitive = function(value) {
+    const expression = /\b(\w*(secret|password)\w*)\b/gim;
+    return expression.test(value);
+}
+
+module.exports.looksLikeTerraformObject = function(value) {
+    const expression = /[{}\[\]()]/gim;
+    return expression.test(value);
+}

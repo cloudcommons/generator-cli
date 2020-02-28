@@ -22,12 +22,12 @@ module.exports = {
                 },                
                 REDIS_PRIMARY_KEY: {
                     description: "The Primary Access Key for the Redis Instance",
-                    value: terraform.toVariable(`${outputBase}.primary_key`),
+                    value: terraform.toVariable(`${outputBase}.primary_access_key`),
                     sensitive: true
                 },
                 REDIS_SECONDARY_KEY: {
                     description: "The Secondary Access Key for the Redis Instance",
-                    value: terraform.toVariable(`${outputBase}.secondary_key`),
+                    value: terraform.toVariable(`${outputBase}.secondary_access_key`),
                     sensitive: true
                 },
                 REDIS_CONFIGURATION: {

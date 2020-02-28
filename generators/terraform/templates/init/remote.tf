@@ -3,9 +3,10 @@ terraform {
   backend "remote" {
     hostname     = "<%= remoteHostname %>"
     organization = "<%= remoteOrganization %>"
+    token        = "<%=  remoteToken%>"
 
     workspaces {
-      name = "<%= remoteWorkspace %>"
+      prefix = "<%= remoteWorkspacePrefix %>"
     }
   }
 }

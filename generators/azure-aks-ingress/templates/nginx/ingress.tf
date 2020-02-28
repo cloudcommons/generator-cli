@@ -1,6 +1,6 @@
 locals {
   ingress_enabled = var.INGRESS_ENABLED
-  ingress_class = local.ingress_enabled ? "${var.APP}-${terraform.workspace}-ingress-${local.uid}" : null
+  ingress_class = local.ingress_enabled ? "${var.APP}-${var.ENVIRONMENT}-ingress-${local.uid}" : null
   ingress_load_balancer_ip = <%- loadBalancerIpReference %>
 }
 
@@ -17,7 +17,7 @@ data "template_file" "ingress_chart_values_yaml" {
 resource "helm_release" "<%= name %>-ingress" {
     count           = local.ingress_enabled ? 1 : 0
     name            = local.ingress_class
-    namespace       = "<%= inamespace %>-${terraform.workspace}-${local.uid}"
+    namespace       = "<%= inamespace %>-${var.ENVIRONMENT}-${local.uid}"
     chart           = var.INGRESS_CHART
     version         = var.INGRESS_CHART_VERSION
     timeout         = 600

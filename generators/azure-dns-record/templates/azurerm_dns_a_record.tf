@@ -10,7 +10,7 @@ resource "azurerm_dns_a_record" "<%= name %>" {
   <% } %>  
   tags = {
     app         = var.APP
-    environment = terraform.workspace
+    environment = var.ENVIRONMENT
     instance    = local.uid
   }  
 }

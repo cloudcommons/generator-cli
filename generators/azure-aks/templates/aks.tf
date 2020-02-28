@@ -1,10 +1,10 @@
 locals {
-  aks_name = "${var.KUBERNETES_CLUSTER_NAME}-${terraform.workspace}-${local.uid}"  
+  aks_name = "${var.KUBERNETES_CLUSTER_NAME}-${var.ENVIRONMENT}-${local.uid}"  
 }
 
 module "<%= name %>-kubernetes" {
   source                    = "cloudcommons/kubernetes/azure"
-  version                   = "0.1.6"
+  version                   = "0.2.0"
   name                      = local.aks_name
   location                  = var.LOCATION
   resource_group            = <%= resourceGroupReference %>
@@ -18,6 +18,9 @@ module "<%= name %>-kubernetes" {
   node_pool_os_disk_size_gb = var.OS_DISK_SIZE_GB
   node_pool_count           = var.KUBERNETES_AGENT_COUNT  
   creator                   = var.CREATOR
-  environment               = terraform.workspace
+  environment               = var.ENVIRONMENT
+  auto_scaling_enable       = var.AUTO_SCALING_ENABLED
+  auto_scaling_min_count    = var.AUTO_SCALING_MIN_COUNT
+  auto_scaling_max_count    = var.AUTO_SCALING_MAX_COUNT
   vnet_ddos_enabled         = false
 }

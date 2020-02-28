@@ -48,9 +48,13 @@
         "value": "../azure-devops-terraform"
     },
     {
-        "name": "Terraform - Configuration",
+        "name": "Terraform - Backend",
         "value": "../terraform"
     },
+    {
+        "name": "Terraform - Workspace",
+        "value": "../terraform-workspace"
+    },    
     {
         "name": "Terraform - Import",
         "value": "../terraform-import"

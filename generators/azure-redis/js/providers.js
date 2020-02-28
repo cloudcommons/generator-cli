@@ -1,11 +1,11 @@
+const coreProviders = require('../../../core/providers');
+
 module.exports = {
     copy: function (terraform, answers) {
         
         var providers = {
             provider: {
-                azurerm: {
-                    version: "~> 1.41"                    
-                },
+                azurerm: coreProviders.azurerm()
             }
         }
 

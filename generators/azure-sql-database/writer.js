@@ -10,8 +10,8 @@ module.exports = function (options, terraform, fsTools, answers) {
     answers = Object.assign({
         name: options.databaseName ? options.databaseName: answers.databaseName,
         databaseCreateMode: answers.databaseRestore === false ? "Default" : "Copy",
-        databaseServerResourceGroup: options.server ? `${options.server}.resource_group_name` : `var.DATABASE_SERVER_RESOURCE_GROUP`,
-        databaseServer: options.server ? `${options.server}.name` : `var.DATABASE_SERVER`,
+        databaseServerReference: terraform.isDependency(answers.databaseServer) ? `${answers.databaseServer}.name` : `var.DATABASE_SERVER`,
+        databaseResourceGroupReference: terraform.isDependency(answers.databaseServerResourceGroup) ? `${answers.databaseServerResourceGroup}.name` : `var.DATABASE_SERVER_RESOURCE_GROUP`
     }, answers);
 
     fsTools.copyTo(`sql-database.tf`, `${answers.name}-sql-database.tf`, answers);

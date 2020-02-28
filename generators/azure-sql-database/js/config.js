@@ -11,6 +11,9 @@ module.exports = {
 
         if (!terraform.isDependency(answers.databaseServer)) {
             config.DATABASE_SERVER = answers.databaseServer;
+        }
+                
+        if (!terraform.isDependency(answers.databaseServerResourceGroup)) {
             config.DATABASE_SERVER_RESOURCE_GROUP = answers.databaseServerResourceGroup;
         }
 

@@ -1,5 +1,7 @@
 
 const jsonMerge = require('./merge');
+const axios = require('axios');
+const regex = require('../core/regex');
 var workspace = null;
 
 /**
@@ -25,6 +27,7 @@ function write(fs, file, json) {
 }
 
 module.exports = class {
+
     constructor(fs, spawn, log) {
         this.fs = fs;
         this.spawn = spawn;
@@ -61,6 +64,10 @@ module.exports = class {
         return workspace;
     }
 
+    createWorkspace(workspace) {
+        return workspace = this.terraform(['workspace', 'new', workspace]);
+    }
+
     /**
      * Merges the given json config object into a tfvars.json
      * @param {*} config Configuration JSON object to merge
@@ -78,6 +85,16 @@ module.exports = class {
      */
     writeVariables(variables, file = 'variables.tf.json') {
         var merged = merge(this.fs, variables, file, "variable");
+        write(this.fs, file, merged);
+    }
+
+    /**
+     * Writes the given json backend object into a tf.json
+     * @param {*} backend 
+     * @param {*} file 
+     */
+    writeBackEnd(backend, file = "__init__.tf.json") {
+        var merged = merge(this.fs, backend, file);
         write(this.fs, file, merged);
     }
 
@@ -148,7 +165,7 @@ module.exports = class {
      * @param {*} azureId Azure resource id
      */
     import(name, azureId) {
-        generator.log(`terraform import ${name} ${azureId}`);
+        this.log(`terraform import ${name} ${azureId}`);
         return terraform(['import', name, azureId]);
     }
 
@@ -168,7 +185,7 @@ module.exports = class {
      * @param {*} value 
      */
     isDependency(value) {
-        return value && value.includes('.');
+        return value && value.includes('.') && !value.startsWith('var.');
     }
 
     /**
@@ -180,4 +197,97 @@ module.exports = class {
     resolveConfigDependency(value) {
         return !this.isDependency(value) ? value : undefined
     }
+
+    async createVariables(varFile, configFile, organisation, workspace, token) {
+        var vars = require(varFile);
+        var config = {};
+        try { config = require(configFile); } catch { }
+        var keys = Object.keys(vars.variable);
+        var client = getInstance(token);
+
+        client.get(`/organizations/${organisation}/workspaces/${workspace}`)            
+            .then(function (response) {
+                var variables = [];
+                for (var i = 0; i < keys.length; i++) {
+                    var ws = response.data.data;
+                    var key = keys[i];
+                    var variable = vars.variable[key];
+                    var value = config[key] !== undefined ? config[key] : variable.default !== undefined ? variable.default : null;
+                    variables.push(getVariable(ws.id, key, "terraform", variable.description, value, false, false));
+                }
+
+                createVars(client, variables);
+            })
+            .catch(e => this.log("Error getting organisation data"));
+    }
+
+    createAzureRmVariables(organisation, workspace, token) {
+        var client = getInstance(token);
+        client.get(`/organizations/${organisation}/workspaces/${workspace}`)            
+            .then(function (response) {
+                var variables = [];
+                var ws = response.data.data;
+                variables.push(getVariable(ws.id, "ARM_CLIENT_ID", "env", "(Required) The Client ID which should be used. This can also be sourced from the ARM_CLIENT_ID Environment Variable."))
+                variables.push(getVariable(ws.id, "ARM_TENANT_ID", "env", "(Required) The Tenant ID which should be used. This can also be sourced from the ARM_TENANT_ID Environment Variable."))
+                variables.push(getVariable(ws.id, "ARM_CLIENT_SECRET", "env", "(Required) The Client ID which should be used. This can also be sourced from the ARM_CLIENT_SECRET Environment Variable.", null, false ,true))
+                variables.push(getVariable(ws.id, "ARM_SUBSCRIPTION_ID", "env", "(Required) The Client ID which should be used. This can also be sourced from the ARM_SUBSCRIPTION_ID Environment Variable."))
+                createVars(client, variables);
+            })
+            .catch(e => this.log("Error getting organisation data"));
+    }
+}
+
+function getVariable(workspaceId, key, category, description, value = null, hcl = false, sensitive = false) {
+    sensitive = regex.looksSensitive(key) || sensitive; // Any secret that looks sensitive, will be sent to terraform as such
+    hcl = regex.looksLikeTerraformObject(value) || hcl;
+    value = hcl ? JSON.stringify(value) : value; // HCL variables are not JSON friendly and should be serialised properly
+    return {
+        "data": {
+            "type": "vars",
+            "attributes": {
+                "key": key,
+                "value": value,
+                "category": category,
+                "description": description,
+                "hcl": hcl,
+                "sensitive": sensitive
+            },
+            "relationships": {
+                "workspace": {
+                    "data": {
+                        "id": workspaceId,
+                        "type": "workspaces"
+                    }
+                }
+            }
+        }
+    };
+}
+
+async function createVars(client, vars) {
+    
+    for (var i = 0; i < vars.length; i++) {        
+        v = vars[i];
+        // Sending vars one by one. Otherwise Terraform may return "429 Too many requests"
+        await client.post(`/vars`, v).catch(e => {
+            if (e.response && e.response.status === 422) { // Variable already exists
+                var body = JSON.parse(e.response.config.data);
+                console.log(`'${body.data.attributes.key}' already exists. Skipping...`);
+            }
+            else {
+                //console.log(`Error sending variable: ${e.response ? e.response.status : ""}: ${e.response ? e.response.statusText : ""}`);
+            }
+        });
+    }
+}
+
+function getInstance(token) {
+    return axios.create({
+        baseURL: 'https://app.terraform.io/api/v2',
+        timeout: 1000,
+        headers: {
+            'Content-Type': 'application/vnd.api+json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
 }

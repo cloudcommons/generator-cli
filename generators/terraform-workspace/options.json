@@ -1,0 +1,12 @@
+{
+    "name": {
+        "desc": "Name of the workspace",
+        "alias": "n",
+        "type": "String"
+    },
+    "token": {
+        "desc": "Terraform Cloud/Enterprise token",
+        "alias": "t",
+        "type": "String"
+    }
+}

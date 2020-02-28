@@ -51,7 +51,7 @@ module.exports = class extends TerraformGenerator {
             return;
         }
 
-        this.terraform.init();
+        //this.terraform.init();
     }
 
     end() {

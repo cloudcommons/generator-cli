@@ -1,5 +1,5 @@
 resource "azurerm_search_service" "<%= name %>" {
-  name                = "${var.SEARCH_NAME}-${terraform.workspace}-${local.uid}"
+  name                = "${var.SEARCH_NAME}-${var.ENVIRONMENT}-${local.uid}"
   resource_group_name = <%= resourceGroupReference %>
   location            = <%= locationReference %>
   sku                 = var.SEARCH_SKU
@@ -8,6 +8,6 @@ resource "azurerm_search_service" "<%= name %>" {
 
   tags = {
     app         = var.APP
-    environment = terraform.workspace
+    environment = var.ENVIRONMENT
   }
 }

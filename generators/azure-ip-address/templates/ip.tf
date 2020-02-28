@@ -1,5 +1,5 @@
 locals {
-  <%=name %>_ip_name = "<%= name %>-${terraform.workspace}-${local.uid}"
+  <%=name %>_ip_name = "<%= name %>-${var.ENVIRONMENT}-${local.uid}"
 }
 
 resource "azurerm_public_ip" "<%=name %>" {
@@ -11,7 +11,7 @@ resource "azurerm_public_ip" "<%=name %>" {
 
   tags = {
     app         = var.APP
-    environment = terraform.workspace
+    environment = var.ENVIRONMENT
     instance    = local.uid
   }
 }
