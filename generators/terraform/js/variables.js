@@ -9,7 +9,8 @@ module.exports = {
                 },
                 ENVIRONMENT: {
                     type: "string",
-                    description: "(Required) Environment name. Used in most cloudcommon names. Short names without special characters are encouraged."
+                    description: "(Required) Environment name. Used in most cloudcommon names. Short names without special characters are encouraged.",
+                    default : "default"
                 },
                 CREATOR: {
                     type: "string",
