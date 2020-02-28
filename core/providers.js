@@ -28,3 +28,10 @@ module.exports.local = function () {
         version: "~> 1.4"
     };
 }
+
+module.exports.helm = function(kubernetes) {
+    return {
+        version: "~> 1.0.0",
+        kubernetes: kubernetes
+    }
+}
