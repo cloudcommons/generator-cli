@@ -12,6 +12,10 @@
         "value": "rbac"
     },
     {
+        "name": "Azure Active Directory Pod Id (aad-pod-id)",
+        "value": "aad-pod-id"
+    },    
+    {
         "name": "Cert-manager",
         "value": "cert-manager"
     },
