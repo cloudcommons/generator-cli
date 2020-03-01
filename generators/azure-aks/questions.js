@@ -96,7 +96,7 @@ module.exports = function (generator, az, terraform, configManager, resources) {
     questions.push({
         type: "input",
         name: "vmsMax",
-        message: "Kubernetes - Maximum nodes (The VNET will be create to accomodate this number. This decision is final and cannot be changed without destroy the cluster)",
+        message: "Kubernetes - Maximum nodes (The VNET will be created to accomodate this number. This decision is final and cannot be changed without destroying the cluster)",
         default: (answers) => configManager.getDefault("vmsMax", () => {
             switch (answers.sizingKind) {
                 case "development":
