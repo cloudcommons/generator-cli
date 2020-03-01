@@ -4,51 +4,57 @@ module.exports = {
             "variable": {
                 CREATOR: {
                     type: "string",
-                    description: "Creator of this deployment"
+                    description: "(Required) Creator of this deployment"
                 },
                 LOCATION: {
                     type: "string",
-                    description: "Azure region to perform the deployment"
+                    description: "(Required) Azure region to perform the deployment"
                 },
                 KUBERNETES_CLUSTER_NAME: {
                     type: "string",
-                    description: "Name of Kubernetes cluster"
+                    description: "(Required) Name of Kubernetes cluster"
                 },
                 ADMIN_USER: {
                     type: "string",
-                    description: "VM admin username"
+                    description: "(Required) VM admin username"
                 },
                 SSH_KEY: {
                     type: "string",
-                    description: "VM SSH Key"
+                    description: "(Required) VM SSH Key"
                 },
                 KUBERNETES_VERSION: {
                     type: "string",
-                    description: "Kubernetes version to deploy"
+                    description: "(Required) Kubernetes version to deploy"
                 },
                 KUBERNETES_AGENT_COUNT: {
                     type: "string",
-                    description: "Number of Kubernetes agents required"
+                    description: "(Required) Number of Kubernetes agents required"
                 },
                 KUBERNETES_VM_SIZE: {
                     type: "string",
-                    description: "M size used for cluster"
+                    description: "(Required) VM size used for cluster"
                 },
                 OS_DISK_SIZE_GB: {
                     type: "number",
-                    description: "Disk size of VMs"
+                    description: "(Required) Disk size of VMs"
                 },
                 KUBERNETES_CLIENT_ID: {
                     type: "string",
-                    description: "Kubernetes client ID (from Azure AD Service Principal)"
+                    description: "(Required) Kubernetes client ID (from Azure AD Service Principal)"
                 },
                 KUBERNETES_CLIENT_SECRET: {
                     type: "string",
-                    description: "Kubernetes client secret (from Azure AD Service Principal)"
+                    description: "(Required) Kubernetes client secret (from Azure AD Service Principal)"
+                },
+                KUBE_DASHBOARD_ENABLED: {
+                    type: "boolean",
+                    description: "(Optional) Is the Kubernetes Dashboard enabled?. Defaults to false",
+                    default: false
                 },
                 RBAC_ENABLED: {
                     type: "bool",
-                    description: "(Optional) Enable Kubernetes Role-Based Access Control. Defaults to true"
+                    description: "(Optional) Enable Kubernetes Role-Based Access Control. Defaults to true",
+                    default: true
                 },
                 AUTO_SCALING_ENABLED: {
                     type: "bool",
@@ -62,10 +68,29 @@ module.exports = {
                 },
                 AUTO_SCALING_MAX_COUNT: {
                     type: "number",
-                    description: `((Optional) The maximum number of nodes which should exist in this Node Pool. If specified this must be between 1 and 100. Defaults to ${answers.maxNodeCount}.`,
+                    description: `(Optional) The maximum number of nodes which should exist in this Node Pool. If specified this must be between 1 and 100. Defaults to ${answers.maxNodeCount}.`,
                     default: answers.maxNodeCount
-                }                
+                },
+                VNET_ADDRESS_SPACE: {
+                    type: "string",
+                    description: ("(Required) VNET Address space")
+                },
+                VNET_CLUSTER_CIDR: {
+                    type: "string",
+                    description: ("(Required) Cluster Subnet CIDR. Should be part of the VNET_ADDRESS_SPACE vnet")
+                },
+                VNET_SERVICE_CIDR: {
+                    type: "string",
+                    description: ("(Required) Service Subnet CIDR. Should be part of the VNET_ADDRESS_SPACE vnet")
+                }
             }
+        }
+
+        if (answers.networkConfig.ingressSubnet) {
+            variables.variable.VNET_INGRESS_CIDR = {
+                type: "string",
+                description: ("(Required) Service Subnet CIDR. Should be part of the VNET_ADDRESS_SPACE vnet")
+            };
         }
 
         if (!terraform.isDependency(answers.resourceGroup)) {

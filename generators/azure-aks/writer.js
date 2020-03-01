@@ -1,28 +1,31 @@
-var config = require('./js/config');
-var variables = require('./js/variables');
-var outputs = require('./js/outputs');
-var providers = require('./js/providers');
+const config = require('./js/config');
+const variables = require('./js/variables');
+const outputs = require('./js/outputs');
+const providers = require('./js/providers');
+const clusterPlanner = require('./js/clusterPlanner');
 /**
  * Application writer
  */
 module.exports = function (terraform, fsTools, answers, options) {
-
-    answers = Object.assign({        
+    answers = Object.assign({
         acrEnabled: answers.features.includes("acr"),
         rbacEnabled: answers.features.includes("rbac"),
         autoScalingEnabled: answers.features.includes("auto-scaler"),
         aadPodId: answers.features.includes("aad-pod-id"),
+        kubeDashboardEnabled: answers.features.includes("kube-dashboard"),
         minNodeCount: this.autoScalingEnabled === true ? answers.minNodeCount : 0,
         maxNodeCount: this.autoScalingEnabled === true ? answers.maxNodeCount : 0,
         resourceGroupReference: terraform.resolveDependency(answers.resourceGroup, `${answers.resourceGroup}.name`, "var.AKS_RESOURCE_GROUP_NAME"),
-        useHelm2: options["helm2"] !== undefined
+        useHelm2: options["helm2"] !== undefined,
+        networkConfig: getNetworkConfiguration(answers)
     }, answers);
 
     config.copy(terraform, answers);
     variables.copy(terraform, answers);
     outputs.copy(terraform, answers);
     providers.copy(terraform, answers);
-    fsTools.copy("aks.tf", answers);    
+    fsTools.copy("aks.tf", answers); 
+    fsTools.writeJSON(answers.networkConfig, "aks-network-sizing.json");   
     if (answers.features.includes("cert-manager")) {
         fsTools.copy(`cert-manager/${answers.certManagerVersion}/crds.yml`, answers);
         fsTools.copy(`cert-manager/${answers.certManagerVersion}/cluster-issuer.yml`, answers);
@@ -34,11 +37,10 @@ module.exports = function (terraform, fsTools, answers, options) {
         fsTools.copyTo("atarraya/atarraya.tf", "atarraya.tf", answers);
     }
 
-    if (!answers.useHelm2)
-    {
+    if (!answers.useHelm2) {
         var helmPrivder = require('./templates/helm/v3/providers.js');
         helmPrivder.copy(terraform, answers);
-    } else {         
+    } else {
         fsTools.copyTo("helm/v2/cluster-role.tf", "tiller-cluster-role.tf");
         fsTools.copyTo("helm/v2/role-binding.tf", "tiller-role-binding.tf");
         fsTools.copyTo("helm/v2/service-account.tf", "tiller-service-account.tf");
@@ -56,4 +58,8 @@ module.exports = function (terraform, fsTools, answers, options) {
             //fsTools.copyTo("aad-pod-id/aad-pod-id.tf", "aad-pod-id.tf", answers);
         }
     }
+}
+
+function getNetworkConfiguration(answers) {    
+    return clusterPlanner.getNetworkConfiguration(answers.networkPluginCidr, answers.sizingAccesibility, answers.vmsMax, answers.podsPerNode);
 }

@@ -1,5 +1,6 @@
-var features = require('./choices/features');
-var regex = require('../../core/regex');
+const features = require('./choices/features');
+const networkConfiguration = require('./choices/networkConfiguration');
+const regex = require('../../core/regex');
 
 module.exports = function (generator, az, terraform, configManager, resources) {
     var questions = [];
@@ -38,17 +39,98 @@ module.exports = function (generator, az, terraform, configManager, resources) {
 
     questions.push({
         type: "list",
+        name: "sizingKind",
+        message: "Sizing assistant - What is the purpose of your cluster?",
+        choices: networkConfiguration.kind,
+        default: configManager.getDefault("sizingKind", "development")
+    });
+
+    questions.push({
+        type: "list",
+        name: "sizingAccesibility",
+        message: "Sizing assistant - Cluster accesibility?",
+        choices: networkConfiguration.accesibility,
+        default: configManager.getDefault("sizingAccesibility", "public")
+    });
+
+    questions.push({
+        type: "list",
         name: "vmsize",
         message: "Kubernetes - Virtual machine size",
         choices: (answers) => az.vmSkus(answers.location),
-        default: configManager.getDefault("vmsize", "Standard_DS3_v2")
+        default: (answers) => configManager.getDefault("vmsize", () => {
+            switch (answers.sizingKind) {
+                case "development":
+                    return "Standard_DS1_v2";
+                case "production-small":
+                    return "Standard_DS2_v2";
+                case "production-large":
+                    return "Standard_DS3_v2";
+                default:
+                    return "Standard_DS2_v2";
+            }
+        })
     });
 
     questions.push({
         type: "input",
         name: "vms",
-        message: "Kubernetes - Nodes",
-        default: configManager.getDefault("vms", 3)
+        message: "Kubernetes - Number of initial nodes (This can be changed in the future)",
+        default: (answers) => configManager.getDefault("vms", () => {
+            switch (answers.sizingKind) {
+                case "development":
+                    return 1;
+                case "production-small":
+                    return 3;
+                case "production-medium":
+                    return 10;
+                case "production-large":
+                    return 50;
+                default:
+                    return 4;
+            }
+        }),
+        validate: regex.isInteger
+    });
+
+    questions.push({
+        type: "input",
+        name: "vmsMax",
+        message: "Kubernetes - Maximum nodes (The VNET will be create to accomodate this number. This decision is final and cannot be changed without destroy the cluster)",
+        default: (answers) => configManager.getDefault("vmsMax", () => {
+            switch (answers.sizingKind) {
+                case "development":
+                    return 4;
+                case "production-small":
+                    return 12;
+                case "production-medium":
+                    return 40;
+                case "production-large":
+                    return 200;
+                default:
+                    return 4;
+            }
+        }),
+        validate: regex.isInteger
+    });
+
+    questions.push({
+        type: "input",
+        name: "podsPerNode",
+        message: "Kubernetes - Pods per node (This decision is final and cannot be changed without destroy the cluster)",
+        default: (answers) => configManager.getDefault("podsPerNode", () => {
+            switch (answers.sizingKind) {
+                case "development":
+                    return 110;
+                case "production-small":
+                case "production-medium":
+                case "production-large":
+                    return 60;
+                default:
+                    return 30;
+            }
+        }),
+        validate: regex.isInteger
     });
 
     questions.push({
@@ -88,6 +170,15 @@ module.exports = function (generator, az, terraform, configManager, resources) {
     });
 
     questions.push({
+        type: "input",
+        name: "networkPluginCidr",
+        message: "Network (CNI) - VNET Cidr",
+        when: (answers) => answers.features.includes("network-plugin"),
+        default: configManager.getDefault("networkPluginCidr", "172.0.0.0"),
+        validate: regex.isIpAddress
+    });
+
+    questions.push({
         type: "list",
         name: "certManagerVersion",
         message: "Cert-manager - Version",
@@ -111,7 +202,7 @@ module.exports = function (generator, az, terraform, configManager, resources) {
         when: (answers) => answers.features.includes("auto-scaler"),
         validate: validateMinCount,
         default: configManager.getDefault("issuerEmail")
-    }); 
+    });
 
     questions.push({
         type: "input",
@@ -121,8 +212,6 @@ module.exports = function (generator, az, terraform, configManager, resources) {
         validate: validateMaxCount,
         default: configManager.getDefault("issuerEmail")
     });
-
-    
 
     return questions;
 }
@@ -140,3 +229,4 @@ function validateMaxCount(value, answers) {
     if (answers.minNodeCount < value) return `The maximum number of nodes should greater than the minimum (${minValue})`;
     return true;
 }
+

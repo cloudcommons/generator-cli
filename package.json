@@ -1,10 +1,10 @@
 {
   "name": "@cloudcommons/generator-cli",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A generator to produce cloud common boilerplate code using Terraform",
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha --resursive",
-    "test:grep": "node node_modules/mocha/bin/mocha --resursive --grep cloudcommons/cli:azure-resource-group"
+    "test:grep": "node node_modules/mocha/bin/mocha --resursive --grep aks-sizing-tests"
   },
   "author": {
     "name": "Sergio Sisternes",
@@ -16,6 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
+    "cidr-split": "^0.1.2",
     "ip-range-check": "^0.2.0",
     "yeoman-generator": "^4.4.0"
   },
