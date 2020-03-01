@@ -16,7 +16,10 @@ describe("cloudcommons/cli:azure-aks", function () {
                 sshKey: 'sskKey',
                 clientId: 'cliendId',
                 clientSecret: 'clientSecret',
-                features: ["network-plugin", "network-policy", "rbac"]
+                features: ["network-plugin", "network-policy", "rbac"],
+                sizingKind: "development",
+                sizingAccesibility: "public",
+                networkPluginCidr: "172.0.0.0"
             };
 
             before(done => {
@@ -103,7 +106,10 @@ describe("cloudcommons/cli:azure-aks", function () {
                 sshKey: 'sskKey',
                 clientId: 'cliendId',
                 clientSecret: 'clientSecret',
-                features: ["network-plugin", "network-policy", "rbac"]
+                features: ["network-plugin", "network-policy", "rbac"],
+                sizingKind: "development",
+                sizingAccesibility: "public",
+                networkPluginCidr: "172.0.0.0"                    
             };
 
             before(done => {
@@ -187,7 +193,10 @@ describe("cloudcommons/cli:azure-aks", function () {
                 clientSecret: 'clientSecret',
                 minNodeCount: 1,
                 maxNodeCount: 10,
-                features: ["auto-scaler"]
+                sizingKind: "development",
+                sizingAccesibility: "public",
+                networkPluginCidr: "172.0.0.0",
+                features: ["network-plugin", "auto-scaler"]
             };
 
             before(done => {
@@ -362,7 +371,10 @@ describe("cloudcommons/cli:azure-aks", function () {
                 sshKey: 'sskKey',
                 clientId: 'cliendId',
                 clientSecret: 'clientSecret',
-                features: ["network-plugin", "network-policy", "rbac"]
+                features: ["network-plugin", "network-policy", "rbac"],
+                sizingKind: "development",
+                sizingAccesibility: "public",
+                networkPluginCidr: "172.0.0.0"                
             };
 
             before(done => {
@@ -441,7 +453,10 @@ describe("cloudcommons/cli:azure-aks", function () {
                 sshKey: 'sskKey',
                 clientId: 'cliendId',
                 clientSecret: 'clientSecret',
-                features: ["network-plugin", "network-policy", "rbac"]
+                features: ["network-plugin", "network-policy", "rbac"],
+                sizingKind: "development",
+                sizingAccesibility: "public",
+                networkPluginCidr: "172.0.0.0"                
             };
 
             before(done => {
@@ -526,7 +541,13 @@ describe("cloudcommons/cli:azure-aks", function () {
                 clientSecret: 'clientSecret',
                 minNodeCount: 1,
                 maxNodeCount: 10,
-                features: ["auto-scaler"]
+                sizingKind: "development",
+                sizingAccesibility: "public",
+                networkPluginCidr: "172.0.0.0",
+                features: ["network-plugin", "auto-scaler"],
+                sizingKind: "development",
+                sizingAccesibility: "public",
+                networkPluginCidr: "172.0.0.0"                
             };
 
             before(done => {
@@ -614,7 +635,10 @@ describe("cloudcommons/cli:azure-aks", function () {
                 sshKey: 'sskKey',
                 clientId: 'cliendId',
                 clientSecret: 'clientSecret',
-                features: ["network-plugin", "network-policy", "rbac", "aad-pod-id"]
+                features: ["network-plugin", "network-policy", "rbac", "aad-pod-id"],
+                sizingKind: "development",
+                sizingAccesibility: "public",
+                networkPluginCidr: "172.0.0.0"                
             };
 
             before(done => {

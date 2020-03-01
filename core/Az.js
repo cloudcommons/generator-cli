@@ -9,7 +9,7 @@ module.exports = class {
      * @param {*} args 
      */
     _az(args) {
-        if (process.env.test === "true") return this._azMock(args);        
+        if (process.env.test === "true") return this._azMock(args);
         var rgs = this.spawn('az', args, {
             stdio: ['ignore', 'pipe', process.stderr]
         });
@@ -30,19 +30,18 @@ module.exports = class {
 
     _azMock(args) {
         var filename = "../test/mocks/azure/responses/";
-        for (var i = 0; i < args.length; i++)
-        {
+        for (var i = 0; i < args.length; i++) {
             var arg = new String(args[i]);
             if (arg.startsWith('-')) {
                 break;
             }
-            
+
             filename += `${arg}-`
         }
 
-        filename = filename.substring(0, filename.length - 1);        
+        filename = filename.substring(0, filename.length - 1);
         try {
-            return require(filename);            
+            return require(filename);
         } catch (e) {
             throw new Error(`Error loading mock file: ${filename}`);
         }
@@ -75,7 +74,25 @@ module.exports = class {
      * @param {*} location 
      */
     vmSkus(location) {
-        return this._az(['vm', 'list-skus', '-l', location, '-o', 'json']);
+        return this._az(['vm', 'list-skus', '-l', location, '-o', 'json']).map(function (vm) {
+
+            var capabilities = "";
+            if (vm.capabilities) {
+                var cores = vm.capabilities.find(c => c.name === "vCPUs");
+                var memory = vm.capabilities.find(c => c.name === "MemoryGB");
+                var gpus = vm.capabilities.find(c => c.name === "GPUs");
+
+                capabilities += cores ? `vCPUs: ${cores.value} `: "";
+                capabilities += memory ? `Memory: ${memory.value} `: "";
+                capabilities += gpus ? `GPUs: ${gpus.value}`: "";
+                capabilities = `(${capabilities})`;
+            }
+
+            return {
+                name: `${vm["name"]} ${capabilities}`,
+                value: vm["name"]
+            }
+        });
     }
 
     /**

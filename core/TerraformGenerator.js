@@ -34,6 +34,15 @@ var FsTools = class {
             parameters
         );
     }
+
+    /**
+     * Writes a JSON object to a file
+     * @param {*} json 
+     * @param {*} destination 
+     */
+    writeJSON(json, destination) {
+        this.generator.fs.writeJSON(this.generator.destinationPath(destination), json);
+    }
 }
 
 module.exports = class extends Generator {

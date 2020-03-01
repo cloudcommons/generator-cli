@@ -20,6 +20,10 @@
         "value": "cert-manager"
     },
     {
+        "name": "Kubernetes Dashboard",
+        "value": "kube-dashboard"
+    },      
+    {
         "name": "Atarraya (Experimental - Key Vault Secret Injector for AKS)",
         "value": "atarraya"
     },
