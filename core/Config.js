@@ -39,6 +39,7 @@ module.exports = class {
      * @param {*} defaultValue 
      */
     getDefault(key, defaultValue) {
+        if (typeof(defaultValue) === "function") defaultValue = defaultValue();
         var generatorConfig = this.get(this.generator.configName);
         if (this.generator.options[key] !== undefined) return this.generator.options[key];
         return generatorConfig && generatorConfig[key] ? generatorConfig[key] : defaultValue;

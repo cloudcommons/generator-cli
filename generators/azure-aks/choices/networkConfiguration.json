@@ -1,0 +1,34 @@
+{
+    "kind": [
+        {
+            "name": "Development",
+            "value": "development"
+        },
+        {
+            "name": "Production - Small cluster",
+            "value": "production-small"
+        },
+        {
+            "name": "Production - Medium cluster",
+            "value": "production-medium"
+        },
+        {
+            "name": "Production - Large cluster",
+            "value": "production-large"
+        }        
+    ],
+    "accesibility": [
+        {
+            "name": "Public - Accesible from the internet only",
+            "value": "public"
+        },
+        {
+            "name": "Private - Accesible from private IPs only",
+            "value": "private"
+        },
+        {
+            "name": "Hybrid - Accesible from private and public IPs",
+            "value": "hybrid"
+        }
+    ]
+}
