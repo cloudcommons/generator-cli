@@ -47,7 +47,7 @@ module.exports = {
                     description: "(Required) Kubernetes client secret (from Azure AD Service Principal)"
                 },
                 KUBE_DASHBOARD_ENABLED: {
-                    type: "boolean",
+                    type: "bool",
                     description: "(Optional) Is the Kubernetes Dashboard enabled?. Defaults to false",
                     default: false
                 },
