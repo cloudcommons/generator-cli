@@ -27,10 +27,9 @@ module.exports = function (terraform, fsTools, answers, options) {
     fsTools.copy("aks.tf", answers); 
     fsTools.writeJSON(answers.networkConfig, "aks-network-sizing.json");   
     if (answers.features.includes("cert-manager")) {
-        fsTools.copy(`cert-manager/${answers.certManagerVersion}/crds.yml`, answers);
-        fsTools.copy(`cert-manager/${answers.certManagerVersion}/cluster-issuer.yml`, answers);
         fsTools.copyTo(`cert-manager/${answers.certManagerVersion}/jetstack-helm-repo.tf`, "cert-manager-jetstack-helm-repo.tf", answers);
-        fsTools.copyTo(`cert-manager/${answers.certManagerVersion}/cert-manager.tf`, "cert-manager.tf", answers);
+        fsTools.copyTo(`cert-manager/${answers.certManagerVersion}/cert-manager.tf`, "cert-manager.tf", answers);        
+        fsTools.copy(`cert-manager/${answers.certManagerVersion}/crds`, answers);
     }
 
     if (answers.features.includes("atarraya")) {

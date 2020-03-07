@@ -1,20 +1,14 @@
-resource "local_file" "kubeconfig" {
-  sensitive_content = module.<%= name %>-kubernetes.kube_config_raw
-  filename = "cert-manager/v0.10.1/.kube/config"
-}
-
-resource "null_resource" "cert_manager" {
-  provisioner "local-exec" {
-    working_dir = "cert-manager/v0.10.1"
-    command     = "kubectl apply -f crds.yml --kubeconfig ./.kube/config && kubectl apply -f cluster-issuer.yml --kubeconfig ./.kube/config"
-  }
-  depends_on = [module.<%= name %>-kubernetes, local_file.kubeconfig]
-}
-
 resource "kubernetes_namespace" "cert-manager" {
   metadata {
     name = "cert-manager" 
   }
+}
+
+resource "helm_release" "cert_manager_crds" {
+  name       = "cert-manager-crds"  
+  chart      = "./cert-manager/v0.10.1/crds"
+  namespace  = kubernetes_namespace.cert-manager.metadata[0].name
+  depends_on = [module.<%= name %>-kubernetes]
 }
 
 resource "helm_release" "cert-manager" {
@@ -23,5 +17,5 @@ resource "helm_release" "cert-manager" {
   chart      = "cert-manager"
   version    = "v0.10.1"
   namespace  = kubernetes_namespace.cert-manager.metadata[0].name
-  depends_on = [module.<%= name %>-kubernetes, null_resource.cert_manager <%= useHelm2 ? ", kubernetes_cluster_role_binding.tiller" : "" %>]
+  depends_on = [module.<%= name %>-kubernetes, helm_release.cert_manager_crds <%= useHelm2 ? ", kubernetes_cluster_role_binding.tiller" : "" %>]
 }
