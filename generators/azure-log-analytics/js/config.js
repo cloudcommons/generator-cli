@@ -3,7 +3,7 @@ module.exports = {
 
         var config = {
             LOCATION: answers.location,
-            LOG_ANALYTICS_RENTION_DAYS: answers.retention
+            LOG_ANALYTICS_RETENTION_DAYS: answers.retention
         };
 
         if (!terraform.isDependency(answers.resourceGroup)) {
