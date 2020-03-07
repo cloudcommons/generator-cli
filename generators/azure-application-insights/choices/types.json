@@ -1,0 +1,25 @@
+[{
+    "name": "ASP.NET",
+    "value": "web"
+}, {
+    "name": "Java web",
+    "value": "java"    
+}, {
+    "name": "Node.JS",
+    "value": "Node.JS"    
+}, {
+    "name": "iOS",
+    "value": "ios"
+}, {
+    "name": "App Center",
+    "value": "MobileCenter"
+}, {
+    "name": "Windows Phone",
+    "value": "phone"
+}, {
+    "name": "Windows Store",
+    "value": "store"
+}, {
+    "name": "General",
+    "value": "Other"
+}]

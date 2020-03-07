@@ -1,0 +1,22 @@
+{
+    "name": {
+        "desc": "Specifies the name of the Application Insights component. Changing this forces a new resource to be created.",
+        "alias": "n",
+        "type": "String"
+    },
+    "resourceGroup": {
+        "desc": "The name of the resource group in which to create the Application Insights component.",
+        "alias": "g",
+        "type": "String"
+    },
+    "location": {
+        "desc": "Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created.",
+        "alias": "l",
+        "type": "String"
+    },
+    "retention": {
+        "desc": "(Optional) The workspace data retention in days. Possible values range between 30 and 730. Defaults to 30",
+        "alias": "r",
+        "type": "String"
+    }
+}
