@@ -52,6 +52,10 @@
         "value": "../azure-dns-record"
     },    
     {
+        "name": "Azure - DNS Zone",
+        "value": "../azure-dns-zone"
+    },        
+    {
         "name": "Azure - DevOps - Terraform pipeline",
         "value": "../azure-devops-terraform"
     },
