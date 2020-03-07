@@ -4,6 +4,10 @@
         "value": "../azure-resource-group"
     },    
     {
+        "name": "Azure - Application Insights",
+        "value": "../azure-application-insights"
+    },
+    {
         "name": "Azure - Kubernetes",
         "value": "../azure-aks"
     },
@@ -18,7 +22,11 @@
     {
         "name": "Azure - Kubernetes - Ingress",
         "value": "../azure-aks-ingress"
-    },        
+    },
+    {
+        "name": "Azure - Log Analytics",
+        "value": "../azure-log-analytics"
+    },
     {
         "name": "Azure - Storage Account",
         "value": "../azure-storage"
