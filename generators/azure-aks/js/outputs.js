@@ -27,7 +27,7 @@ module.exports = {
                 // }                
                 AKS_KUBE_CONFIG: {
                     description: "A kube_config block",
-                    value: terraform.toVariable(`${key}.kube_config_raw`),
+                    value: terraform.toVariable(`${key}.kube_config`),
                     sensitive: true
                 },
                 AKS_KUBE_CONFIG_RAW: {
