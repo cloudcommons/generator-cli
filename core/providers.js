@@ -1,6 +1,6 @@
 module.exports.kubernetes = function (config = null) {
     var provider = {
-        version: "= 1.10"
+        version: "~> 1.11.1"
     };
 
     if (config != null) {
