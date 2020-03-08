@@ -8,7 +8,7 @@ module.exports = {
                 null: coreProviders.null(),
                 local: coreProviders.local(),
                 kubernetes: coreProviders.kubernetes({
-                    // load_config_file: false,
+                    load_config_file: false,
                     host: terraform.toVariable(`module.${answers.name}-kubernetes.kube_config.0.host`),
                     client_certificate: terraform.toVariable(`base64decode(module.${answers.name}-kubernetes.kube_config.0.client_certificate)`),
                     client_key: terraform.toVariable(`base64decode(module.${answers.name}-kubernetes.kube_config.0.client_key)`),
