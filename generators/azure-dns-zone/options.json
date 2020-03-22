@@ -1,0 +1,16 @@
+{
+    "name": {
+        "desc": "Specifies the name of the Application Insights component. Changing this forces a new resource to be created.",
+        "alias": "n",
+        "type": "String"
+    },
+    "resourceGroup": {
+        "desc": "The name of the resource group in which to create the Application Insights component.",
+        "alias": "g",
+        "type": "String"
+    },
+    "tld": {
+        "desc": "DNS Zone Top Level Domain",
+        "alias": "t"
+    }
+}
