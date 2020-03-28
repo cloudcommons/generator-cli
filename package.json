@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "fs-extra": "^8.1.0",
+    "fs-extra": "^9.0.0",
     "mocha": "^7.0.1",
     "mocha-multi-reporters": "^1.1.7",
     "yeoman-assert": "^3.1.1",
