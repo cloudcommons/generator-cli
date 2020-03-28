@@ -8,7 +8,7 @@ locals {
 
 module "<%= name %>" {
   source                          = "cloudcommons/application/kubernetes"
-  version                         = "0.1.9"
+  version                         = "0.1.10"
   APP_NAME                        = var.APP
   UID                             = local.uid
   ENVIRONMENT                     = var.ENVIRONMENT
