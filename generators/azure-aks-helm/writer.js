@@ -22,7 +22,7 @@ module.exports = function (terraform, fsTools, answers) {
     }, answers);
 
     fsTools.copyTo(`helm-chart.tf`, `${answers.name}-helm-chart.tf`, answers);
-    fsTools.copyTo(`helm-repository.tf`, `${answers.name}-helm-repository.tf`, answers);
+    fsTools.copyTo(`helm-repository.tf`, `helm-repository-${answers.repositoryName}.tf`, answers);
     fsTools.copyTo(`templates/values.yml`, `templates/${answers.name}-values.yml`, answers);
     config.copy(terraform, answers);
     outputs.copy(terraform, answers);

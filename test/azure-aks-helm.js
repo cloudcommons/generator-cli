@@ -7,7 +7,9 @@ describe("cloudcommons/cli:azure-aks-helm", function () {
         describe('Without any additional features', () => {
             var prompts = {
                 name: 'cloudcommons',
-                chartName: 'stable/sonarqube',
+                repositoryName: 'stable',
+                repositoryUrl: 'https://kubernetes-charts.storage.googleapis.com',
+                chartName: 'sonarqube',
                 chartVersion: '3.4.0',
                 recreatePods: true,
                 features: []
@@ -22,7 +24,7 @@ describe("cloudcommons/cli:azure-aks-helm", function () {
 
             it('Generates resource group files', () => {
                 assert.file(`${prompts.name}-helm-chart.tf`);
-                assert.file(`${prompts.name}-helm-repository.tf`);
+                assert.file(`helm-repository-${prompts.repositoryName}.tf`);
                 assert.file(`templates/${prompts.name}-values.yml`);
                 assert.file('terraform.tfvars.json');
                 assert.file('variables.tf.json');
@@ -55,6 +57,12 @@ describe("cloudcommons/cli:azure-aks-helm", function () {
                 assert.fileContent('providers.tf.json', '"provider":');
                 assert.fileContent('providers.tf.json', '"helm":');
                 assert.fileContent('providers.tf.json', '"version":');
+            });
+
+            it('Creates the helm repository', () => {
+                assert.fileContent(`${prompts.name}-helm-chart.tf`, prompts.repositoryName);
+                assert.fileContent(`helm-repository-${prompts.repositoryName}.tf`, prompts.repositoryName);
+                assert.fileContent(`helm-repository-${prompts.repositoryName}.tf`, prompts.repositoryUrl);
             });
         });
     });
