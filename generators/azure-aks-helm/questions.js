@@ -16,8 +16,22 @@ module.exports = function (generator, az, terraform, configManager) {
 
     questions.push({
         type: "input",
+        name: "repositoryName",
+        message: "Helm - Repository name",
+        default: configManager.getDefault("repositoryName", "stable")
+    });
+
+    questions.push({
+        type: "input",
+        name: "repositoryUrl",
+        message: "Helm - Repository URL",
+        default: configManager.getDefault("repositoryUrl", "https://kubernetes-charts.storage.googleapis.com")
+    });    
+
+    questions.push({
+        type: "input",
         name: "chartName",
-        message: "Helm - Chart name",
+        message: "Helm - Chart name (Without repository)",
         default: configManager.getDefault("chartName")
     });
 
