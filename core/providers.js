@@ -31,7 +31,7 @@ module.exports.local = function () {
 
 module.exports.helm = function (kubernetes = {}) {
     return {
-        version: "~> 1.0.0",
+        version: "~> 1.1.0",
         kubernetes: kubernetes
     }
 }
