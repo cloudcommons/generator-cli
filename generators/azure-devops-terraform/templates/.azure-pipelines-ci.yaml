@@ -18,8 +18,10 @@ stages:
   displayName: 'Continous Integration'
   variables: 
     - template: templates/vars/release.yaml  
-    - TF_STORAGE_CONTAINER: build
-    - TF_STORAGE_KEY: build.tfstate
+    - name: TF_STORAGE_CONTAINER 
+      value: build
+    - name: TF_STORAGE_KEY
+      value: build.tfstate
   jobs:
   - template: azure-pipelines/cloudcommons-terraform-validate.yaml 
     parameters:
