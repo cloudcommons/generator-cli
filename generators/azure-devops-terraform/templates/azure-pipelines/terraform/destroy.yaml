@@ -1,0 +1,56 @@
+parameters:  
+  artifactName: Terraform
+  terraformRoot: <%= terraformRoot %>
+  workingDirectory: $(Pipeline.Workspace)
+  ensureBackend: false
+
+stages:
+- stage: 'planDestroy${{ parameters.name }}'
+  displayName: 'Terraform - Plan - ${{ parameters.environment }}'
+  dependsOn: ${{ parameters.after }}
+  variables: 
+    - template: ../vars/release.yaml
+    - template: ../vars/${{ parameters.name }}.yaml
+  jobs:
+  - template: command.yaml 
+    parameters:
+      name: ${{ parameters.name }}
+      command: plan
+      commandOptions: -destroy      
+      environment: ${{ parameters.environment }}
+      subscriptionName: ${{ variables.AZURE_SUBSCRIPTION }}
+      terraformVersion: ${{ variables.TF_VERSION }}
+      artifactName: ${{ parameters.artifactName }}
+      terraformRoot: ${{ parameters.terraformRoot }}
+      backendServiceArm: ${{ variables.TF_AZURE_BACKEND_SUBSCRIPTION }}
+      backendAzureRmResourceGroupName: ${{ variables.TF_RESOURCE_GROUP_NAME}}
+      backendAzureRmResourceGroupLocation: ${{ variables.TF_RESOURCE_GROUP_LOCATION }}
+      backendAzureRmStorageAccountName: ${{ variables.TF_STORAGE_ACCOUNT_NAME }}
+      backendAzureRmStorageAccountSku: ${{ variables.TF_STORAGE_ACCOUNT_SKU }}
+      backendAzureRmContainerName: ${{ variables.TF_STORAGE_CONTAINER }}
+      backendAzureRmKey: ${{ variables.TF_STORAGE_KEY }}
+      ensureBackend: ${{ parameters.ensureBackend }}
+
+- stage: 'destroy${{ parameters.name }}'
+  displayName: 'Terraform - Destroy - ${{ parameters.environment }}'
+  variables:     
+    - template: ../vars/release.yaml
+    - template: ../vars/${{ parameters.name }}.yaml    
+  jobs:
+  - template: command.yaml 
+    parameters:
+      name: '${{ parameters.name }}'
+      command: 'destroy'
+      environment: '${{ parameters.environment }}'
+      subscriptionName: '${{ variables.AZURE_SUBSCRIPTION }}'
+      terraformVersion: '${{ variables.TF_VERSION }}'
+      artifactName: ${{ parameters.artifactName }}
+      terraformRoot: ${{ parameters.terraformRoot }}
+      backendServiceArm: ${{ variables.TF_AZURE_BACKEND_SUBSCRIPTION }}
+      backendAzureRmResourceGroupName: ${{ variables.TF_RESOURCE_GROUP_NAME}}
+      backendAzureRmResourceGroupLocation: ${{ variables.TF_RESOURCE_GROUP_LOCATION }}
+      backendAzureRmStorageAccountName: ${{ variables.TF_STORAGE_ACCOUNT_NAME }}
+      backendAzureRmStorageAccountSku: ${{ variables.TF_STORAGE_ACCOUNT_SKU }}
+      backendAzureRmContainerName: ${{ variables.TF_STORAGE_CONTAINER }}
+      backendAzureRmKey: ${{ variables.TF_STORAGE_KEY }}
+      ensureBackend: ${{ parameters.ensureBackend }}

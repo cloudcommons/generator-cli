@@ -1,0 +1,42 @@
+parameters:
+  pool: ubuntu-latest
+  name: Terraform
+  terraformVersion: <%= terraformVersion %>
+  terraformRoot: <%= terraformRoot %>
+  workingDirectory: $(System.DefaultWorkingDirectory)
+  ensureBackend: false
+
+jobs:
+- job: Validate${{ parameters.name}}
+  displayName: 'Terraform - Validate'
+  pool:
+    vmImage: ${{ parameters.pool }}
+
+  steps:
+  - task: TerraformInstaller@0
+    displayName: 'Terraform - Install'
+    inputs:
+        terraformVersion: '${{ parameters.terraformVersion }}'
+
+  - task: TerraformCLI@0
+    displayName: "Terraform - Init"
+    inputs:
+      command: init
+      continueOnError: true
+      workingDirectory: '${{ parameters.workingDirectory }}/${{ parameters.artifactName }}/${{ parameters.terraformRoot }}'
+      backendType: azurerm
+      backendServiceArm: ${{ parameters.backendServiceArm }}
+      ensureBackend: ${{ parameters.ensureBackend }}
+      backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
+      backendAzureRmResourceGroupLocation: ${{ parameters.backendAzureRmResourceGroupLocation }}
+      backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmStorageAccountName }}
+      backendAzureRmStorageAccountSku: ${{ parameters.backendAzureRmStorageAccountSku }}
+      backendAzureRmContainerName: build
+      backendAzureRmKey: build.tfstate
+
+  - task: TerraformCLI@0
+    displayName: "Terraform - Validate"
+    inputs:
+        command: 'validate'
+        workingDirectory: ${{ parameters.workingDirectory }}
+        commandOptions: ${{ parameters.validateCommandOptions }}
