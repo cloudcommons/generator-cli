@@ -1,6 +1,6 @@
 {
   "name": "@cloudcommons/generator-cli",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "A generator to produce cloud common boilerplate code using Terraform",
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha --resursive",
