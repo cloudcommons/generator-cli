@@ -1,0 +1,49 @@
+variables:
+  - name: TF_VERSION
+    value: '<%= terraformVersion %>'
+  - name: ARTIFACT_NAME
+    value: 'Terraform'
+  - name: ENSURE_BACKEND
+    value: false
+
+trigger:
+  tags:
+    include:
+    - '*'
+
+stages:
+- template: azure-pipelines/terraform/build.yaml
+  parameters:
+    terraformVersion: ${{ variables.TF_VERSION }}
+    artifactName: ${{ variables.ARTIFACT_NAME }}
+    ensureBackend: ${{ variables.ENSURE_BACKEND }}
+
+- template: azure-pipelines/terraform/deploy.yaml
+  parameters:
+    name: dev
+    after: [build]
+    environment: <%= name %>-dev
+    ensureBackend: ${{ variables.ENSURE_BACKEND }}
+
+- template: azure-pipelines/terraform/deploy.yaml
+  parameters:
+    name: prod
+    after: [build]
+    environment: <%= name %>-prod
+    ensureBackend: ${{ variables.ENSURE_BACKEND }}
+
+# Comment if you don't want to add destroy stages to your pipelines!
+
+- template: azure-pipelines/terraform/destroy.yaml
+  parameters:
+    name: dev    
+    environment: <%= name %>-dev
+    ensureBackend: ${{ variables.ENSURE_BACKEND }}
+    after: [applydev]
+
+- template: azure-pipelines/terraform/destroy.yaml
+  parameters:
+    name: prod    
+    environment: <%= name %>-prod
+    ensureBackend: ${{ variables.ENSURE_BACKEND }}
+    after: [applyprod]
