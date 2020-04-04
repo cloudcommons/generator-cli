@@ -1,3 +1,2 @@
 variables:
-  TF_VAR_ENVIRONMENT: dev
-  TF_STORAGE_KEY: ''
+  TF_VAR_ENVIRONMENT: dev  

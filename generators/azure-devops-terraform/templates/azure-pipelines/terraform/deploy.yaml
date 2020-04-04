@@ -1,14 +1,15 @@
 parameters:  
   artifactName: 'Terraform'
+  terraformRoot: '<%= terraformRoot %>'
   workingDirectory: '$(Pipeline.Workspace)'
 
 stages:
 - stage: 'plan${{ parameters.name }}'
   displayName: 'Plan - ${{ parameters.name }}'
   dependsOn: ${{ parameters.after }}
-  variables: 
+  variables:     
     - template: ../vars/release.yaml
-    - template: ../vars/${{ parameters.name }}.yaml
+    - template: ../vars/${{ parameters.name }}.yaml    
   jobs:
   - template: command.yaml 
     parameters:
@@ -18,9 +19,9 @@ stages:
       subscriptionName: '${{ variables.AZURE_SUBSCRIPTION }}'
       terraformVersion: '${{ variables.TF_VERSION }}'
       artifactName: ${{ parameters.artifactName }}
-      terraformRoot: ${{ parameters.workingDirectory }}
+      terraformRoot: ${{ parameters.terraformRoot }}
       backendServiceArm: ${{ variables.TF_AZURE_BACKEND_SUBSCRIPTION }}
-      backendAzureRmResourceGroupName: ${{ variables.TF_RESOURCE_GROUP_NAME }}
+      backendAzureRmResourceGroupName: ${{ variables.TF_RESOURCE_GROUP_NAME}}
       backendAzureRmResourceGroupLocation: ${{ variables.TF_RESOURCE_GROUP_LOCATION }}
       backendAzureRmStorageAccountName: ${{ variables.TF_STORAGE_ACCOUNT_NAME }}
       backendAzureRmStorageAccountSku: ${{ variables.TF_STORAGE_ACCOUNT_SKU }}
@@ -29,9 +30,9 @@ stages:
 
 - stage: 'apply${{ parameters.name }}'
   displayName: 'Apply - ${{ parameters.name }}'
-  variables: 
+  variables:     
     - template: ../vars/release.yaml
-    - template: ../vars/${{ parameters.name }}.yaml
+    - template: ../vars/${{ parameters.name }}.yaml    
   jobs:
   - template: command.yaml 
     parameters:
@@ -41,9 +42,9 @@ stages:
       subscriptionName: '${{ variables.AZURE_SUBSCRIPTION }}'
       terraformVersion: '${{ variables.TF_VERSION }}'
       artifactName: ${{ parameters.artifactName }}
-      terraformRoot: ${{ parameters.workingDirectory }}
+      terraformRoot: ${{ parameters.terraformRoot }}
       backendServiceArm: ${{ variables.TF_AZURE_BACKEND_SUBSCRIPTION }}
-      backendAzureRmResourceGroupName: ${{ variables.TF_RESOURCE_GROUP_NAME }}
+      backendAzureRmResourceGroupName: ${{ variables.TF_RESOURCE_GROUP_NAME}}
       backendAzureRmResourceGroupLocation: ${{ variables.TF_RESOURCE_GROUP_LOCATION }}
       backendAzureRmStorageAccountName: ${{ variables.TF_STORAGE_ACCOUNT_NAME }}
       backendAzureRmStorageAccountSku: ${{ variables.TF_STORAGE_ACCOUNT_SKU }}

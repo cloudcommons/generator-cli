@@ -1,3 +1,2 @@
 variables:
   TF_VAR_ENVIRONMENT: prod
-  TF_STORAGE_KEY: ''

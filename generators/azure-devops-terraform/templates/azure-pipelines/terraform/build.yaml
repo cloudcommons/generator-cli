@@ -11,13 +11,24 @@ stages:
   dependsOn: ${{ parameters.after }}
   variables: 
     - template: ../vars/release.yaml
-
+    - name: TF_STORAGE_CONTAINER 
+      value: build
+    - name: TF_STORAGE_KEY
+      value: build.tfstate
   jobs:
-  - template: validate.yaml 
-    parameters:
-      terraformVersion: ${{ parameters.terraformVersion }}
-      artifactName: ${{ parameters.artifactName }}
-      terraformRoot: ${{ parameters.workingDirectory }}
+  - template: validate.yaml
+    parameters:      
+      subscriptionName: '${{ variables.AZURE_SUBSCRIPTION }}'
+      terraformVersion: '${{ variables.TF_VERSION }}'
+      artifactName: ${{ variables.artifactName }}
+      terraformRoot: ${{ variables.workingDirectory }}
+      backendServiceArm: ${{ variables.TF_AZURE_BACKEND_SUBSCRIPTION }}
+      backendAzureRmResourceGroupName: ${{ variables.TF_RESOURCE_GROUP_NAME}}
+      backendAzureRmResourceGroupLocation: ${{ variables.TF_RESOURCE_GROUP_LOCATION }}
+      backendAzureRmStorageAccountName: ${{ variables.TF_STORAGE_ACCOUNT_NAME }}
+      backendAzureRmStorageAccountSku: ${{ variables.TF_STORAGE_ACCOUNT_SKU }}
+      backendAzureRmContainerName: ${{ variables.TF_STORAGE_CONTAINER }}
+      backendAzureRmKey: ${{ variables.TF_STORAGE_KEY }} 
 
   - job: Publish${{ parameters.name}}
     displayName: 'Publish - ${{ parameters.name}}'

@@ -58,6 +58,6 @@ jobs:
           displayName: 'Terraform ${{ parameters.command }}'
           inputs:
             command: '${{ parameters.command }}'
-            commandOptions: '${{ parameters.commandOptions }}'
+            commandOptions: '-input=false ${{ parameters.commandOptions }}'
             environmentServiceName: '${{ parameters.subscriptionName }}'
             workingDirectory: '${{ parameters.workingDirectory }}/${{ parameters.artifactName }}/${{ parameters.terraformRoot }}'

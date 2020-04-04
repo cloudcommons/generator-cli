@@ -2,6 +2,7 @@ parameters:
   pool: 'ubuntu-latest'
   name: 'Terraform'
   terraformVersion: '<%= terraformVersion %>'
+  terraformRoot: '<%= terraformRoot %>'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
 
 
@@ -21,8 +22,17 @@ jobs:
     displayName: "Terraform - Init"
     inputs:
       command: 'init'
-      workingDirectory: ${{ parameters.workingDirectory }}
-      backendType: 'local'
+      continueOnError: true
+      workingDirectory: '${{ parameters.workingDirectory }}/${{ parameters.artifactName }}/${{ parameters.terraformRoot }}'
+      backendType: 'azurerm'
+      backendServiceArm: '${{ parameters.backendServiceArm }}'
+      ensureBackend: true
+      backendAzureRmResourceGroupName: '${{ parameters.backendAzureRmResourceGroupName }}'
+      backendAzureRmResourceGroupLocation: '${{ parameters.backendAzureRmResourceGroupLocation }}'
+      backendAzureRmStorageAccountName: '${{ parameters.backendAzureRmStorageAccountName }}'
+      backendAzureRmStorageAccountSku: '${{ parameters.backendAzureRmStorageAccountSku }}'
+      backendAzureRmContainerName: 'build'
+      backendAzureRmKey: 'build.tfstate'
 
   - task: TerraformCLI@0
     displayName: "Terraform - Validate"
