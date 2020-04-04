@@ -37,17 +37,17 @@ jobs:
         - task: TerraformCLI@0
           displayName: "Terraform - Init"
           inputs:
-            command: 'init'
+            command: init
             continueOnError: true
             workingDirectory: '${{ parameters.workingDirectory }}/${{ parameters.artifactName }}/${{ parameters.terraformRoot }}'
-            backendType: 'azurerm'
-            backendServiceArm: '${{ parameters.backendServiceArm }}'
+            backendType: azurerm
+            backendServiceArm: ${{ parameters.backendServiceArm }}
             ensureBackend: ${{ parameters.ensureBackend }}
-            backendAzureRmResourceGroupName: '${{ parameters.backendAzureRmResourceGroupName }}'
-            backendAzureRmResourceGroupLocation: '${{ parameters.backendAzureRmResourceGroupLocation }}'
-            backendAzureRmStorageAccountName: '${{ parameters.backendAzureRmStorageAccountName }}'
-            backendAzureRmStorageAccountSku: '${{ parameters.backendAzureRmStorageAccountSku }}'
-            backendAzureRmContainerName: '${{ parameters.backendAzureRmContainerName }}'
+            backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
+            backendAzureRmResourceGroupLocation: ${{ parameters.backendAzureRmResourceGroupLocation }}
+            backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmStorageAccountName }}
+            backendAzureRmStorageAccountSku: ${{ parameters.backendAzureRmStorageAccountSku }}
+            backendAzureRmContainerName: ${{ parameters.backendAzureRmContainerName }}
             backendAzureRmKey: '${{ parameters.backendAzureRmKey }}.${{ parameters.name }}.tfstate'
 
         - task: CmdLine@2
@@ -58,7 +58,7 @@ jobs:
         - task: TerraformCLI@0
           displayName: 'Terraform ${{ parameters.command }}'
           inputs:
-            command: '${{ parameters.command }}'
+            command: ${{ parameters.command }}
             commandOptions: '-input=false ${{ parameters.commandOptions }}'
-            environmentServiceName: '${{ parameters.subscriptionName }}'
+            environmentServiceName: ${{ parameters.subscriptionName }}
             workingDirectory: '${{ parameters.workingDirectory }}/${{ parameters.artifactName }}/${{ parameters.terraformRoot }}'

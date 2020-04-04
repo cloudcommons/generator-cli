@@ -19,8 +19,8 @@ stages:
   jobs:
   - template: validate.yaml
     parameters:      
-      subscriptionName: '${{ variables.AZURE_SUBSCRIPTION }}'
-      terraformVersion: '${{ variables.TF_VERSION }}'
+      subscriptionName: ${{ variables.AZURE_SUBSCRIPTION }}
+      terraformVersion: ${{ variables.TF_VERSION }}
       artifactName: ${{ variables.artifactName }}
       terraformRoot: ${{ variables.workingDirectory }}
       backendServiceArm: ${{ variables.TF_AZURE_BACKEND_SUBSCRIPTION }}
