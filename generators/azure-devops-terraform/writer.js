@@ -11,6 +11,9 @@ module.exports = function (fsTools, answers) {
     fsTools.copy("azure-pipelines/templates/terraform/deploy.yaml", answers);
     fsTools.copy("azure-pipelines/templates/terraform/destroy.yaml", answers);
     fsTools.copy("azure-pipelines/templates/terraform/validate.yaml", answers);
+    fsTools.copy("azure-pipelines/vars/release.yaml", answers);
+    fsTools.copy("azure-pipelines/vars/dev.yaml", answers);
+    fsTools.copy("azure-pipelines/vars/prod.yaml", answers);
     fsTools.copy(".azure-pipelines-ci.yaml", answers);
     fsTools.copy(".azure-pipelines-cd.yaml", answers);
 }
