@@ -6,11 +6,11 @@ module.exports = function (fsTools, answers) {
         terraformVersion: '0.12.20' // TODO Read this value from configuration/answers, to match the terraform version selected by the user and the one set in the pipelines
     }, answers);
 
-    fsTools.copy("azure-pipelines/templates/terraform/build.yaml", answers);
-    fsTools.copy("azure-pipelines/templates/terraform/command.yaml", answers);
-    fsTools.copy("azure-pipelines/templates/terraform/deploy.yaml", answers);
-    fsTools.copy("azure-pipelines/templates/terraform/destroy.yaml", answers);
-    fsTools.copy("azure-pipelines/templates/terraform/validate.yaml", answers);
+    fsTools.copy("azure-pipelines/terraform/build.yaml", answers);
+    fsTools.copy("azure-pipelines/terraform/command.yaml", answers);
+    fsTools.copy("azure-pipelines/terraform/deploy.yaml", answers);
+    fsTools.copy("azure-pipelines/terraform/destroy.yaml", answers);
+    fsTools.copy("azure-pipelines/terraform/validate.yaml", answers);
     fsTools.copy("azure-pipelines/vars/release.yaml", answers);
     fsTools.copy("azure-pipelines/vars/dev.yaml", answers);
     fsTools.copy("azure-pipelines/vars/prod.yaml", answers);

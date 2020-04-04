@@ -17,13 +17,13 @@ stages:
 - stage: 'build'
   displayName: 'Continous Integration'
   variables: 
-    - template: templates/vars/release.yaml  
+    - template: azure-pipelines/vars/release.yaml  
     - name: TF_STORAGE_CONTAINER 
       value: build
     - name: TF_STORAGE_KEY
       value: build.tfstate
   jobs:
-  - template: azure-pipelines/cloudcommons-terraform-validate.yaml 
+  - template: azure-pipelines/templates/terraform/validate.yaml
     parameters:
       terraformVersion: '$(TF_VERSION)'
       terraformRoot: '<%= terraformRoot %>'
