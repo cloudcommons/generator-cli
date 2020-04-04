@@ -2,7 +2,7 @@ variables:
   - name: TF_VERSION
     value: '<%= terraformVersion %>'
   - name: ARTIFACT_NAME
-    value: '<%= terraformRoot %>'
+    value: 'Terraform'
 
 trigger:
   tags:

@@ -15,17 +15,17 @@ stages:
       name: '${{ parameters.name }}'
       command: 'plan'
       environment: '${{ parameters.environment }}'
-      subscriptionName: '$(AZURE_SUBSCRIPTION)'
-      terraformVersion: '$(TF_VERSION)'
+      subscriptionName: '${{ variables.AZURE_SUBSCRIPTION }}'
+      terraformVersion: '${{ variables.TF_VERSION }}'
       artifactName: ${{ parameters.artifactName }}
       terraformRoot: ${{ parameters.workingDirectory }}
-      backendServiceArm: '$(TF_AZURE_BACKEND_SUBSCRIPTION)'
-      backendAzureRmResourceGroupName: '$(TF_RESOURCE_GROUP_NAME)'
-      backendAzureRmResourceGroupLocation: '$(TF_RESOURCE_GROUP_LOCATION)'
-      backendAzureRmStorageAccountName: '$(TF_STORAGE_ACCOUNT_NAME)'
-      backendAzureRmStorageAccountSku: '$(TF_STORAGE_ACCOUNT_SKU)'
-      backendAzureRmContainerName: '$(TF_STORAGE_CONTAINER)'
-      backendAzureRmKey: '$(TF_STORAGE_KEY)'
+      backendServiceArm: ${{ variables.TF_AZURE_BACKEND_SUBSCRIPTION }}
+      backendAzureRmResourceGroupName: ${{ variables.TF_RESOURCE_GROUP_NAME }}
+      backendAzureRmResourceGroupLocation: ${{ variables.TF_RESOURCE_GROUP_LOCATION }}
+      backendAzureRmStorageAccountName: ${{ variables.TF_STORAGE_ACCOUNT_NAME }}
+      backendAzureRmStorageAccountSku: ${{ variables.TF_STORAGE_ACCOUNT_SKU }}
+      backendAzureRmContainerName: ${{ variables.TF_STORAGE_CONTAINER }}
+      backendAzureRmKey: ${{ variables.TF_STORAGE_KEY }}
 
 - stage: 'apply${{ parameters.name }}'
   displayName: 'Apply - ${{ parameters.name }}'
@@ -38,14 +38,14 @@ stages:
       name: '${{ parameters.name }}'
       command: 'apply'
       environment: '${{ parameters.environment }}'
-      subscriptionName: '$(AZURE_SUBSCRIPTION)'
-      terraformVersion: '$(TF_VERSION)'
+      subscriptionName: '${{ variables.AZURE_SUBSCRIPTION }}'
+      terraformVersion: '${{ variables.TF_VERSION }}'
       artifactName: ${{ parameters.artifactName }}
       terraformRoot: ${{ parameters.workingDirectory }}
-      backendServiceArm: '$(TF_AZURE_BACKEND_SUBSCRIPTION)'
-      backendAzureRmResourceGroupName: '$(TF_RESOURCE_GROUP_NAME)'
-      backendAzureRmResourceGroupLocation: '$(TF_RESOURCE_GROUP_LOCATION)'
-      backendAzureRmStorageAccountName: '$(TF_STORAGE_ACCOUNT_NAME)'
-      backendAzureRmStorageAccountSku: '$(TF_STORAGE_ACCOUNT_SKU)'
-      backendAzureRmContainerName: '$(TF_STORAGE_CONTAINER)'
-      backendAzureRmKey: '$(TF_STORAGE_KEY)'
+      backendServiceArm: ${{ variables.TF_AZURE_BACKEND_SUBSCRIPTION }}
+      backendAzureRmResourceGroupName: ${{ variables.TF_RESOURCE_GROUP_NAME }}
+      backendAzureRmResourceGroupLocation: ${{ variables.TF_RESOURCE_GROUP_LOCATION }}
+      backendAzureRmStorageAccountName: ${{ variables.TF_STORAGE_ACCOUNT_NAME }}
+      backendAzureRmStorageAccountSku: ${{ variables.TF_STORAGE_ACCOUNT_SKU }}
+      backendAzureRmContainerName: ${{ variables.TF_STORAGE_CONTAINER }}
+      backendAzureRmKey: ${{ variables.TF_STORAGE_KEY }}
