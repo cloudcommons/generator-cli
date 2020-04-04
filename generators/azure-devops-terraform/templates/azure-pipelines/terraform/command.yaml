@@ -1,0 +1,64 @@
+parameters:  
+  pool: 'ubuntu-latest'
+  artifactName: 'Terraform'
+  terraformVersion: '<%= terraformVersion %>'
+  workingDirectory: '$(Pipeline.Workspace)'
+  terraformRoot: ''
+  commandOptions: ''
+  ensureBackend: false
+
+jobs:
+- deployment: TerraformCommand${{ parameters.command }}${{ parameters.name }}
+  displayName: Terraform ${{ parameters.command }} - ${{ parameters.environment }}
+  pool:
+    vmImage: ${{ parameters.pool }}
+  environment: ${{ parameters.environment }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - task: replacetokens@3
+          displayName: 'Replace tokens'
+          inputs:
+            rootDirectory: '${{ parameters.workingDirectory }}/${{ parameters.artifactName }}/${{ parameters.terraformRoot }}'
+            targetFiles: '**/terraform.tfvars'
+            encoding: 'auto'
+            writeBOM: true
+            actionOnMissing: 'warn'
+            keepToken: false
+            tokenPrefix: '#{'
+            tokenSuffix: '}#' 
+
+        - task: TerraformInstaller@0
+          displayName: 'Terraform - Install'
+          inputs:
+            terraformVersion: '${{ parameters.terraformVersion }}'
+
+        - task: TerraformCLI@0
+          displayName: "Terraform - Init"
+          inputs:
+            command: init
+            continueOnError: true
+            workingDirectory: '${{ parameters.workingDirectory }}/${{ parameters.artifactName }}/${{ parameters.terraformRoot }}'
+            backendType: azurerm
+            backendServiceArm: ${{ parameters.backendServiceArm }}
+            ensureBackend: ${{ parameters.ensureBackend }}
+            backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
+            backendAzureRmResourceGroupLocation: ${{ parameters.backendAzureRmResourceGroupLocation }}
+            backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmStorageAccountName }}
+            backendAzureRmStorageAccountSku: ${{ parameters.backendAzureRmStorageAccountSku }}
+            backendAzureRmContainerName: ${{ parameters.backendAzureRmContainerName }}
+            backendAzureRmKey: '${{ parameters.backendAzureRmKey }}.${{ parameters.name }}.tfstate'
+
+        - task: CmdLine@2
+          displayName: 'Terraform - Select workspace "${{ parameters.name }}"'
+          inputs:
+            script: 'terraform workspace select ${{ parameters.name }} || terraform workspace new ${{ parameters.name }}'
+
+        - task: TerraformCLI@0
+          displayName: 'Terraform ${{ parameters.command }}'
+          inputs:
+            command: ${{ parameters.command }}
+            commandOptions: '-input=false ${{ parameters.commandOptions }}'
+            environmentServiceName: ${{ parameters.subscriptionName }}
+            workingDirectory: '${{ parameters.workingDirectory }}/${{ parameters.artifactName }}/${{ parameters.terraformRoot }}'

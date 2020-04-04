@@ -1,0 +1,55 @@
+parameters:
+  pool: 'ubuntu-latest'
+  name: 'Terraform'
+  artifactName: 'Terraform'
+  terraformVersion: '<%= terraformVersion %>'
+  workingDirectory: '$(System.DefaultWorkingDirectory)'
+  ensureBackend: false  
+
+stages:
+- stage: 'build'
+  displayName: 'Build'
+  dependsOn: ${{ parameters.after }}
+  variables: 
+    - template: ../vars/release.yaml
+    - name: TF_STORAGE_CONTAINER 
+      value: build
+    - name: TF_STORAGE_KEY
+      value: build.tfstate
+  jobs:
+  - template: validate.yaml
+    parameters:      
+      subscriptionName: ${{ variables.AZURE_SUBSCRIPTION }}
+      terraformVersion: ${{ variables.TF_VERSION }}
+      artifactName: ${{ variables.artifactName }}
+      terraformRoot: ${{ variables.workingDirectory }}
+      backendServiceArm: ${{ variables.TF_AZURE_BACKEND_SUBSCRIPTION }}
+      backendAzureRmResourceGroupName: ${{ variables.TF_RESOURCE_GROUP_NAME}}
+      backendAzureRmResourceGroupLocation: ${{ variables.TF_RESOURCE_GROUP_LOCATION }}
+      backendAzureRmStorageAccountName: ${{ variables.TF_STORAGE_ACCOUNT_NAME }}
+      backendAzureRmStorageAccountSku: ${{ variables.TF_STORAGE_ACCOUNT_SKU }}
+      backendAzureRmContainerName: ${{ variables.TF_STORAGE_CONTAINER }}
+      backendAzureRmKey: ${{ variables.TF_STORAGE_KEY }} 
+
+  - job: Publish${{ parameters.name}}
+    displayName: 'Publish - ${{ parameters.name}}'
+    pool:
+      vmImage: ${{ parameters.pool }}
+    steps:
+    - task: CopyFiles@2
+      displayName: 'Copy - Terraform scripts'
+      inputs:
+        SourceFolder: ${{ parameters.workingDirectory }}
+        Contents: |
+          **
+          !.git/**
+          !.gitignore
+          !azure-pipelines*.yaml
+          !azure-pipelines/**
+        TargetFolder: $(Build.ArtifactStagingDirectory)
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish - Validated Terraform scripts'
+      inputs:
+          targetPath: $(Build.ArtifactStagingDirectory)
+          artifactName: ${{ parameters.artifactName }}

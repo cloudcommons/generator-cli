@@ -1,0 +1,40 @@
+variables:
+  - name: TF_VERSION
+    value: '<%= terraformVersion %>'
+  - name: ARTIFACT_NAME
+    value: 'Terraform'
+  - name: terraformRoot
+    value: '<%= terraformRoot %>'  
+    
+trigger:
+  branches:
+    include:
+    - '*'
+  # YAML PR triggers are only supported in GitHub and Bitbucket Cloud. If you are using Azure Repos Git, you can configure a branch policy for build validation in order to trigger your pipeline for validation.  
+  # Source: https://docs.microsoft.com/en-us/azure/devops/pipelines/build/triggers?view=azure-devops&tabs=yaml#pr-triggers
+  # pr:
+  # - '*'
+
+stages:
+- stage: 'build'
+  displayName: 'Continous Integration'
+  variables: 
+    - template: azure-pipelines/vars/release.yaml  
+    - name: TF_STORAGE_CONTAINER 
+      value: build
+    - name: TF_STORAGE_KEY
+      value: build.tfstate
+  jobs:
+  - template: azure-pipelines/terraform/validate.yaml
+    parameters:      
+      subscriptionName: '${{ variables.AZURE_SUBSCRIPTION }}'
+      terraformVersion: '${{ variables.TF_VERSION }}'
+      artifactName: ${{ variables.artifactName }}
+      terraformRoot: ${{ variables.terraformRoot }}
+      backendServiceArm: ${{ variables.TF_AZURE_BACKEND_SUBSCRIPTION }}
+      backendAzureRmResourceGroupName: ${{ variables.TF_RESOURCE_GROUP_NAME}}
+      backendAzureRmResourceGroupLocation: ${{ variables.TF_RESOURCE_GROUP_LOCATION }}
+      backendAzureRmStorageAccountName: ${{ variables.TF_STORAGE_ACCOUNT_NAME }}
+      backendAzureRmStorageAccountSku: ${{ variables.TF_STORAGE_ACCOUNT_SKU }}
+      backendAzureRmContainerName: ${{ variables.TF_STORAGE_CONTAINER }}
+      backendAzureRmKey: ${{ variables.TF_STORAGE_KEY }}      

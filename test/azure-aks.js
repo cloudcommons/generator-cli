@@ -90,7 +90,6 @@ describe("cloudcommons/cli:azure-aks", function () {
                 assert.fileContent('providers.tf.json', '"provider":');
                 assert.fileContent('providers.tf.json', '"azurerm":');
                 assert.fileContent('providers.tf.json', '"helm":');
-                assert.fileContent('providers.tf.json', '"version": "~> 1.0.0"');
             });
         });
 
@@ -267,7 +266,6 @@ describe("cloudcommons/cli:azure-aks", function () {
                 assert.fileContent('providers.tf.json', '"provider":');
                 assert.fileContent('providers.tf.json', '"azurerm":');
                 assert.fileContent('providers.tf.json', '"helm":');
-                assert.fileContent('providers.tf.json', '"version": "~> 1.0.0"');
             });
         });        
 
@@ -354,7 +352,6 @@ describe("cloudcommons/cli:azure-aks", function () {
                 assert.fileContent('providers.tf.json', '"provider":');
                 assert.fileContent('providers.tf.json', '"azurerm":');
                 assert.fileContent('providers.tf.json', '"helm":');
-                assert.fileContent('providers.tf.json', '"version": "~> 1.0.0"');
             });
         });        
     });
@@ -437,7 +434,6 @@ describe("cloudcommons/cli:azure-aks", function () {
                 assert.fileContent('providers.tf.json', '"provider":');
                 assert.fileContent('providers.tf.json', '"azurerm":');
                 assert.fileContent('providers.tf.json', '"helm":');
-                assert.fileContent('providers.tf.json', '"version": "~> 1.0.0"');
             });
         });
 
@@ -618,7 +614,6 @@ describe("cloudcommons/cli:azure-aks", function () {
                 assert.fileContent('providers.tf.json', '"provider":');
                 assert.fileContent('providers.tf.json', '"azurerm":');
                 assert.fileContent('providers.tf.json', '"helm":');
-                assert.fileContent('providers.tf.json', '"version": "~> 1.0.0"');
             });
         });  
         
@@ -701,7 +696,6 @@ describe("cloudcommons/cli:azure-aks", function () {
                 assert.fileContent('providers.tf.json', '"provider":');
                 assert.fileContent('providers.tf.json', '"azurerm":');
                 assert.fileContent('providers.tf.json', '"helm":');
-                assert.fileContent('providers.tf.json', '"version": "~> 1.0.0"');
             });
         });        
     });

@@ -23,13 +23,5 @@ module.exports = function (generator, terraform, configManager) {
         default: configManager.getDefault("terraformRoot", "/")
     });
 
-    questions.push({
-        type: "checkbox",
-        name: "features",
-        message: "Application features",
-        choices: ["templates", "pipelines"],
-        default: configManager.getDefault("features", ["templates", "pipelines"])
-    });
-
     return questions;
 }
