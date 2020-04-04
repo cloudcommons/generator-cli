@@ -1,0 +1,4 @@
+variables:
+  TF_VAR_ENVIRONMENT: dev
+  TF_STORAGE_CONTAINER: ''
+  TF_STORAGE_KEY: ''

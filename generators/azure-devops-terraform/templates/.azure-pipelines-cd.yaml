@@ -1,0 +1,45 @@
+variables:
+  - name: TF_VERSION
+    value: '<%= terraformVersion %>'
+  - name: ARTIFACT_NAME
+    value: '<%= terraformRoot %>'
+
+trigger:
+  tags:
+    include:
+    - '*'
+
+stages:
+- stage: 'build'
+  displayName: 'Terraform - Build'
+  jobs:
+  - template: azure-pipelines/terraform/build.yaml
+    parameters:
+      terraformVersion: '$(TF_VERSION)'
+      artifactName: '$(ARTIFACT_NAME)'
+
+- template: azure-pipelines/terraform/deploy.yaml
+  parameters:
+    name: dev
+    after: [build]
+    environment: <%= name %>-dev
+
+- template: azure-pipelines/terraform/deploy.yaml
+  parameters:
+    name: prod
+    after: [build]
+    environment: <%= name %>-prod
+
+# Comment if you don't want to add destroy stages to your pipelines!
+
+- template: azure-pipelines/terraform/destroy.yaml
+  parameters:
+    name: dev    
+    environment: <%= name %>-dev
+    after: [applydev]
+
+- template: azure-pipelines/terraform/destroy.yaml
+  parameters:
+    name: prod    
+    environment: <%= name %>-prod
+    after: [applyprod]

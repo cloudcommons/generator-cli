@@ -1,0 +1,27 @@
+variables:
+  - name: TF_VERSION
+    value: '<%= terraformVersion %>'
+  - name: ARTIFACT_NAME
+    value: '<%= terraformRoot %>'
+    
+trigger:
+  branches:
+    include:
+    - '*'
+  # YAML PR triggers are only supported in GitHub and Bitbucket Cloud. If you are using Azure Repos Git, you can configure a branch policy for build validation in order to trigger your pipeline for validation.  
+  # Source: https://docs.microsoft.com/en-us/azure/devops/pipelines/build/triggers?view=azure-devops&tabs=yaml#pr-triggers
+  # pr:
+  # - '*'
+
+stages:
+- stage: 'build'
+  displayName: 'Continous Integration'
+  variables: 
+    - template: templates/vars/release.yaml  
+    - TF_STORAGE_CONTAINER: build
+    - TF_STORAGE_KEY: build.tfstate
+  jobs:
+  - template: azure-pipelines/cloudcommons-terraform-validate.yaml 
+    parameters:
+      terraformVersion: '$(TF_VERSION)'
+      terraformRoot: '<%= terraformRoot %>'

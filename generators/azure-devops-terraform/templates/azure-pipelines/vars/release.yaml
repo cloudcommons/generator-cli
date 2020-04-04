@@ -1,0 +1,8 @@
+variables:
+  AZURE_SUBSCRIPTION: '<%= subscription %>'
+  TF_VERSION: '<%= terraformVersion %>'
+  TF_VAR_AZURE_SUBSCRIPTION: ''
+  TF_RESOURCE_GROUP_LOCATION: ''
+  TF_RESOURCE_GROUP_NAME: ''
+  TF_STORAGE_ACCOUNT_NAME: ''
+  TF_STORAGE_ACCOUNT_SKU: ''

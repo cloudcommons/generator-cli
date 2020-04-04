@@ -3,19 +3,16 @@ module.exports = function (fsTools, answers) {
 
     answers = Object.assign({
         safeName: generateSafeName(answers.name),
-        terraformVersion: '0.12.19' // TODO Read this value from configuration/answers, to match the terraform version selected by the user and the one set in the pipelines
+        terraformVersion: '0.12.20' // TODO Read this value from configuration/answers, to match the terraform version selected by the user and the one set in the pipelines
     }, answers);
 
-    if (answers.features.includes("templates")) {
-        fsTools.copy("azure-pipelines/cloudcommons-terraform-validate.yaml", answers);
-        fsTools.copy("azure-pipelines/cloudcommons-terraform-build.yaml", answers);
-        fsTools.copy("azure-pipelines/cloudcommons-terraform-deploy.yaml", answers);
-    }
-
-    if (answers.features.includes("pipelines")) {
-        fsTools.copy("azure-pipelines-ci.yaml", answers);
-        fsTools.copy("azure-pipelines-cd.yaml", answers);
-    }
+    fsTools.copy("azure-pipelines/templates/terraform/build.yaml", answers);
+    fsTools.copy("azure-pipelines/templates/terraform/command.yaml", answers);
+    fsTools.copy("azure-pipelines/templates/terraform/deploy.yaml", answers);
+    fsTools.copy("azure-pipelines/templates/terraform/destroy.yaml", answers);
+    fsTools.copy("azure-pipelines/templates/terraform/validate.yaml", answers);
+    fsTools.copy(".azure-pipelines-ci.yaml", answers);
+    fsTools.copy(".azure-pipelines-cd.yaml", answers);
 }
 
 /**

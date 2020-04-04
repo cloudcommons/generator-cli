@@ -1,0 +1,43 @@
+parameters:
+  pool: 'ubuntu-latest'
+  name: 'Terraform'
+  artifactName: 'Terraform'
+  terraformVersion: '<%= terraformVersion %>'
+  workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+stages:
+- stage: 'build'
+  displayName: 'Build'
+  dependsOn: ${{ parameters.after }}
+  variables: 
+    - template: ../vars/release.yaml
+
+  jobs:
+  - template: validate.yaml 
+    parameters:
+      terraformVersion: ${{ parameters.terraformVersion }}
+      artifactName: ${{ parameters.artifactName }}
+      terraformRoot: ${{ parameters.workingDirectory }}
+
+  - job: Publish${{ parameters.name}}
+    displayName: 'Publish - ${{ parameters.name}}'
+    pool:
+      vmImage: ${{ parameters.pool }}
+    steps:
+    - task: CopyFiles@2
+      displayName: 'Copy - Terraform scripts'
+      inputs:
+        SourceFolder: ${{ parameters.workingDirectory }}
+        Contents: |
+          **
+          !.git/**
+          !.gitignore
+          !azure-pipelines*.yaml
+          !azure-pipelines/**
+        TargetFolder: $(Build.ArtifactStagingDirectory)
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish - Validated Terraform scripts'
+      inputs:
+          targetPath: $(Build.ArtifactStagingDirectory)
+          artifactName: ${{ parameters.artifactName }}

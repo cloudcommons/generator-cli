@@ -1,0 +1,48 @@
+stages:
+- stage: 'planDestroy${{ parameters.name }}'
+  displayName: 'Terraform - Plan - ${{ parameters.environment }}'
+  dependsOn: ${{ parameters.after }}
+  variables: 
+    - template: ../vars/release.yaml
+    - template: ../vars/${{ parameters.name }}.yaml
+  jobs:
+  - template: cloudcommons-terraform-command.yaml 
+    parameters:
+      name: '${{ parameters.name }}'
+      command: 'plan'
+      commandOptions: '-destroy'
+      environment: '${{ parameters.environment }}'
+      subscriptionName: '$(AZURE_SUBSCRIPTION)'
+      terraformVersion: '$(TF_VERSION)'
+      artifactName: ${{ parameters.artifactName }}
+      terraformRoot: '/'
+      backendServiceArm: '$(TF_AZURE_BACKEND_SUBSCRIPTION)'
+      backendAzureRmResourceGroupName: '$(TF_RESOURCE_GROUP_NAME)'
+      backendAzureRmResourceGroupLocation: '$(TF_RESOURCE_GROUP_LOCATION)'
+      backendAzureRmStorageAccountName: '$(TF_STORAGE_ACCOUNT_NAME)'
+      backendAzureRmStorageAccountSku: '$(TF_STORAGE_ACCOUNT_SKU)'
+      backendAzureRmContainerName: '$(TF_STORAGE_CONTAINER)'
+      backendAzureRmKey: '$(TF_STORAGE_KEY)'
+
+- stage: 'destroy${{ parameters.name }}'
+  displayName: 'Terraform - Destroy - ${{ parameters.environment }}'
+  variables: 
+    - template: ../vars/release.yaml
+    - template: ../vars/${{ parameters.name }}.yaml
+  jobs:
+  - template: cloudcommons-terraform-command.yaml 
+    parameters:
+      name: '${{ parameters.name }}'
+      command: 'destroy'
+      environment: '${{ parameters.environment }}'
+      subscriptionName: '$(AZURE_SUBSCRIPTION)'
+      terraformVersion: '$(TF_VERSION)'
+      artifactName: '$(ARTIFACT_NAME)'
+      terraformRoot: '/'
+      backendServiceArm: '$(TF_AZURE_BACKEND_SUBSCRIPTION)'
+      backendAzureRmResourceGroupName: '$(TF_RESOURCE_GROUP_NAME)'
+      backendAzureRmResourceGroupLocation: '$(TF_RESOURCE_GROUP_LOCATION)'
+      backendAzureRmStorageAccountName: '$(TF_STORAGE_ACCOUNT_NAME)'
+      backendAzureRmStorageAccountSku: '$(TF_STORAGE_ACCOUNT_SKU)'
+      backendAzureRmContainerName: '$(TF_STORAGE_CONTAINER)'
+      backendAzureRmKey: '$(TF_STORAGE_KEY)'
