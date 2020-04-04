@@ -4,6 +4,7 @@ parameters:
   artifactName: 'Terraform'
   terraformVersion: '<%= terraformVersion %>'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
+  ensureBackend: false  
 
 stages:
 - stage: 'build'

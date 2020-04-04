@@ -1,10 +1,10 @@
 parameters:
-  pool: 'ubuntu-latest'
-  name: 'Terraform'
-  terraformVersion: '<%= terraformVersion %>'
-  terraformRoot: '<%= terraformRoot %>'
-  workingDirectory: '$(System.DefaultWorkingDirectory)'
-
+  pool: ubuntu-latest
+  name: Terraform
+  terraformVersion: <%= terraformVersion %>
+  terraformRoot: <%= terraformRoot %>
+  workingDirectory: $(System.DefaultWorkingDirectory)
+  ensureBackend: false
 
 jobs:
 - job: Validate${{ parameters.name}}
@@ -21,22 +21,22 @@ jobs:
   - task: TerraformCLI@0
     displayName: "Terraform - Init"
     inputs:
-      command: 'init'
+      command: init
       continueOnError: true
       workingDirectory: '${{ parameters.workingDirectory }}/${{ parameters.artifactName }}/${{ parameters.terraformRoot }}'
-      backendType: 'azurerm'
-      backendServiceArm: '${{ parameters.backendServiceArm }}'
-      ensureBackend: true
-      backendAzureRmResourceGroupName: '${{ parameters.backendAzureRmResourceGroupName }}'
-      backendAzureRmResourceGroupLocation: '${{ parameters.backendAzureRmResourceGroupLocation }}'
-      backendAzureRmStorageAccountName: '${{ parameters.backendAzureRmStorageAccountName }}'
-      backendAzureRmStorageAccountSku: '${{ parameters.backendAzureRmStorageAccountSku }}'
-      backendAzureRmContainerName: 'build'
-      backendAzureRmKey: 'build.tfstate'
+      backendType: azurerm
+      backendServiceArm: ${{ parameters.backendServiceArm }}
+      ensureBackend: ${{ parameters.ensureBackend }}
+      backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
+      backendAzureRmResourceGroupLocation: ${{ parameters.backendAzureRmResourceGroupLocation }}
+      backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmStorageAccountName }}
+      backendAzureRmStorageAccountSku: ${{ parameters.backendAzureRmStorageAccountSku }}
+      backendAzureRmContainerName: build
+      backendAzureRmKey: build.tfstate
 
   - task: TerraformCLI@0
     displayName: "Terraform - Validate"
     inputs:
         command: 'validate'
         workingDirectory: ${{ parameters.workingDirectory }}
-        commandOptions: '${{ parameters.validateCommandOptions }}'
+        commandOptions: ${{ parameters.validateCommandOptions }}

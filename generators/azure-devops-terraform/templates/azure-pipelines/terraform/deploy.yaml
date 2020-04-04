@@ -1,7 +1,8 @@
 parameters:  
-  artifactName: 'Terraform'
-  terraformRoot: '<%= terraformRoot %>'
-  workingDirectory: '$(Pipeline.Workspace)'
+  artifactName: Terraform
+  terraformRoot: <%= terraformRoot %>
+  workingDirectory: $(Pipeline.Workspace)
+  ensureBackend: false
 
 stages:
 - stage: 'plan${{ parameters.name }}'
@@ -13,11 +14,11 @@ stages:
   jobs:
   - template: command.yaml 
     parameters:
-      name: '${{ parameters.name }}'
-      command: 'plan'
-      environment: '${{ parameters.environment }}'
-      subscriptionName: '${{ variables.AZURE_SUBSCRIPTION }}'
-      terraformVersion: '${{ variables.TF_VERSION }}'
+      name: ${{ parameters.name }}
+      command: plan
+      environment: ${{ parameters.environment }}
+      subscriptionName: ${{ variables.AZURE_SUBSCRIPTION }}
+      terraformVersion: ${{ variables.TF_VERSION }}      
       artifactName: ${{ parameters.artifactName }}
       terraformRoot: ${{ parameters.terraformRoot }}
       backendServiceArm: ${{ variables.TF_AZURE_BACKEND_SUBSCRIPTION }}
@@ -27,6 +28,7 @@ stages:
       backendAzureRmStorageAccountSku: ${{ variables.TF_STORAGE_ACCOUNT_SKU }}
       backendAzureRmContainerName: ${{ variables.TF_STORAGE_CONTAINER }}
       backendAzureRmKey: ${{ variables.TF_STORAGE_KEY }}
+      ensureBackend: ${{ parameters.ensureBackend }}
 
 - stage: 'apply${{ parameters.name }}'
   displayName: 'Apply - ${{ parameters.name }}'
@@ -50,3 +52,4 @@ stages:
       backendAzureRmStorageAccountSku: ${{ variables.TF_STORAGE_ACCOUNT_SKU }}
       backendAzureRmContainerName: ${{ variables.TF_STORAGE_CONTAINER }}
       backendAzureRmKey: ${{ variables.TF_STORAGE_KEY }}
+      ensureBackend: ${{ parameters.ensureBackend }}

@@ -1,2 +1,2 @@
 variables:
-  TF_VAR_ENVIRONMENT: dev  
+  TF_VAR_ENVIRONMENT: dev

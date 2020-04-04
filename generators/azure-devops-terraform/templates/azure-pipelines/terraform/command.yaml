@@ -5,6 +5,7 @@ parameters:
   workingDirectory: '$(Pipeline.Workspace)'
   terraformRoot: ''
   commandOptions: ''
+  ensureBackend: false
 
 jobs:
 - deployment: TerraformCommand${{ parameters.command }}${{ parameters.name }}
@@ -41,7 +42,7 @@ jobs:
             workingDirectory: '${{ parameters.workingDirectory }}/${{ parameters.artifactName }}/${{ parameters.terraformRoot }}'
             backendType: 'azurerm'
             backendServiceArm: '${{ parameters.backendServiceArm }}'
-            ensureBackend: true
+            ensureBackend: ${{ parameters.ensureBackend }}
             backendAzureRmResourceGroupName: '${{ parameters.backendAzureRmResourceGroupName }}'
             backendAzureRmResourceGroupLocation: '${{ parameters.backendAzureRmResourceGroupLocation }}'
             backendAzureRmStorageAccountName: '${{ parameters.backendAzureRmStorageAccountName }}'
