@@ -6,7 +6,7 @@ stages:
     - template: ../vars/release.yaml
     - template: ../vars/${{ parameters.name }}.yaml
   jobs:
-  - template: cloudcommons-terraform-command.yaml 
+  - template: command.yaml 
     parameters:
       name: '${{ parameters.name }}'
       command: 'plan'
@@ -30,7 +30,7 @@ stages:
     - template: ../vars/release.yaml
     - template: ../vars/${{ parameters.name }}.yaml
   jobs:
-  - template: cloudcommons-terraform-command.yaml 
+  - template: command.yaml 
     parameters:
       name: '${{ parameters.name }}'
       command: 'destroy'
