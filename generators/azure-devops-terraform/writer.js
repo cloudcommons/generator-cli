@@ -14,6 +14,7 @@ module.exports = function (fsTools, answers) {
     fsTools.copy("azure-pipelines/vars/release.yaml", answers);
     fsTools.copy("azure-pipelines/vars/dev.yaml", answers);
     fsTools.copy("azure-pipelines/vars/prod.yaml", answers);
+    fsTools.copy("azure-pipelines/README.md", answers);
     fsTools.copy(".azure-pipelines-ci.yaml", answers);
     fsTools.copy(".azure-pipelines-cd.yaml", answers);
 }
