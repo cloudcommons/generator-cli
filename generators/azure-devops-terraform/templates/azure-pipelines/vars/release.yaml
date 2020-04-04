@@ -1,7 +1,13 @@
 variables:
+  # General configuration
   AZURE_SUBSCRIPTION: '<%= subscription %>'
+
+  # Terraform back-end configuration
+  TF_VAR_ENVIRONMENT: default
   TF_VERSION: '<%= terraformVersion %>'
+  TF_AZURE_BACKEND_SUBSCRIPTION: ''    
   TF_RESOURCE_GROUP_LOCATION: ''
   TF_RESOURCE_GROUP_NAME: ''
   TF_STORAGE_ACCOUNT_NAME: ''
   TF_STORAGE_ACCOUNT_SKU: ''
+  TF_STORAGE_CONTAINER: ''

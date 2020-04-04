@@ -7,7 +7,7 @@ parameters:
   commandOptions: ''
 
 jobs:
-- deployment: Terraform${{ parameters.name }}
+- deployment: TerraformCommand${{ parameters.command }}${{ parameters.name }}
   displayName: Terraform ${{ parameters.command }} - ${{ parameters.environment }}
   pool:
     vmImage: ${{ parameters.pool }}
