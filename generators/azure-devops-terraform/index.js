@@ -40,10 +40,14 @@ module.exports = class extends TerraformGenerator {
 
   end() {
     this.save(cleanupSecrets(this.answers));
-    this.log("Completed! Please note this template require the following Azure DevOps extensions:");
-    this.log("Terraform Buld & Release Tasks, by Charles Zipp: https://marketplace.visualstudio.com/items?itemName=charleszipp.azure-pipelines-tasks-terraform");
-    this.log("Replace toeksn task, by Guillaume Rouchon: https://marketplace.visualstudio.com/items?itemName=qetza.replacetokens");
-    this.log("Ensure them are installed before running the pipeline!");
+    this.log("================");
+    this.log("Completed! ");
+    this.log("Please note this template require the following Azure DevOps extensions:");
+    this.log("* Terraform Buld & Release Tasks, by Charles Zipp: https://marketplace.visualstudio.com/items?itemName=charleszipp.azure-pipelines-tasks-terraform");
+    this.log("* Replace tokens task, by Guillaume Rouchon: https://marketplace.visualstudio.com/items?itemName=qetza.replacetokens");
+    this.log("");
+    this.log("Ensure them are installed in your Azure DevOps before running any pipelines!");
+    this.log("================");
   }
 };
 
