@@ -1,5 +1,5 @@
 variables:
-- testCommand: run test:full
+  testCommand: run test:full
 
 trigger:
   batch: true
