@@ -4,7 +4,8 @@
   "description": "A generator to produce cloud common boilerplate code using Terraform",
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha --resursive",
-    "test:grep": "node node_modules/mocha/bin/mocha --resursive --grep aks-sizing-tests"
+    "test:unit": "node node_modules/mocha/bin/mocha --grep unit",
+    "test:integration": "node node_modules/mocha/bin/mocha --resursive --grep integration"  
   },
   "author": {
     "name": "Sergio Sisternes",

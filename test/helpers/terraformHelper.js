@@ -1,3 +1,6 @@
+const path = require('path');
+const fs = require('fs-extra');
+
 module.exports = class {
 
     constructor(spawn = null, log = null) {
@@ -25,7 +28,6 @@ module.exports = class {
      * @param {*} spawnCommandSync 
      */
     init() {
-        this.log("Initialising Terraform...")
         try {
             this.spawn('terraform', ['init']);
         }
@@ -42,7 +44,14 @@ module.exports = class {
         this.terraform(['plan', `-out=${plan}`]);
         var jsonString = this.terraform(['show', '-json', plan]);
         var json = JSON.parse(jsonString);
-        console.log(json);
         return json;
+    }
+
+    /**
+     * Initialises a folder to execute subgenerators
+     * @param {*} dir 
+     */
+    initialiseDir(dir, terraformVersion = "0.12.20") {
+        fs.copySync(path.join(__dirname, `templates/${terraformVersion}`), dir);
     }
 }
