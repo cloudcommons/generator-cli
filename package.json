@@ -3,9 +3,9 @@
   "version": "0.2.5",
   "description": "A generator to produce cloud common boilerplate code using Terraform",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --resursive",
-    "test:unit": "node node_modules/mocha/bin/mocha --grep unit",
-    "test:integration": "node node_modules/mocha/bin/mocha --resursive --grep integration"
+    "test": "node node_modules/mocha/bin/mocha",
+    "test:ci": "node node_modules/mocha/bin/mocha",
+    "test:full": "node node_modules/mocha/bin/mocha ./test ./test/plan"
   },
   "author": {
     "name": "Sergio Sisternes",
@@ -22,7 +22,7 @@
     "yeoman-generator": "^4.4.0"
   },
   "devDependencies": {
-    "@cloudcommons/terraform-assert": "^0.1.0",
+    "@cloudcommons/terraform-assert": "^0.1.1",
     "chai": "^4.2.0",
     "fs-extra": "^9.0.0",
     "mocha": "^7.0.1",

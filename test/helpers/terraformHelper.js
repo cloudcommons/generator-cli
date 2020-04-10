@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs-extra');
+const terraformAssert = require('@cloudcommons/terraform-assert');
 
 module.exports = class {
 
@@ -45,6 +46,14 @@ module.exports = class {
         var jsonString = this.terraform(['show', '-json', plan]);
         var json = JSON.parse(jsonString);
         return json;
+    }
+
+    getGeneratorPlan(done) {
+        this.init();
+        var planJson = this.getPlan();
+        var plan = terraformAssert(planJson);
+        done();
+        return plan;
     }
 
     /**
