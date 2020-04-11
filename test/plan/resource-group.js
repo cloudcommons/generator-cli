@@ -1,59 +1,41 @@
-const helpers = require('yeoman-test');
-const path = require('path');
 const assert = require('yeoman-assert');
-const TerraformHelper = require('../helpers/terraformHelper');
-const terraform = new TerraformHelper();
-const generatorHelper = require('../helpers/generatorHelper');
+const genSpec = require('../helpers/geneteratorSpecificationHelper');
 
 describe("Terraform plan", function () {
     describe("Validate cloudcommons/cli:resource-group", function () {
         describe("Resource group cloudcommons in westeu", function () {
-            var prompts = {
-                name: 'cloudcommons',
-                location: 'westeu'
-            }
+            var spec = {
+                config: {
+                    terraform: {
+                        init: true,
+                        plan: true
+                    }
+                },
+                generators: {
+                    "terraform": {
+                        prompts: {
+                            app: "cloudcommons",
+                            version: "0.12.20",
+                            backendType: "local"
+                        }
+                    },                    
+                    "azure-resource-group": {
+                        prompts: {
+                            name: 'cloudcommons',
+                            location: 'westeu'
+                        }
+                    }
+                }
+            };
 
+            var prompts = spec.generators["azure-resource-group"].prompts;
             var plan = null;
-            var directory = null;
 
             before(done => {
-
-                // var genSpec = {
-                //     config: {
-                //         terraform: {
-                //             init: true,
-                //             plan: true
-                //         }
-                //     },
-                //     generators: {
-                //         "terraform": {
-                //             prompts: {
-                //                 app: "cloudcommons",
-                //                 version: "0.12.20",
-                //                 backendType: "local"
-                //             }
-                //         },
-                //         "azure-resource-group": {
-                //             prompts: {
-                //                 name: 'cloudcommons',
-                //                 location: 'westeu'
-                //             }
-                //         }
-                //     }
-                // }
-
-                helpers
-                    .run(path.join(__dirname, '../../generators/azure-resource-group'))
-                    .inTmpDir((dir) => {
-                        directory = dir;
-                    })
-                    .withPrompts(prompts)
-                    .once('end', () => {
-                        var resourceGroupReference = `azurerm_resource_group.${prompts.name}`;
-                        generatorHelper.terraform(directory, 'cloudcommons')
-                            .then(() => generatorHelper.logAnalytics(directory, "logAnalytics", resourceGroupReference, prompts.location)
-                                .then(() => plan = terraform.getGeneratorPlan(done, directory)))
-                    });
+                genSpec(spec, (terraformPlan) => {
+                    plan = terraformPlan;
+                    done();
+                });
             });
 
             it('Generates a valid plan', () => {
