@@ -13,14 +13,17 @@ module.exports = class {
     * Spawns a terraform command
     * @param {*} args
     */
-    terraform(args) {
-        var rgs = this.spawn('terraform', args, {
+    terraform(args, dir = null) {
+        var opts = {
             stdio: ['ignore', 'pipe', process.stderr]
-        });
-
+        };
+        if (dir) opts.cwd = dir;
+        var rgs = this.spawn('terraform', args, opts);
         if (rgs.output === null) throw "No response from terraform. Is terraform installed??";
         var output = rgs.output.toString().trim();
-        return output.substring(1, output.length - 2);
+        output = output.substring(1, output.length - 2);
+        console.log(output);
+        return output;
     }
 
     /**
@@ -28,9 +31,11 @@ module.exports = class {
      * @param {*} log 
      * @param {*} spawnCommandSync 
      */
-    init() {
+    init(dir = null) {
+        var opts = {};
+        if (dir) opts.cwd = dir;
         try {
-            this.spawn('terraform', ['init']);
+            this.terraform(['init'], dir);
         }
         catch (e) {
             this.log("Error executing terraform init. Is terraform installed? ", e);
@@ -41,26 +46,20 @@ module.exports = class {
      * Runs a terraform plan and returns it in JSON format 
      * @param {*} plan 
      */
-    getPlan(plan = 'plan.tfplan') {
-        this.terraform(['plan', `-out=${plan}`]);
-        var jsonString = this.terraform(['show', '-json', plan]);
+    getPlan(dir = null) {
+        const planName = 'plan.tfplan';
+        this.terraform(['plan', `-out=${planName}`], dir);
+        var jsonString = this.terraform(['show', '-json', planName]);
         var json = JSON.parse(jsonString);
         return json;
     }
 
-    getGeneratorPlan(done) {
-        this.init();
-        var planJson = this.getPlan();
+    getGeneratorPlan(done, dir = null) {
+        console.log(`Generating plan in folder ${dir}`);
+        this.init(dir);
+        var planJson = this.getPlan(dir);
         var plan = terraformAssert(planJson);
         done();
         return plan;
-    }
-
-    /**
-     * Initialises a folder to execute subgenerators
-     * @param {*} dir 
-     */
-    initialiseDir(dir, terraformVersion = "0.12.20") {
-        fs.copySync(path.join(__dirname, `templates/${terraformVersion}`), dir);
     }
 }

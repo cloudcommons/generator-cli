@@ -3,27 +3,56 @@ const path = require('path');
 const assert = require('yeoman-assert');
 const TerraformHelper = require('../helpers/terraformHelper');
 const terraform = new TerraformHelper();
+const generatorHelper = require('../helpers/generatorHelper');
 
 describe("Terraform plan", function () {
     describe("Validate cloudcommons/cli:resource-group", function () {
         describe("Resource group cloudcommons in westeu", function () {
             var prompts = {
-                app: 'cloudcommons',
-                version: '~> v0.12.19',
-                backendType: 'local',
                 name: 'cloudcommons',
                 location: 'westeu'
             }
 
             var plan = null;
+            var directory = null;
 
             before(done => {
+
+                // var genSpec = {
+                //     config: {
+                //         terraform: {
+                //             init: true,
+                //             plan: true
+                //         }
+                //     },
+                //     generators: {
+                //         "terraform": {
+                //             prompts: {
+                //                 app: "cloudcommons",
+                //                 version: "0.12.20",
+                //                 backendType: "local"
+                //             }
+                //         },
+                //         "azure-resource-group": {
+                //             prompts: {
+                //                 name: 'cloudcommons',
+                //                 location: 'westeu'
+                //             }
+                //         }
+                //     }
+                // }
+
                 helpers
                     .run(path.join(__dirname, '../../generators/azure-resource-group'))
-                    .inTmpDir(terraform.initialiseDir)
+                    .inTmpDir((dir) => {
+                        directory = dir;
+                    })
                     .withPrompts(prompts)
                     .once('end', () => {
-                        plan = terraform.getGeneratorPlan(done);
+                        var resourceGroupReference = `azurerm_resource_group.${prompts.name}`;
+                        generatorHelper.terraform(directory, 'cloudcommons')
+                            .then(() => generatorHelper.logAnalytics(directory, "logAnalytics", resourceGroupReference, prompts.location)
+                                .then(() => plan = terraform.getGeneratorPlan(done, directory)))
                     });
             });
 
@@ -32,7 +61,7 @@ describe("Terraform plan", function () {
             });
 
             it('Plans to create all the variables', () => {
-                plan.variable("APP").is(prompts.app);
+                plan.variable("APP").is("cloudcommons");
                 plan.variable("CREATOR").is("cloudcommons");
                 plan.variable("ENVIRONMENT").is("default");
                 plan.variable("LOCATION").is(prompts.location);
@@ -43,7 +72,7 @@ describe("Terraform plan", function () {
                 plan.plannedValues.output("RESOURCE_GROUP_ID").isNotSensitive();
             });
 
-            it(`Plans the resource group ${prompts.name}`, () => {
+            it(`Plans includes the resource group ${prompts.name}`, () => {
                 var resourceGroup = plan.plannedValues.resources.resource(`azurerm_resource_group.${prompts.name}`);
                 resourceGroup.modeIs("managed")
                     .typeIs("azurerm_resource_group")
@@ -52,7 +81,7 @@ describe("Terraform plan", function () {
                     .valueIs("location", prompts.location);
             });
 
-            it('Plans the global random id', () => {
+            it('Plan includes the global random id', () => {
                 var randomId = plan.plannedValues.resources.resource(`random_id.cloudcommons`);
                 randomId.modeIs("managed")
                     .typeIs("random_id")
@@ -60,6 +89,38 @@ describe("Terraform plan", function () {
                     .providerNameIs("random")
                     .valueIs("byte_length", 4);
             });
+
+            it(`Will create the resources ${prompts.name}`, () => {
+                var address = `azurerm_resource_group.${prompts.name}`;
+                var change = plan.resourceChange(address);
+                change.actionIs('create')
+                    .typeIs('azurerm_resource_group')
+                    .nameIs(prompts.name)
+                    .providerNameIs('azurerm');
+
+                change.before.isNull();
+                change.after.is('location', prompts.location);
+                change.unknown.is('id')
+                    .is('name')
+                    .is('tags');
+            });
+
+            it(`Will create the output variables`, () => {
+                plan.outputChange('RESOURCE_GROUP_ID').actionIs('create');
+            });
+
+            it('Will use the right providers', () => {
+                plan.configuration.provider('azurerm');
+                plan.configuration.provider('random');
+            });
+
+            it('Will have the correct environment variables and they have description', () => {
+                plan.configuration.variable('APP').defaultIs('cloudcommons').hasDescription();
+                plan.configuration.variable('CREATOR').defaultIs('cloudcommons').hasDescription();
+                plan.configuration.variable('ENVIRONMENT').defaultIs('default').hasDescription();
+                plan.configuration.variable('LOCATION').hasDescription();
+                plan.configuration.variable('RESOURCE_GROUP_NAME').hasDescription();
+            });
         });
     });
-}); 
+});
