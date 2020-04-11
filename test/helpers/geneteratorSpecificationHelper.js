@@ -27,6 +27,15 @@ module.exports = function (spec, done) {
     executeGenerators(tmpdir, spec, generators, done);
 }
 
+/**
+ * Iterative function executing all the generators in the same folder, one by one. 
+ * Once all generators have been executed, checks if terraform plan should be executed.
+ * Finally, notifies the upstream process that everything is ready by calling to "done"
+ * @param {*} dir 
+ * @param {*} spec 
+ * @param {*} generators 
+ * @param {*} done 
+ */
 function executeGenerators(dir, spec, generators, done) {
     const nextGenerator = generators.shift();
     if (nextGenerator) {
@@ -48,7 +57,12 @@ function executeGenerators(dir, spec, generators, done) {
         });
     }
 }
-
+/**
+ * Yeoman generator invokation in a promise
+ * @param {*} dir 
+ * @param {*} name 
+ * @param {*} generatorSpec 
+ */
 function executeGenerator(dir, name, generatorSpec) {
     return new Promise((resolve, reject) => {
         console.debug(`Executing generator ${name}`);
@@ -67,6 +81,11 @@ function executeGenerator(dir, name, generatorSpec) {
     });
 }
 
+/**
+ * Final stage of the chain, where we check if we should perform terraform init and terraform plan.
+ * @param {*} spec 
+ * @param {*} dir 
+ */
 function generatorsCompleted(spec, dir) {
     console.debug("Generators completed");
     if (spec && spec.config && spec.config.terraform) {
