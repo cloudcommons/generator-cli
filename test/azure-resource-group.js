@@ -2,7 +2,7 @@ var helpers = require('yeoman-test');
 var path = require('path');
 var assert = require('yeoman-assert');
 
-describe("cloudcommons/cli:azure-resource-group", function () {    
+describe("cloudcommons/cli:azure-resource-group", function () {
     describe('Creates a Resource Group', () => {
         before(done => {
             helpers

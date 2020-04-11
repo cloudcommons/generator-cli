@@ -1,5 +1,6 @@
 variables:
   testCommand: run test
+  TF_CLI_CONFIG_FILE: '${{ System.DefaultWorkingDirectory }}/.terraformrc'
 
 trigger:
   batch: true
