@@ -44,7 +44,7 @@ module.exports = class {
      */
     getPlan(dir = null) {
         const planName = 'plan.tfplan';
-        this.terraform(['plan', `-out=${planName}`], dir);
+        this.terraform(['plan', `-out=${planName}`, '-input=false'], dir);
         var jsonString = this.terraform(['show', '-json', planName]);
         var json = JSON.parse(jsonString);
         return json;
