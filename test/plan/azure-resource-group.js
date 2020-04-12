@@ -18,7 +18,7 @@ describe("cloudcommons/cli:azure-resource-group", function () {
                             version: "0.12.20",
                             backendType: "local"
                         }
-                    },                    
+                    },
                     "azure-resource-group": {
                         prompts: {
                             name: 'cloudcommons',
@@ -43,52 +43,52 @@ describe("cloudcommons/cli:azure-resource-group", function () {
             });
 
             it('Plans to create all the variables', () => {
-                plan.variable("APP").is("cloudcommons");
-                plan.variable("CREATOR").is("cloudcommons");
-                plan.variable("ENVIRONMENT").is("default");
-                plan.variable("LOCATION").is(prompts.location);
-                plan.variable("RESOURCE_GROUP_NAME").is(prompts.name);
+                plan.variables("APP").is("cloudcommons");
+                plan.variables("CREATOR").is("cloudcommons");
+                plan.variables("ENVIRONMENT").is("default");
+                plan.variables("LOCATION").is(prompts.location);
+                plan.variables("RESOURCE_GROUP_NAME").is(prompts.name);
             });
 
             it('Plans the right output variables', () => {
-                plan.plannedValues.output("RESOURCE_GROUP_ID").isNotSensitive();
+                plan.planned_values.outputs("RESOURCE_GROUP_ID").isNotSensitive();
             });
 
             it(`Plans includes the resource group ${prompts.name}`, () => {
-                var resourceGroup = plan.plannedValues.resources.resource(`azurerm_resource_group.${prompts.name}`);
-                resourceGroup.modeIs("managed")
-                    .typeIs("azurerm_resource_group")
-                    .nameIs(prompts.name)
-                    .providerNameIs("azurerm")
-                    .valueIs("location", prompts.location);
+                var resourceGroup = plan.planned_values.root_module.resources(`azurerm_resource_group.${prompts.name}`);
+                resourceGroup.mode().is("managed")
+                    .type().is("azurerm_resource_group")
+                    .name().is(prompts.name)
+                    .providerName().is("azurerm")
+                    .value("location").is(prompts.location);
             });
 
             it('Plan includes the global random id', () => {
-                var randomId = plan.plannedValues.resources.resource(`random_id.cloudcommons`);
-                randomId.modeIs("managed")
-                    .typeIs("random_id")
-                    .nameIs("cloudcommons")
-                    .providerNameIs("random")
-                    .valueIs("byte_length", 4);
+                var randomId = plan.planned_values.root_module.resources(`random_id.cloudcommons`);
+                randomId.mode().is("managed")
+                    .type().is("random_id")
+                    .name().is("cloudcommons")
+                    .providerName().is("random")
+                    .value("byte_length").is(4);
             });
 
             it(`Will create the resources ${prompts.name}`, () => {
-                var address = `azurerm_resource_group.${prompts.name}`;
-                var change = plan.resourceChange(address);
-                change.actionIs('create')
-                    .typeIs('azurerm_resource_group')
-                    .nameIs(prompts.name)
-                    .providerNameIs('azurerm');
+                var change = plan.resource_changes(`azurerm_resource_group.${prompts.name}`);
+                change.name().is(prompts.name)                    
+                    .type().is('azurerm_resource_group')
+                    .action().is('create')
+                    .providerName().is('azurerm');
 
-                change.before.isNull();
-                change.after.is('location', prompts.location);
-                change.unknown.is('id')
+                change.before().isNull();
+                change.after().is('location', prompts.location);
+                change.unknown()
+                    .is('id')
                     .is('name')
                     .is('tags');
             });
 
             it(`Will create the output variables`, () => {
-                plan.outputChange('RESOURCE_GROUP_ID').actionIs('create');
+                plan.output_changes('RESOURCE_GROUP_ID').actionIs('create');
             });
 
             it('Will use the right providers', () => {

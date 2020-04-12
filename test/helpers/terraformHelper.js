@@ -10,16 +10,21 @@ module.exports = class {
     * @param {*} args
     */
     terraform(args, dir = null) {
-        var opts = {
-            stdio: ['ignore', 'pipe', process.stderr]
-        };
-        if (dir) opts.cwd = dir;
-        var rgs = this.spawn('terraform', args, opts);
-        if (rgs.output === null) throw "No response from terraform. Is terraform installed??";
-        var output = rgs.output.toString().trim();
-        output = output.substring(1, output.length - 2);
-        console.log(output);
-        return output;
+        try {
+            var opts = {
+                stdio: ['ignore', 'pipe', process.stderr]
+            };
+            if (dir) opts.cwd = dir;
+            var rgs = this.spawn('terraform', args, opts);
+            if (rgs.output === null) throw "No response from terraform. Is terraform installed??";
+            var output = rgs.output.toString().trim();
+            output = output.substring(1, output.length - 2);
+            console.log(output);
+            return output;
+        } catch (e) {
+            this.log("Error executing terraform init. Is terraform installed? ", e);
+            throw e;
+        }
     }
 
     /**
@@ -28,14 +33,11 @@ module.exports = class {
      * @param {*} spawnCommandSync 
      */
     init(dir = null) {
-        var opts = {};
-        if (dir) opts.cwd = dir;
-        try {
-            this.terraform(['init'], dir);
-        }
-        catch (e) {
-            this.log("Error executing terraform init. Is terraform installed? ", e);
-        }
+        this.terraform(['init'], dir);
+    }
+
+    validate(dir = null) {
+        this.terraform(['validate'], dir);
     }
 
     /**

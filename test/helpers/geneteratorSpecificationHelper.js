@@ -93,6 +93,8 @@ function generatorsCompleted(spec, dir) {
         if (cfg.init) {
             console.debug("terraform init");
             terraform.init(dir);
+            console.debug("terraform validate");
+            terraform.validate(dir);
         }
         if (cfg.plan) {
             console.debug("terraform plan")
