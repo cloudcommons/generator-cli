@@ -2,6 +2,7 @@ parameters:
   name: 'generator'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
   maxParallel: 2
+  testCommand: 'run test'
 
 jobs:
 - job: Build${{ parameters.name}}
@@ -47,7 +48,7 @@ jobs:
     displayName: 'NPM - Test'
     inputs:
       command: 'custom'
-      customCommand: 'test'
+      customCommand: ${{ parameters.testCommand }}
 
   - task: PublishTestResults@2
     displayName: 'NPM - Test - Publish results'
