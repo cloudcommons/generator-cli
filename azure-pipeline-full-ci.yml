@@ -2,12 +2,6 @@ variables:
   testCommand: test:full
   TF_CLI_CONFIG_FILE: '$(System.DefaultWorkingDirectory)/.terraformrc'
 
-trigger:
-  batch: true
-  branches:
-    include:
-    - 'master'
-
 # YAML PR triggers are only supported in GitHub and Bitbucket Cloud. If you are using Azure Repos Git, you can configure a branch policy for build validation in order to trigger your pipeline for validation.  
 # Source: https://docs.microsoft.com/en-us/azure/devops/pipelines/build/triggers?view=azure-devops&tabs=yaml#pr-triggers
 pr:
