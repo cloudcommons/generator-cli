@@ -1,4 +1,5 @@
 var merge = require('./merge');
+const debug = require('debug')('cloudcommons/generator-cli:config');
 
 /**
  * Wraps a key and value into a workspace property, merging any existing siblings
@@ -28,6 +29,7 @@ module.exports = class {
      * @param {*} key 
      */
     get(key) {
+        debug(`Getting key ${key}`);
         var workspace = this.terraform.getWorkspace();
         var envConfig = this.generator.config.get(workspace);
         return envConfig && envConfig[key] ? envConfig[key] : null;
@@ -39,6 +41,7 @@ module.exports = class {
      * @param {*} defaultValue 
      */
     getDefault(key, defaultValue) {
+        debug(`Getting key ${key} with default value ${defaultValue}`);
         if (typeof(defaultValue) === "function") defaultValue = defaultValue();
         var generatorConfig = this.get(this.generator.configName);
         if (this.generator.options[key] !== undefined) return this.generator.options[key];
@@ -51,6 +54,7 @@ module.exports = class {
      * @param {*} value 
      */
     set(key, value) {
+        debug(`Setting key ${key}`);
         var workspace = this.terraform.getWorkspace();
         value = scopeToWorkspace(this.generator, workspace, key, value);
         this.generator.config.set(workspace, value);
@@ -63,6 +67,7 @@ module.exports = class {
      * @param {*} defaultValue 
      */
     getGlobal(key, defaultValue) {
+        debug(`Getting global key ${key}`);
         const value = this.generator.config.get(key);
         return value ? value : defaultValue;
     }
@@ -73,6 +78,7 @@ module.exports = class {
      * @param {*} value 
      */
     setGlobal(key, value) {
+        debug(`Setting global key ${key}`);
         this.generator.config.set(key, value);
     }
 
@@ -81,6 +87,7 @@ module.exports = class {
      * @param {*} generator 
      */
     save() {
+        debug('Saving');
         this.generator.config.save();
     }
 }
