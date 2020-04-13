@@ -2,6 +2,7 @@
 const jsonMerge = require('./merge');
 const axios = require('axios');
 const regex = require('../core/regex');
+const debug = require('debug')('cloudcommons/generator-cli:terraform');
 var workspace = null;
 
 /**
@@ -28,6 +29,12 @@ function write(fs, file, json) {
 
 module.exports = class {
 
+    /**
+     * Creates a new instance of the terraform manager
+     * @param {*} fs 
+     * @param {*} spawn 
+     * @param {*} log 
+     */
     constructor(fs, spawn, log) {
         this.fs = fs;
         this.spawn = spawn;
@@ -35,36 +42,58 @@ module.exports = class {
     }
 
     /**
-  * Spawns a terraform command
-  * @param {*} args
-  */
+     * Spawns a terraform command
+     * @param {*} args
+     */
     terraform(args) {
+        if (!args) {
+            var error = 'ERROR: No arguments passed to terraform.';
+            debug(error);
+            throw error;
+        }
+
+        debug(`terraform ${args.join(' ')}`);
         var rgs = this.spawn('terraform', args, {
             stdio: ['ignore', 'pipe', process.stderr]
         });
+        if (rgs.status !== 0 || rgs.output === null) {
+            var error = rgs.output ? rgs.output.toString() : "No response from terraform. Is terraform installed??";
+            debug(error);
+        }
 
-        if (rgs.output === null) throw "No response from terraform. Is terraform installed??";
         var output = rgs.output.toString().trim();
-        return output.substring(1, output.length - 2);
+        output = output.substring(1, output.length - 2);
+        debug(output);
+        return output;
     }
 
     /**
      * Returns the current terraform workspace
      */
     getWorkspace() {
+        debug('Getting workspace');
         if (workspace != null) {
+            debug(`Returning cached workspace: ${workspace}`);
             return workspace;
         }
 
+        debug(`No cached workspace found. Obtaining from terraform...`)
         workspace = this.terraform(['workspace', 'show']);
         if (workspace == null) {
+            debug('No workspace found in terraform. Using "default"');
             workspace = "default";
         }
 
+        debug(`Returning workspace: ${workspace}`);
         return workspace;
     }
 
+    /**
+     * Creates a terraform workspace
+     * @param {*} workspace 
+     */
     createWorkspace(workspace) {
+        debug(`Creating workspace ${workspace}`);
         return workspace = this.terraform(['workspace', 'new', workspace]);
     }
 
@@ -75,6 +104,7 @@ module.exports = class {
      */
     writeConfig(config, file = 'terraform.tfvars.json') {
         var merged = merge(this.fs, config, file);
+        debug(`Writing config to "${file}": ${JSON.stringify(merged)}`);
         write(this.fs, file, merged);
     }
 
@@ -85,6 +115,7 @@ module.exports = class {
      */
     writeVariables(variables, file = 'variables.tf.json') {
         var merged = merge(this.fs, variables, file, "variable");
+        debug(`Writing variables to "${file}": ${JSON.stringify(merged)}`);
         write(this.fs, file, merged);
     }
 
@@ -95,6 +126,7 @@ module.exports = class {
      */
     writeBackEnd(backend, file = "__init__.tf.json") {
         var merged = merge(this.fs, backend, file);
+        debug(`Writing backend to "${file}": ${JSON.stringify(merged)}`);
         write(this.fs, file, merged);
     }
 
@@ -105,6 +137,7 @@ module.exports = class {
      */
     writeOutput(output, file = 'output.tf.json') {
         var merged = merge(this.fs, output, file, "output");
+        debug(`Writing output to "${file}": ${JSON.stringify(merged)}`);
         write(this.fs, file, merged);
     }
 
@@ -115,6 +148,7 @@ module.exports = class {
      */
     writeProviders(providers, file = 'providers.tf.json') {
         var merged = merge(this.fs, providers, file, "provider");
+        debug(`Writing providers to "${file}": ${JSON.stringify(merged)}`);
         write(this.fs, file, merged);
     }
 
@@ -124,13 +158,8 @@ module.exports = class {
      * @param {*} spawnCommandSync 
      */
     init() {
-        this.log("Initialising Terraform...")
-        try {
-            this.spawn('terraform', ['init']);
-        }
-        catch (e) {
-            this.log("Error executing terraform init. Is terraform installed? ", e);
-        }
+        debug('Initialising terraform');
+        this.spawn('terraform', ['init']);
     }
 
     /**
@@ -138,6 +167,7 @@ module.exports = class {
      * @param {*} string String to convert into Terraform string variable
      */
     toVariable(string) {
+        debug(`Transforming ${string} to variable`);
         return "${" + string + "}"
     }
 
@@ -147,7 +177,9 @@ module.exports = class {
      */
     generateKey(string) {
         if (!string) return null;
-        return string.replace(/[\s!*.,#\\/!]+/g, '-').toLowerCase();
+        var key = string.replace(/[\s!*.,#\\/!]+/g, '-').toLowerCase();
+        debug(`${string} transformed to key: ${key}`);
+        return key;
     }
 
     /**
@@ -155,6 +187,7 @@ module.exports = class {
      * @param {*} string 
      */
     validateKey(string) {
+        debug(`Validating key ${string}`);
         if (string && string.match("^([a-z][a-z0-9]*)(-[a-z0-9]+)*$")) return true;
         else return "Invalid name. Object names should meet kebab casing. Lower case only (^([a-z][a-z0-9]*)(-[a-z0-9]+)*$)";
     }
@@ -165,7 +198,7 @@ module.exports = class {
      * @param {*} azureId Azure resource id
      */
     import(name, azureId) {
-        this.log(`terraform import ${name} ${azureId}`);
+        debug(`terraform import ${name} ${azureId}`);
         return terraform(['import', name, azureId]);
     }
 
@@ -176,16 +209,18 @@ module.exports = class {
      * @param {*} variable Variable to use if this is not a dependency
      */
     resolveDependency(dependency, value, variable) {
+        debug(`Resolving dependency ${dependency} value: ${value} variable: ${variable}`);
         return this.isDependency(dependency) ? value : variable;
     }
-
 
     /**
      * Given a value, finds out if it a dependency with another Terraform resource 
      * @param {*} value 
      */
     isDependency(value) {
-        return value && value.includes('.') && !value.startsWith('var.');
+        var result = value && value.includes('.') && !value.startsWith('var.');
+        debug(`Checkf if ${value} is dependency: ${result}`);
+        return result;
     }
 
     /**
@@ -195,6 +230,7 @@ module.exports = class {
      * @param {*} value 
      */
     resolveConfigDependency(value) {
+        debug(`Resolving dependency ${value}`);
         return !this.isDependency(value) ? value : undefined
     }
 
@@ -205,7 +241,9 @@ module.exports = class {
         var keys = Object.keys(vars.variable);
         var client = getInstance(token);
 
-        client.get(`/organizations/${organisation}/workspaces/${workspace}`)            
+        debug(`Creating variables in organisation ${organisation}/${workspace}`);
+
+        client.get(`/organizations/${organisation}/workspaces/${workspace}`)
             .then(function (response) {
                 var variables = [];
                 for (var i = 0; i < keys.length; i++) {
@@ -223,13 +261,13 @@ module.exports = class {
 
     createAzureRmVariables(organisation, workspace, token) {
         var client = getInstance(token);
-        client.get(`/organizations/${organisation}/workspaces/${workspace}`)            
+        client.get(`/organizations/${organisation}/workspaces/${workspace}`)
             .then(function (response) {
                 var variables = [];
                 var ws = response.data.data;
                 variables.push(getVariable(ws.id, "ARM_CLIENT_ID", "env", "(Required) The Client ID which should be used. This can also be sourced from the ARM_CLIENT_ID Environment Variable."))
                 variables.push(getVariable(ws.id, "ARM_TENANT_ID", "env", "(Required) The Tenant ID which should be used. This can also be sourced from the ARM_TENANT_ID Environment Variable."))
-                variables.push(getVariable(ws.id, "ARM_CLIENT_SECRET", "env", "(Required) The Client ID which should be used. This can also be sourced from the ARM_CLIENT_SECRET Environment Variable.", null, false ,true))
+                variables.push(getVariable(ws.id, "ARM_CLIENT_SECRET", "env", "(Required) The Client ID which should be used. This can also be sourced from the ARM_CLIENT_SECRET Environment Variable.", null, false, true))
                 variables.push(getVariable(ws.id, "ARM_SUBSCRIPTION_ID", "env", "(Required) The Client ID which should be used. This can also be sourced from the ARM_SUBSCRIPTION_ID Environment Variable."))
                 createVars(client, variables);
             })
@@ -265,10 +303,11 @@ function getVariable(workspaceId, key, category, description, value = null, hcl 
 }
 
 async function createVars(client, vars) {
-    
-    for (var i = 0; i < vars.length; i++) {        
+
+    for (var i = 0; i < vars.length; i++) {
         v = vars[i];
         // Sending vars one by one. Otherwise Terraform may return "429 Too many requests"
+        debug(`Sending variable ${v}`);
         await client.post(`/vars`, v).catch(e => {
             if (e.response && e.response.status === 422) { // Variable already exists
                 var body = JSON.parse(e.response.config.data);
@@ -282,6 +321,7 @@ async function createVars(client, vars) {
 }
 
 function getInstance(token) {
+    debug('Getting terraform cloud instance');
     return axios.create({
         baseURL: 'https://app.terraform.io/api/v2',
         timeout: 1000,
