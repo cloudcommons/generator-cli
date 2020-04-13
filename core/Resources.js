@@ -1,3 +1,5 @@
+const debug = require('debug')('cloudcommons/generator-cli:resources')
+
 function load(configManager) {
     var resources = configManager.get("resources");
     if (!resources || !typeof resources === "object") {
@@ -19,6 +21,7 @@ module.exports = class {
      * Saves the resources to Yeoman
      */
     save() {
+        debug('Saving');
         var existing = load(this.configManager); 
         this.resources = Object.assign(existing ? existing : {}, this.resources);
         this.configManager.set("resources", this.resources);
@@ -29,6 +32,7 @@ module.exports = class {
      * @param {*} type 
      */
     get(type) {
+        debug(`Getting resources of type ${type}`);
         var result = this.resources[type];
         return result ? result : []
     }
@@ -39,6 +43,7 @@ module.exports = class {
      * @param {*} name 
      */
     push(type, name) {
+        debug(`Pushing type ${type} as ${name}`);
         if (!this.resources[type]) {
             this.resources[type] = [name];
         }
@@ -53,6 +58,7 @@ module.exports = class {
      * Gets all registered object typs
      */
     keys() {
+        debug(`Getting keys`);
         return Object.keys(this.resources);
     }
 
@@ -74,11 +80,12 @@ module.exports = class {
      * Get all the SQL Azure servers, including local and remote
      * @param {*} resourceGroup 
      */
-    sqlServers(resourceGroup) {
+    sqlServers(resourceGroup) {        
         if (this.terraform.isDependency(resourceGroup)) {
             return this.get('azurerm_sql_server');
         }
         else {
+            debug(`${resourceGroup} is not a dependency. Getting SQL Servers from Azure`);
             return this.az.sqlServers(resourceGroup);
         }
     }
