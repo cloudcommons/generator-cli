@@ -1,4 +1,4 @@
-const debug = require('debug')('generator-cli:terraform');
+const debug = require('debug')('cloudcommons/generator-cli:terraform');
 
 module.exports = class {
 

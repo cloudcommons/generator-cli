@@ -8,7 +8,7 @@ const TerraformHelper = require('./terraformHelper');
 const terraform = new TerraformHelper();
 const basePath = path.join(__dirname, '../../generators');
 const terraformAssert = require('@cloudcommons/terraform-assert');
-const log = require('debug')('generator-cli:genspec');
+const log = require('debug')('cloudcommons/generator-cli:genspec');
 
 /**
  * Given a generator specification, executes a chain of promises invoking all the generators, one by one.
