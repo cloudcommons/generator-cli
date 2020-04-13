@@ -8,23 +8,31 @@ const TerraformHelper = require('./terraformHelper');
 const terraform = new TerraformHelper();
 const basePath = path.join(__dirname, '../../generators');
 const terraformAssert = require('@cloudcommons/terraform-assert');
+const log = require('debug')('generator-cli:genspec');
 
 /**
  * Given a generator specification, executes a chain of promises invoking all the generators, one by one.
  * If the config
  */
-module.exports = function (spec, done) {
+module.exports = function (spec, done, reject) {
     // Creates a temporary working folder for all sub-generators
+    log('Creating temporary directory');
     var tmpdir = path.join(os.tmpdir(), crypto.randomBytes(20).toString('hex'));
+    log(`Temporary directory will be ${tmpdir}`);
     rimraf.sync(tmpdir);
-
+    log(`Temporary dir rmrf (${tmpdir})`);
     if (!fs.existsSync(tmpdir)) {
+        log(`Temporary dir created (${tmpdir} )`);
         fs.mkdirSync(tmpdir);
     }
     // Get all generators to execute
     var generators = Object.keys(spec.generators);
+    log(`Executing generators ${generators}`)
     // Execute the promise chain
-    executeGenerators(tmpdir, spec, generators, done);
+    executeGenerators(tmpdir, spec, generators, done, reject).catch(e => {
+        log(e);
+        reject(e);
+    });
 }
 
 /**
@@ -37,12 +45,17 @@ module.exports = function (spec, done) {
  * @param {*} done 
  */
 function executeGenerators(dir, spec, generators, done) {
+    log(`executeGenerators: ${dir}, ${spec}, ${generators}`);
     const nextGenerator = generators.shift();
     if (nextGenerator) {
         return executeGenerator(dir, nextGenerator, spec.generators[nextGenerator]).then(() => {
-            executeGenerators(dir, spec, generators, done);
+            executeGenerators(dir, spec, generators, done).catch(e => {
+                log(e);
+                done(e);
+            });
         }).catch(e => {
-            console.log(e);
+            log(e);
+            done(e);
         });
     }
     else {
@@ -65,17 +78,17 @@ function executeGenerators(dir, spec, generators, done) {
  */
 function executeGenerator(dir, name, generatorSpec) {
     return new Promise((resolve, reject) => {
-        console.debug(`Executing generator ${name}`);
+        log(`Executing generator ${name}`);
         try {
             helpers.run(path.join(basePath, name))
                 .cd(dir)
                 .withPrompts(generatorSpec.prompts)
                 .once('end', () => {
-                    console.debug(`Generator ${name} execution completed.`);
+                    log(`Generator ${name} execution completed.`);
                     resolve();
                 });
         } catch (e) {
-            console.log(e);
+            log(e);
             reject(e);
         }
     });
@@ -86,22 +99,23 @@ function executeGenerator(dir, name, generatorSpec) {
  * @param {*} spec 
  * @param {*} dir 
  */
-function generatorsCompleted(spec, dir) {
-    console.debug("Generators completed");
+function generatorsCompleted(spec, dir) {    
+    log("All generators have completed. Finishing generator specification execution...");
     if (spec && spec.config && spec.config.terraform) {
         cfg = spec.config.terraform;
         if (cfg.init) {
-            console.debug("terraform init");
+            log('Initisalising terraform');
             terraform.init(dir);
-            console.debug("terraform validate");
             terraform.validate(dir);
         }
         if (cfg.plan) {
-            console.debug("terraform plan")
+            log('Planning terraform');
             var planJson = terraform.getPlan(dir);
+            log("Completed");
             return terraformAssert(planJson);
         }
     }
 
+    log("Completed");
     return null;
 }

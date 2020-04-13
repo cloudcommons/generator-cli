@@ -1,12 +1,11 @@
 variables:
-  testCommand: run test
-  TF_CLI_CONFIG_FILE: '$(System.DefaultWorkingDirectory)/.terraformrc'
+  testCommand: test
 
 trigger:
   batch: true
   branches:
-    # exclude:
-    # - 'master'
+    exclude:
+    - 'master'
     include:
     - '*'
 

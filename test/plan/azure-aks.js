@@ -1,9 +1,10 @@
 const assert = require('yeoman-assert');
 const genSpec = require('../helpers/geneteratorSpecificationHelper');
 
-describe('cloudcommons/cli:azure-aks', function () {
+describe('cloudcommons/cli:azure-aks', function () {    
     describe('Terraform plan validations', function () {
-        describe('Creates an AKS with Application Insights with log analytics', function () {
+        describe('Creates an AKS with Application Insights with log analytics', function () {    
+                    
             var spec = {
                 config: {
                     terraform: {
@@ -95,7 +96,7 @@ describe('cloudcommons/cli:azure-aks', function () {
                 plan.variables('VNET_SERVICE_CIDR').is('172.0.2.0/23');
             });
 
-            it('Plans the right output variables', () => {
+            it('Plans the right output variables', () => {                
                 plan.planned_values.outputs("AKS_KUBE_CONFIG").isSensitive();
                 plan.planned_values.outputs("AKS_KUBE_CONFIG_RAW").isSensitive();
                 plan.planned_values.outputs("LOG_ANALYTICS_ID").isNotSensitive();

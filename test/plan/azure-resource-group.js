@@ -32,8 +32,12 @@ describe("cloudcommons/cli:azure-resource-group", function () {
             var plan = null;
 
             before(done => {
-                genSpec(spec, (terraformPlan) => {
-                    plan = terraformPlan;
+                genSpec(spec, (result) => {
+                    if (result instanceof Error) { 
+                        console.log(result);
+                        process.exit(-1);
+                    }
+                    plan = result;
                     done();
                 });
             });
