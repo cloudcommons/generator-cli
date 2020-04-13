@@ -1,3 +1,4 @@
+const debug = require('debug')('cloudcommons/generator-cli:az');
 module.exports = class {
     constructor(spawn, log) {
         this.spawn = spawn;
@@ -10,25 +11,35 @@ module.exports = class {
      */
     _az(args) {
         if (process.env.test === "true") return this._azMock(args);
+        debug('az', args.join(' '));
         var rgs = this.spawn('az', args, {
             stdio: ['ignore', 'pipe', process.stderr]
         });
 
+        if (rgs.status !== 0) {
+            var error = rgs.stdout.toString();
+            debug(error)
+            throw new Error(error);
+        }
+
         var json = rgs.stdout.toString();
-        if (json && json.startsWith(",ERROR:")) {
+        debug(json);
+        if (json && json.startsWith(",ERROR:")) {            
             this.log(json);
             throw json;
         }
         try {
             return JSON.parse(json);
         } catch (e) {
+            debug(e);
             this.log(`Error parsing az response: ${json}`);
             this.log(`${e}`);
-            throw e;
+            throw new Error(e);
         }
     }
 
     _azMock(args) {
+        debug(`azmock ${args ? args.join(' ') : ''}`);
         var filename = "../test/mocks/azure/responses/";
         for (var i = 0; i < args.length; i++) {
             var arg = new String(args[i]);
@@ -38,12 +49,15 @@ module.exports = class {
 
             filename += `${arg}-`
         }
-
+        
         filename = filename.substring(0, filename.length - 1);
         try {
+            debug(`Try loading mock file ${filename}`);
             return require(filename);
         } catch (e) {
-            throw new Error(`Error loading mock file: ${filename}`);
+            var error = `Error loading mock file ${filename}: ${e}`;
+            debug(error);
+            throw new Error(eror);
         }
     }
 
