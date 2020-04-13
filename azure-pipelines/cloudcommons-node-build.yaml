@@ -2,6 +2,7 @@ parameters:
   name: 'generator'
   workingDirectory: '$(System.DefaultWorkingDirectory)'
   maxParallel: 2
+  testCommand: 'run test'
 
 jobs:
 - job: Build${{ parameters.name}}
@@ -9,16 +10,19 @@ jobs:
     maxParallel: ${{ parameters.maxParallel }}
     matrix:    
       linux_node_12_terraform_0_12_20:
+        TF_CLI_CONFIG_FILE: '$(System.DefaultWorkingDirectory)/.terraformrc'
         vmImage: 'ubuntu-latest'
         nodeVersionSpec: '12.x'
         terraformVersion: '0.12.20'
         scriptType: bash
       mac_node_12_terraform_0_12_20:
+        TF_CLI_CONFIG_FILE: '$(System.DefaultWorkingDirectory)/.terraformrc'
         vmImage: 'macos-latest'
         nodeVersionSpec: '12.x'
         terraformVersion: '0.12.20'
         scriptType: bash
       windows_node_12_terraform_0_12_20:
+        TF_CLI_CONFIG_FILE: '$(System.DefaultWorkingDirectory)/terraform.rc'
         vmImage: 'windows-latest'
         nodeVersionSpec: '12.x'
         terraformVersion: '0.12.20'
@@ -41,13 +45,13 @@ jobs:
   - task: TerraformInstaller@0
     displayName: 'Terraform - Install'
     inputs:
-      terraformVersion: '$(terraformVersion)'      
+      terraformVersion: '$(terraformVersion)' 
 
-  - task: Npm@1
+  - script: |
+      npm run ${{ parameters.testCommand }}
     displayName: 'NPM - Test'
-    inputs:
-      command: 'custom'
-      customCommand: 'test'
+    env:
+      ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
 
   - task: PublishTestResults@2
     displayName: 'NPM - Test - Publish results'

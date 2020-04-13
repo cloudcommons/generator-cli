@@ -3,7 +3,7 @@ var path = require('path');
 var assert = require('yeoman-assert');
 
 describe("cloudcommons/cli:resource-group", function () {
-    describe('Creates a Resource Group', () => {
+    describe("Creates a Resource Group", function () {
         before(done => {
             helpers
                 .run(path.join(__dirname, '../generators/azure-resource-group'))
