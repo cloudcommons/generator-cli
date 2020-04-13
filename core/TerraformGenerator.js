@@ -1,3 +1,4 @@
+const debug = require('debug')('cloudcommons/generator-cli:terraformGenerator')
 var Generator = require('yeoman-generator');
 var Config = require('./Config');
 var Resources = require('./Resources')
@@ -14,6 +15,7 @@ var FsTools = class {
      * @param {*} parameters Object with parameters to replace
      */
     copy(source, parameters) {
+        debug(`copy: ${source} parameters: ${parameters ? JSON.stringify(parameters) : ''}`);
         this.generator.fs.copyTpl(
             this.generator.templatePath(source),
             this.generator.destinationPath(source),
@@ -28,6 +30,7 @@ var FsTools = class {
      * @param {*} parameters Object with parameters to replace
      */
     copyTo(source, destination, parameters) {
+        debug(`copyTo: ${source} > ${destination} parameters: ${parameters ? JSON.stringify(parameters) : ''}`);
         this.generator.fs.copyTpl(
             this.generator.templatePath(source),
             this.generator.destinationPath(destination),
@@ -41,6 +44,7 @@ var FsTools = class {
      * @param {*} destination 
      */
     writeJSON(json, destination) {
+        debug(`writeJSON: ${destination} ${json ? JSON.stringify(json) : ''}`);
         this.generator.fs.writeJSON(this.generator.destinationPath(destination), json);
     }
 }
@@ -59,16 +63,19 @@ module.exports = class extends Generator {
     };
 
     addResource(name) {
+        debug(`Adding resource ${this.resourceType} as ${this.resourceType}.${name}`);
         this.resources.push(this.resourceType, `${this.resourceType}.${name}`);
     }
 
     save(answers) {
+        debug('Saving scoped settings');
         this.configManager.set(this.configName, answers);
         this.resources.save();
         this.config.save();
     }
 
     saveGlobal(answers) {
+        debug('Saving global settings');
         this.configManager.setGlobal(this.configName, answers);
         this.resources.save();
         this.config.save();
@@ -77,6 +84,7 @@ module.exports = class extends Generator {
     addOptions(options) {
         for (const [option, config] of Object.entries(options)) {
             config.type = getType(config.type);
+            debug(`Adding option: ${option}`);
             this.option(option, config);
         }
     }
@@ -84,6 +92,7 @@ module.exports = class extends Generator {
     addArguments(args) {
         for (const [arg, config] of Object.entries(args)) {
             config.type = getType(config.type);
+            debug(`Adding argument: ${option}`);
             this.argument(arg, config);
         }
     }
@@ -91,6 +100,7 @@ module.exports = class extends Generator {
     mergeOptions(options, answers) {
         for (const [option] of Object.entries(options)) {
             if (this.options[option] === undefined) continue;
+            debug(`Merging option: ${option}`);
             answers[option] = this.options[option];
         }
 
@@ -99,6 +109,7 @@ module.exports = class extends Generator {
 }
 
 function getType(stringType) {
+    debug(`Getting type: ${stringType}`);
     switch (stringType) {
         case "String":
             return String;
