@@ -6,14 +6,15 @@ trigger:
   batch: true
   branches:
     include:
-    - 'master'
+    - 'feature/integration-tests'
+    # - 'master'
 
 # YAML PR triggers are only supported in GitHub and Bitbucket Cloud. If you are using Azure Repos Git, you can configure a branch policy for build validation in order to trigger your pipeline for validation.  
 # Source: https://docs.microsoft.com/en-us/azure/devops/pipelines/build/triggers?view=azure-devops&tabs=yaml#pr-triggers
-pr:
-  branches:
-    include:
-    - 'master'
+# pr:
+#   branches:
+#     include:
+#     - 'master'
 
 stages:
 - stage: 'build'
