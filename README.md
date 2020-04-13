@@ -1,6 +1,6 @@
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcloudcommons%2Fgenerator-cli.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcloudcommons%2Fgenerator-cli?ref=badge_shield)
-
 # Cloudcommons CLI
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcloudcommons%2Fgenerator-cli.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcloudcommons%2Fgenerator-cli?ref=badge_shield)
+
 
 CloudCommons is a toolbox that aims to hold common patterns and practices for cloud applications.
 
@@ -83,8 +83,6 @@ A: It uses az cli active subscription. To change is, use ```az account set -s xx
 Q: Does the cli support multiple subscriptions?
 A: No. Multiple subscriptions are not suported yet.
 
-# License
 
-MIT license
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcloudcommons%2Fgenerator-cli.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcloudcommons%2Fgenerator-cli?ref=badge_large)
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcloudcommons%2Fgenerator-cli.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcloudcommons%2Fgenerator-cli?ref=badge_large)
