@@ -1,0 +1,31 @@
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        node: [12.x]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        terraform: [0.12.20]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+
+    - name: HashiCorp - Setup Terraform
+      uses: hashicorp/setup-terraform@v1.0.1       
+      with:
+        terraform_version: ${{ matrix.terraform }}     
+    - run: npm install
+    - run: npm run build --if-present
+    - run: npm test
+      env:
+        CI: true
+    - run: npm publish --dry-run
