@@ -1,4 +1,6 @@
 # Cloudcommons CLI
+
+![node-build](https://github.com/sesispla/generator-cli/workflows/node-build/badge.svg)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcloudcommons%2Fgenerator-cli.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcloudcommons%2Fgenerator-cli?ref=badge_shield)
 
 
